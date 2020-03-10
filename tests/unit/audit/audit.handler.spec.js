@@ -11,7 +11,7 @@ describe('Audit Log', () => {
 
   describe('receiver handler', () => {
     describe('when send a correct payload', () => {
-      it.skip('should return 200', async () => {
+      it('should return 200', async () => {
         const response = await handler(mock);
         expect(response.statusCode).toBe(200);
         const expectedResponse = JSON.parse(mock.Records[0].body);
@@ -28,7 +28,7 @@ describe('Audit Log', () => {
         expect(JSON.parse(response.body).msg).toEqual('You should send at least one record');
       });
 
-      it.skip('should return 500', async () => {
+      it('should return 500', async () => {
         AuditLog.save = jest.fn(() => {
           throw new Error('Not Found');
         });

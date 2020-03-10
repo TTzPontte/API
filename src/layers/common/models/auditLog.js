@@ -1,5 +1,5 @@
 const { Schema } = require('dynamoose');
-const { Dynamoose } = require('../aws/dynamoose');
+const dynamoose = require('../aws/dynamoose');
 const baseModel = require('./baseModel');
 
 const { ENV, PROJECT } = process.env;
@@ -16,4 +16,4 @@ const AuditLogSchema = new Schema(
     data: Object
   })
 );
-module.exports = Dynamoose.model(`${PROJECT}-AuditLog.${ENV}`, AuditLogSchema);
+module.exports = dynamoose.model(`${PROJECT}-AuditLog.${ENV}`, AuditLogSchema);
