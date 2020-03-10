@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - npm install
+      - cd ./src/layers/common/
+      - npm install
+      - cd ../../../
+  build:
+    commands:
+      - npm run test
+
+artifacts:
+  type: zip
+  files:
+    - '**/*'
+
+cache:
+  paths:
+    - 'node_modules/**/*'

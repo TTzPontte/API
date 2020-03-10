@@ -1,0 +1,40 @@
+{
+  "extends": "strongloop",
+  "plugins": ["jest"],
+  "env": {
+    "node": true,
+    "es6": true,
+    "jest/globals": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 8,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "rules": {
+    "comma-dangle": [2, "never"],
+    "max-len": 0,
+    "no-console": ["error", { "allow": ["log"] }],
+    "indent": ["error", 2, { "SwitchCase": 1, "ObjectExpression": 1 }],
+    "no-unused-vars": [1, { "vars": "local", "args": "none" }],
+    "linebreak-style": "off",
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "semi": ["error", "always"],
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
+  }
+}

@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Pontte API
+
+Parameters:
+  Project:
+    Description: Project Name
+    Type: String
+    Default: API
+
+  Environment:
+    Description: Execution environment
+    Type: String
+    AllowedValues:
+      - dev
+      - test
+      - staging
+      - prod
+
+Conditions:
+  Prod: !Equals [!Ref Project, prod]
+
+Globals:
+  Function:
+    Runtime: nodejs10.x
+    MemorySize: 1024
+    Timeout: 120
+    Tags:
+      Project: !Ref Project
+      Environment: !Ref Environment
+    Environment:
+      Variables:
+        PROJECT: !Ref Project
+        ENV: !Ref Environment
+
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'Authorization,Content-Type,If-Match'"
+      AllowOrigin: !If [Prod, "'https://api-pontte.pontte.com.br'", "'*'"]
+
+Conditions:
+  Prod: !Equals [!Ref Environment, prod]
+
+Resources:
+  ApiAuditLogApp:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: src/audit/template.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment

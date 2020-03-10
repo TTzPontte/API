@@ -1,0 +1,44 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Pontte API",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "npm run test:clean && npm run lint",
+    "test": "ENV=test jest",
+    "test:coverage": "jest --coverage",
+    "test:clean": "rimraf ./coverage",
+    "test:watch": "jest --watchAll",
+    "lint": "./node_modules/.bin/eslint ."
+  },
+  "author": "Devs Pontte <dev@pontte.com.br> (https://www.pontte.com.br)",
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-strongloop": "^2.1.0",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^25.1.0",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@types/jest": "^25.1.4",
+    "babel-eslint": "^10.1.0",
+    "husky": "^4.2.3"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run lint && pretty-quick --staged --pattern '**/*.*(js)'"
+    }
+  }
+}
