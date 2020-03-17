@@ -38,7 +38,7 @@ Globals:
     Cors:
       AllowMethods: "'*'"
       AllowHeaders: "'Authorization,Content-Type,If-Match'"
-      AllowOrigin: !If [Prod, "'https://api-pontte.pontte.com.br'", "'*'"]
+      AllowOrigin: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
 
 Conditions:
   Prod: !Equals [!Ref Environment, prod]
