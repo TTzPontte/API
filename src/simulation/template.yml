@@ -1,0 +1,102 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Simulation API
+Parameters:
+  Project:
+    Description: nome do projeto
+    Type: String
+    Default: Pontte
+
+  Environment:
+    Description: ambiente de execucao do servico
+    Type: String
+    AllowedValues:
+      - dev
+      - test
+      - staging
+      - prod
+
+  APIDomainName:
+    Description: Nome do dominio
+    Type: String
+
+
+Conditions:
+  Prod: !Equals [!Ref Project, prod]
+
+Globals:
+  Function:
+    Runtime: nodejs10.x
+    MemorySize: 128
+    Timeout: 120
+    Layers:
+      - !Ref CommonAPILayer
+    Tags:
+      Project: !Ref Project
+      Environment: !Ref Environment
+    Environment:
+      Variables:
+        PROJECT: !Ref Project
+        ENV: !Ref Environment
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'Authorization,Content-Type,If-Match'"
+      AllowOrigin: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
+
+Resources:
+  CommonAPILayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      Description: bibliotecas comuns para as funcoes.
+      ContentUri: ../layers/common
+      CompatibleRuntimes:
+        - nodejs10.x
+
+  APISimulation:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub 'APISimulation-${Environment}'
+      StageName: !Ref Environment
+      GatewayResponses:
+        DEFAULT_4xx:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Headers: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
+              Access-Control-Allow-Origin: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
+
+        DEFAULT_5XX:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Headers: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
+              Access-Control-Allow-Origin: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
+
+        EXPIRED_TOKEN:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Headers: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
+              Access-Control-Allow-Origin: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
+
+  APISimulation:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      BasePath: 'simulation'
+      DomainName: !Ref APIDomainName
+      RestApiId: !Ref APISimulation
+      Stage: !Ref APISimulation.Stage
+
+  SimulationHello:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'SimulationHello-${Environment}'
+      Description: Get permission to upload authorization
+      Handler: hello.handler
+      Tracing: Active
+      Events:
+        api1:
+          Type: Api
+          Properties:
+            RestApiId: !Ref APISimulation
+            Path: '/v1'
+            Method: GET
