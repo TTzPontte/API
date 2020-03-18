@@ -62,7 +62,7 @@ Resources:
   SimulationApp:
     Type: AWS::Serverless::Application
     Properties:
-      Location: src/simulation/template.yaml
+      Location: src/simulation/template.yml
       Parameters:
         Project: !Ref Project
         Environment: !Ref Environment

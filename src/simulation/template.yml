@@ -59,26 +59,8 @@ Resources:
     Properties:
       Name: !Sub 'APISimulation-${Environment}'
       StageName: !Ref Environment
-      GatewayResponses:
-        DEFAULT_4xx:
-          ResponseParameters:
-            Headers:
-              Access-Control-Allow-Headers: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
-              Access-Control-Allow-Origin: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
-
-        DEFAULT_5XX:
-          ResponseParameters:
-            Headers:
-              Access-Control-Allow-Headers: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
-              Access-Control-Allow-Origin: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
-
-        EXPIRED_TOKEN:
-          ResponseParameters:
-            Headers:
-              Access-Control-Allow-Headers: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
-              Access-Control-Allow-Origin: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
-
-  APISimulation:
+  
+  APISimulationMapping:
     Type: AWS::ApiGateway::BasePathMapping
     Properties:
       BasePath: 'simulation'
@@ -86,7 +68,7 @@ Resources:
       RestApiId: !Ref APISimulation
       Stage: !Ref APISimulation.Stage
 
-  SimulationHello:
+  SimulationHelloFn:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub 'SimulationHello-${Environment}'
