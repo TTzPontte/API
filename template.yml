@@ -51,3 +51,22 @@ Resources:
       Parameters:
         Project: !Ref Project
         Environment: !Ref Environment
+        
+  DBClients:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'Clients.${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [Prod, true, false]
+      SSESpecification:
+        SSEEnabled: true
+      AttributeDefinitions:
+        - AttributeName: clientId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: clientId
+          KeyType: HASH
+      Tags:
+        - { Key: Project, Value: !Ref Project }
+        - { Key: Environment, Value: !Ref Environment }
