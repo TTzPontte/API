@@ -14,6 +14,7 @@
     "axios": "^0.19.2",
     "dynamoose": "^1.11.1",
     "http-errors": "^1.7.3",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "middy": "^0.34.0"
   }

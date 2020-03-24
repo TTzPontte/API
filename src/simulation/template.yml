@@ -21,7 +21,6 @@ Parameters:
     Description: Nome do dominio
     Type: String
 
-
 Conditions:
   Prod: !Equals [!Ref Project, prod]
 
@@ -59,7 +58,7 @@ Resources:
     Properties:
       Name: !Sub 'APISimulation-${Environment}'
       StageName: !Ref Environment
-  
+
   APISimulationMapping:
     Type: AWS::ApiGateway::BasePathMapping
     Properties:
@@ -75,6 +74,9 @@ Resources:
       Description: Get permission to upload authorization
       Handler: hello.handler
       Tracing: Active
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Sub 'ClientsApi.${Environment}'
       Events:
         api1:
           Type: Api

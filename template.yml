@@ -68,6 +68,7 @@ Resources:
         Environment: !Ref Environment
         APIDomainName: !Ref APIDomainName
       
+
   DBClients:
     Type: AWS::DynamoDB::Table
     Properties:
