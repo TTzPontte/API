@@ -6,9 +6,10 @@ const { ENV, PROJECT } = process.env;
 
 const ClientsApiSchema = new Schema(
   Object.assign({}, baseModel, {
-    name: String,
     clientId: String,
-    clientSecret: String
+    name: Str ng,
+    clientSecret: String,
+    clientName: String
   })
 );
 module.exports = dynamoose.model(`ClientsApi.${ENV}`, ClientsApiSchema);
