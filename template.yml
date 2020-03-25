@@ -44,6 +44,13 @@ Conditions:
   Prod: !Equals [!Ref Environment, prod]
 
 Resources:
+  APIDomainName:
+    Type: "AWS::ApiGateway::DomainName"
+    Properties:
+      DomainName:
+        !If [Prod, "api.pontte.com.br", !Sub "api${Environment}.pontte.com.br"]
+      CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
+
   ApiAuditLogApp:
     Type: AWS::Serverless::Application
     Properties:
@@ -51,3 +58,22 @@ Resources:
       Parameters:
         Project: !Ref Project
         Environment: !Ref Environment
+
+  DBClients:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'ClientsApi.${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [Prod, true, false]
+      SSESpecification:
+        SSEEnabled: true
+      AttributeDefinitions:
+        - AttributeName: clientId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: clientId
+          KeyType: HASH
+      Tags:
+        - { Key: Project, Value: !Ref Project }
+        - { Key: Environment, Value: !Ref Environment }
