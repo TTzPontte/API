@@ -55,7 +55,6 @@ const save = async ({
     ltvMax: [[ltvMax]],
     cet: [[cet]],
     date: getDateIsoString(),
-    status: 'PENDING',
     clientApiId: clientId
   });
 

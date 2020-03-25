@@ -1,5 +1,5 @@
 const { Schema } = require('dynamoose');
-const { Dynamoose } = require('../aws/dynamoose');
+const Dynamoose = require('../aws/dynamoose');
 const { v1: uuid } = require('uuid');
 
 const { ENV } = process.env;
@@ -31,7 +31,8 @@ const SimulationsSchema = new Schema({
     source: String,
     valorEmprestimo: Number,
     gracePeriod: Number,
-    skipMonth: Number
+    skipMonth: Number,
+    loanDate: String
   },
   parcelas: [
     {

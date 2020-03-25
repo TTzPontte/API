@@ -1,4 +1,4 @@
-const { invoke } = require('/opt/aws/invoke');
+const Invoke = require('../aws/invoke');
 
 const calculate = async ({ loanValue, propertyValue, monthlyIncome, terms, gracePeriod, skipMonth }) => {
   const payload = {
@@ -17,7 +17,7 @@ const calculate = async ({ loanValue, propertyValue, monthlyIncome, terms, grace
 
   const body = JSON.stringify(payload);
 
-  const response = await invoke('SimulatorCalculatorFn', { body });
+  const response = await Invoke.invoke('SimulatorCalculatorFn', { body });
 
   return JSON.parse(response.body);
 };

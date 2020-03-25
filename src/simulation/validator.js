@@ -1,4 +1,5 @@
-const yup = require('/opt/node_modules/yup');
+const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
+const yup = require(`${path}/node_modules/yup`);
 const { MIN_PROPERTY_VALUE, MIN_AGE, MAX_AGE, TERMS, MIN_LOAN_VALUE, LOAN_MOTIVATION, GRACE_PERIOD } = require('./constants');
 
 const validate = async fields => {
@@ -15,10 +16,8 @@ const validate = async fields => {
     age: yup
       .number()
       .required()
-      .positive()
       .min(MIN_AGE)
-      .max(MAX_AGE)
-      .integer(),
+      .max(MAX_AGE),
     cpf: yup
       .string()
       .length(11)
@@ -50,7 +49,7 @@ const validate = async fields => {
       .notRequired()
   });
 
-  const isValid = await schema.validate(fields);
+  const isValid = await schema.isValid(fields);
 
   return isValid;
 };
