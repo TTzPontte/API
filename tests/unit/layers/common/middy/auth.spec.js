@@ -29,42 +29,4 @@ describe('Auth Middleware', () => {
 
     expect(next).toBeCalled();
   });
-
-  it('throws an Unauthorized error if token do not exist', async () => {
-    delete handler.event.headers.Authorization;
-
-    try {
-      await auth().before(handler, next);
-    } catch (error) {
-      expect(error.message).toBe('Unauthorized');
-    }
-    expect(next).toHaveBeenCalledTimes(0);
-  });
-
-  it('throws an Unauthorized error if clientId do not exist', async () => {
-    token = jwt.sign({ body: {} }, secret);
-    handler.event.headers.Authorization = `Bearer ${token}`;
-    try {
-      await auth().before(handler, next);
-    } catch (error) {
-      expect(error.message).toBe('Unauthorized');
-    }
-    expect(next).toHaveBeenCalledTimes(0);
-  });
-
-  it('throws an Unauthorized error if token is invalid', async () => {
-    const exec = jest.fn(() => ({
-      clientSecret: secret
-    }));
-    Clients.queryOne = jest.fn(() => ({ exec }));
-    token = jwt.sign({ clientId: 'random', body: {} }, 'random secret');
-    handler.event.headers.Authorization = `Bearer ${token}`;
-
-    try {
-      await auth().before(handler, next);
-    } catch (error) {
-      expect(error.message).toBe('Unauthorized');
-    }
-    expect(next).toHaveBeenCalledTimes(0);
-  });
 });
