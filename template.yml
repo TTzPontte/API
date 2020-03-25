@@ -26,6 +26,8 @@ Globals:
     Runtime: nodejs10.x
     MemorySize: 1024
     Timeout: 120
+    Layers:
+      - !Ref CommonAPILayer
     Tags:
       Project: !Ref Project
       Environment: !Ref Environment
@@ -38,7 +40,7 @@ Globals:
     Cors:
       AllowMethods: "'*'"
       AllowHeaders: "'Authorization,Content-Type,If-Match'"
-      AllowOrigin: !If [Prod, "'https://api.pontte.com.br'", "'*'"]
+      AllowOrigin: "'*'"
 
 Conditions:
   Prod: !Equals [!Ref Environment, prod]
@@ -50,6 +52,27 @@ Resources:
       DomainName:
         !If [Prod, "api.pontte.com.br", !Sub "api${Environment}.pontte.com.br"]
       CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
+
+  API:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub 'API-${Environment}'
+      StageName: !Ref Environment
+
+  APIMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref APIDomainName
+      RestApiId: !Ref API
+      Stage: !Ref API.Stage
+
+  CommonAPILayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      Description: Common libraries
+      ContentUri: src/layers/common
+      CompatibleRuntimes:
+        - nodejs10.x
 
   ApiAuditLogApp:
     Type: AWS::Serverless::Application
@@ -77,3 +100,28 @@ Resources:
       Tags:
         - { Key: Project, Value: !Ref Project }
         - { Key: Environment, Value: !Ref Environment }
+
+  SimulationSaveApiFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "SimulationSaveApiFn-${Environment}"
+      Description: Save the simulations done from partners
+      CodeUri: src/simulation
+      Handler: simulation.handler
+      Tracing: Active
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !Sub "ApiAuditLog_${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Simulations.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DBClients
+        - LambdaInvokePolicy:
+            FunctionName: !Sub 'SimulatorCalculatorFn-${Environment}'
+      Events:
+        api1:
+          Type: Api
+          Properties:
+            RestApiId: !Ref API
+            Path: "/v1/simulation"
+            Method: POST
