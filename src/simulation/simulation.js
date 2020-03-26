@@ -1,10 +1,12 @@
+const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const { validate } = require('./validator');
 const { parser } = require('./parser');
-const Simulation = require('/opt/services/simulation.service');
-const Calculator = require('/opt/services/calculator.service');
-const { success, badRequest } = require('/opt/lambda/response');
+const { success, badRequest } = require(`${path}/lambda/response`);
+const Simulation = require(`${path}/services/simulation.service`);
+const Calculator = require(`${path}/services/calculator.service`);
+const middy = require(`${path}/middy/middy`);
 
-const handler = async (event, context) => {
+const handler = async event => {
   const data = await parser(event);
   const isValid = await validate(data);
   if (isValid) {
@@ -25,4 +27,4 @@ const handler = async (event, context) => {
   return badRequest('Algo deu errado');
 };
 
-module.exports = { handler };
+module.exports = { handler: middy(handler) };

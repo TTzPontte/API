@@ -24,7 +24,7 @@ const validate = async fields => {
       .required(),
     phone: yup
       .string()
-      .length(19) // +55 (99) 99999-9999
+      .length(19)
       .required(),
     cep: yup
       .string()

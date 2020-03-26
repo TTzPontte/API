@@ -3,13 +3,12 @@ const { trackCode } = require(`${path}/helpers/fingerprint`);
 
 const parser = async event => {
   const { body, clientId, clientName, requestContext } = event;
-  const data = JSON.parse(body);
-  const { gracePeriod = 0, skipMonth = 0, loanMotivation = [] } = data;
+  const { gracePeriod = 0, skipMonth = 0, loanMotivation = [] } = body;
   const sourceIp = requestContext.identity.sourceIp;
-  const trackingCode = (await trackCode()) + `:${clientId}`;
+  const trackingCode = (await trackCode()) + `:${clientName}`;
 
   return {
-    ...data,
+    ...body,
     gracePeriod,
     loanMotivation,
     skipMonth,

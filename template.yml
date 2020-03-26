@@ -98,9 +98,13 @@ Resources:
       Tracing: Active
       Policies:
         - SQSSendMessagePolicy:
-            QueueName: !Sub "AuditLog_${Environment}"
+            QueueName: !Sub "ApiAuditLog_${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Simulations.${Environment}"
+        - DynamoDbCrudPolicy:
+            TableName: !Ref DBClients
+        - LambdaInvokePolicy:
+            FunctionName: !Sub 'SimulatorCalculatorFn-${Environment}'
       Events:
         api1:
           Type: Api
