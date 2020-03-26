@@ -69,26 +69,6 @@ Resources:
         Project: !Ref Project
         Environment: !Ref Environment
 
-  SimulationSaveApiFn:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub "SimulationSaveApiFn-${Environment}"
-      Description: Save the simulations done from partners
-      CodeUri: src/simulation
-      Handler: simulation.handler
-      Tracing: Active
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "Simulations.${Environment}"
-        - LambdaInvokePolicy:
-            FunctionName: !Sub "SimulatorCalculatorFn-${Environment}"
-      Events:
-        api1:
-          Type: Api
-          Properties:
-            Path: "/v1/simulation"
-            Method: POST
-
   DBClients:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -107,3 +87,27 @@ Resources:
       Tags:
         - { Key: Project, Value: !Ref Project }
         - { Key: Environment, Value: !Ref Environment }
+
+  SimulationSaveApiFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "SimulationSaveApiFn-${Environment}"
+      Description: Save the simulations done from partners
+      CodeUri: src/simulation
+      Handler: simulation.handler
+      Tracing: Active
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !Sub "ApiAuditLog_${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Simulations.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DBClients
+        - LambdaInvokePolicy:
+            FunctionName: !Sub 'SimulatorCalculatorFn-${Environment}'
+      Events:
+        api1:
+          Type: Api
+          Properties:
+            Path: "/v1/simulation"
+            Method: POST
