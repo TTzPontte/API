@@ -16,7 +16,8 @@ const save = async ({
     gracePeriod,
     skipMonth,
     sourceIp,
-    clientId
+    clientId,
+    clientName
   },
   calculated: { netLoan, grossLoan, installment, ltv, ltvMax, cet }
 }) => {
@@ -38,6 +39,8 @@ const save = async ({
       phone: phone,
       trackCode: trackCode,
       gracePeriod: gracePeriod,
+      campaign: clientName,
+      source: clientName,
       skipMonth: skipMonth,
       loanDate: getNowDefaultDate()
     },
