@@ -88,6 +88,21 @@ Resources:
         - { Key: Project, Value: !Ref Project }
         - { Key: Environment, Value: !Ref Environment }
 
+  SimulationHelloApiFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "SimulationSaveApiFn-${Environment}"
+      Description: Save the simulations done from partners
+      CodeUri: src/simulation
+      Handler: hello.handler
+      Tracing: Active
+      Events:
+        api1:
+          Type: Api
+          Properties:
+            Path: "/v1/simulation"
+            Method: GET
+
   SimulationSaveApiFn:
     Type: AWS::Serverless::Function
     Properties:
