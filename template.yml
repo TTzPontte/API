@@ -53,6 +53,19 @@ Resources:
         !If [Prod, "api.pontte.com.br", !Sub "api${Environment}.pontte.com.br"]
       CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
 
+  API:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub 'API-${Environment}'
+      StageName: !Ref Environment
+
+  APIMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref APIDomainName
+      RestApiId: !Ref API
+      Stage: !Ref API.Stage
+
   CommonAPILayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -100,6 +113,7 @@ Resources:
         api1:
           Type: Api
           Properties:
+            RestApiId: !Ref API
             Path: "/v1/simulation"
             Method: GET
 
@@ -124,5 +138,6 @@ Resources:
         api1:
           Type: Api
           Properties:
+            RestApiId: !Ref API
             Path: "/v1/simulation"
             Method: POST
