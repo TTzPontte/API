@@ -10,7 +10,7 @@ module.exports = () => {
       event.body = { ...body };
       event.clientId = clientId;
       event.clientName = clientName;
-      next();
+      return;
     }
   };
 };

@@ -1,5 +1,5 @@
 const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
-const { trackCode } = require(`${path}/helpers/fingerprint`);
+const { trackCode } = require(`${path}/helpers/trackCode`);
 
 const parser = async event => {
   const { body, clientId, clientName, requestContext } = event;
