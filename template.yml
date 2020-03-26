@@ -102,7 +102,7 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Sub "Simulations.${Environment}"
         - DynamoDbCrudPolicy:
-            TableName: !Ref DBClients
+            TableName: !Sub 'ClientsApi.${Environment}'
         - LambdaInvokePolicy:
             FunctionName: !Sub 'SimulatorCalculatorFn-${Environment}'
       Events:
