@@ -91,7 +91,7 @@ Resources:
   SimulationHelloApiFn:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub "SimulationSaveApiFn-${Environment}"
+      FunctionName: !Sub "SimulationHelloApiFn-${Environment}"
       Description: Save the simulations done from partners
       CodeUri: src/simulation
       Handler: hello.handler
