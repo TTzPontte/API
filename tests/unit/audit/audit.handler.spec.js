@@ -25,7 +25,7 @@ describe('Audit Log', () => {
         const records = { Records: [] };
         const response = await handler(records);
         expect(response.statusCode).toBe(400);
-        expect(JSON.parse(response.body).msg).toEqual('You should send at least one record');
+        expect(JSON.parse(response.body).message).toEqual('You should send at least one record');
       });
 
       it('should return 500', async () => {
@@ -42,7 +42,7 @@ describe('Audit Log', () => {
       it('should return 400', async () => {
         const response = await handler({});
         expect(response.statusCode).toBe(400);
-        expect(JSON.parse(response.body).msg).toEqual('Bad request');
+        expect(JSON.parse(response.body).message).toEqual('Bad request');
       });
     });
   });
