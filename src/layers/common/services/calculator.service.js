@@ -7,9 +7,7 @@ const calculate = async ({ loanValue, propertyValue, monthlyIncome, terms, grace
     monthly_income: monthlyIncome,
     terms: terms,
     grace_period: gracePeriod,
-    skip_month: skipMonth,
-    day_due: 5,
-    interest_rate: 0.85
+    skip_month: skipMonth
   };
 
   if (!skipMonth) delete payload.skip_month;
