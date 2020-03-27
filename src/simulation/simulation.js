@@ -6,7 +6,7 @@ const Simulation = require(`${path}/services/simulation.service`);
 const Calculator = require(`${path}/services/calculator.service`);
 const middy = require(`${path}/middy/middy`);
 
-const handler = async event => {
+const simulation = async event => {
   const data = await parser(event);
   const isValid = await validate(data);
   if (isValid) {
@@ -27,4 +27,4 @@ const handler = async event => {
   return badRequest('Algo deu errado');
 };
 
-module.exports = { handler: middy(handler) };
+module.exports = { handler: middy(simulation), simulation };
