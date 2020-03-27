@@ -12,9 +12,7 @@ describe('Calculator service', () => {
         loan_value: 68000,
         property_value: 310000,
         monthly_income: 6000,
-        terms: 210,
-        day_due: 5,
-        interest_rate: 0.85
+        terms: 210
       };
       const data = { loanValue: 68000, propertyValue: 310000, monthlyIncome: 6000, terms: 210, gracePeriod: 0, skipMonth: 0 };
       await calculate(data);
