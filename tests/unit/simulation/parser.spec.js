@@ -1,10 +1,13 @@
 const { parser } = require('../../../src/simulation/parser');
-const { trackCode } = require('../../../src/layers/common/helpers/fingerprint');
+const { trackCode } = require('../../../src/layers/common/helpers/trackCode');
+jest.mock('../../../src/layers/common/helpers/trackCode');
 
 describe('simulation', () => {
   describe('parser', () => {
-    let event;
+    let event, id;
     beforeEach(() => {
+      id = '1234-1234-1234-1234';
+      trackCode.mockReturnValueOnce(id);
       event = {
         clientName: 'random-name',
         clientId: 'random-id',
@@ -15,11 +18,12 @@ describe('simulation', () => {
         }
       };
     });
+
     it('returns the parsed event', async () => {
-      event.body = JSON.stringify({
+      event.body = {
         loanMotivation: ['PAY_OFF_DEBTS'],
         loanValue: 22000
-      });
+      };
 
       const expectedResult = {
         loanMotivation: ['PAY_OFF_DEBTS'],
@@ -28,7 +32,7 @@ describe('simulation', () => {
         skipMonth: 0,
         sourceIp: '127.0.0.1',
         clientName: 'random-name',
-        trackCode: (await trackCode()) + ':random-id',
+        trackCode: `${id}:random-name`,
         clientId: 'random-id'
       };
 
@@ -36,10 +40,11 @@ describe('simulation', () => {
 
       expect(parsed).toStrictEqual(expectedResult);
     });
+
     it('returns the parsed without loan motivation', async () => {
-      event.body = JSON.stringify({
+      event.body = {
         loanValue: 22000
-      });
+      };
       const expectedResult = {
         loanMotivation: [],
         loanValue: 22000,
@@ -47,7 +52,7 @@ describe('simulation', () => {
         skipMonth: 0,
         sourceIp: '127.0.0.1',
         clientName: 'random-name',
-        trackCode: (await trackCode()) + ':random-id',
+        trackCode: `${id}:random-name`,
         clientId: 'random-id'
       };
 
