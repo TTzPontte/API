@@ -1,7 +1,7 @@
 const AWS = jest.requireActual('aws-sdk');
 const mockConverter = Object.assign({}, AWS.DynamoDB.Converter);
 
-jest.setTimeout(15000); // in milliseconds
+jest.setTimeout(15000);
 
 global.mockUpdateDocumentClient = jest.fn(() => ({
   promise: jest.fn()

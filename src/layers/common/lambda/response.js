@@ -17,13 +17,13 @@ const build = statusCode => body => {
   };
 };
 
-const buildError = statusCode => msg => {
+const buildError = statusCode => message => {
   return {
     headers,
     statusCode,
     body: JSON.stringify({
       statusCode,
-      msg
+      message
     })
   };
 };
