@@ -14,7 +14,7 @@ const LOAN_MOTIVATION = [
   'JUST_CURIOSITY'
 ];
 
-const TERMS = [90, 120, 150, 180, 210, 240];
+const TERMS = [60, 90, 120, 150, 180, 210, 240];
 
 const GRACE_PERIOD = [0, 1, 3, 6];
 

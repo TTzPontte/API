@@ -11,12 +11,6 @@ const SimulationsSchema = new Schema({
     default: () => uuid()
   },
   cep: String,
-  cet: [
-    {
-      type: 'list',
-      list: [Number]
-    }
-  ],
   date: String,
   idade: Number,
   parametros: {
@@ -32,47 +26,25 @@ const SimulationsSchema = new Schema({
     valorEmprestimo: Number,
     gracePeriod: Number,
     skipMonth: Number,
-    loanDate: String
+    loanDate: String,
+    cpf: String
   },
-  parcelas: [
-    {
-      type: 'list',
-      list: [Number]
-    }
-  ],
-  prazos: [
-    {
-      type: Number
-    }
-  ],
-  valoresEmprestimeBruto: [
-    {
-      type: Number
-    }
-  ],
-  valoresEmprestimo: [
-    {
-      type: Number
-    }
-  ],
   valorImovel: Number,
-  createdAt: String,
+  parcelas: [{ type: 'list', list: [Number] }],
+  prazos: [{ type: Number }],
+  valoresEmprestimeBruto: [{ type: Number }],
+  valoresEmprestimo: [{ type: Number }],
+  ultimaParcela: [{ type: 'list', list: [Number] }],
+  cet: [{ type: 'list', list: [Number] }],
+  ltv: [{ type: Number }],
+  ltvMax: [{ type: Number }],
+  loanMotivation: [{ type: String }],
+  clientApiId: String,
   status: {
     type: String,
     default: 'PENDING'
   },
-  loanMotivation: [
-    {
-      type: String
-    }
-  ],
-  ultimaParcela: [
-    {
-      type: 'list',
-      list: [Number]
-    }
-  ],
-  clientApiId: String
+  createdAt: String
 });
 
 module.exports = Dynamoose.model(`Simulations.${ENV}`, SimulationsSchema, {

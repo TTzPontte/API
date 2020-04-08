@@ -10,6 +10,19 @@ global.mockUpdateDocumentClient = jest.fn(() => ({
 global.mockModelSave = jest.fn();
 
 jest.mock(
+  '@elastic/elasticsearch',
+  () => ({
+    Client: jest.fn(() => ({
+      index: jest.fn(() => 'OK - Index'),
+      delete: jest.fn(() => 'OK - Remove'),
+      search: jest.fn(() => ({})),
+      updateByQuery: jest.fn(() => ({}))
+    })),
+    Connection: class Connection {}
+  }),
+  { virtual: true }
+);
+jest.mock(
   'aws-sdk',
   () => ({
     Lambda: jest.fn(() => ({

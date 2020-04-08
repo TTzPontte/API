@@ -1,5 +1,7 @@
 const { getNowDefaultDate, getDateIsoString } = require('../helpers/date');
-const Simulation = require('../models/simulation');
+const createError = require('http-errors');
+const SimulationModel = require('../models/simulation');
+const { getClientSimulation } = require('../elasticsearch/simulations.es');
 
 const save = async ({
   data: {
@@ -17,14 +19,15 @@ const save = async ({
     skipMonth,
     sourceIp,
     clientId,
-    clientName
+    clientName,
+    cpf
   },
   calculated: { netLoan, grossLoan, installment, ltv, ltvMax, cet }
 }) => {
   const lastInstallment = installment[installment.length - 1].installment;
   const firstInstallment = installment[0].installment;
 
-  const simulation = new Simulation({
+  const simulation = new SimulationModel({
     valorImovel: propertyValue,
     loanMotivation: loanMotivation,
     cep: cep,
@@ -42,6 +45,7 @@ const save = async ({
       campaign: clientName,
       source: clientName,
       skipMonth: skipMonth,
+      cpf: cpf,
       loanDate: getNowDefaultDate()
     },
     accepted: {
@@ -54,7 +58,7 @@ const save = async ({
     valoresEmprestimeBruto: [grossLoan],
     parcelas: [[firstInstallment]],
     ultimaParcela: [[lastInstallment]],
-    lvt: [[ltv]],
+    ltv: [[ltv]],
     ltvMax: [[ltvMax]],
     cet: [[cet]],
     date: getDateIsoString(),
@@ -64,4 +68,13 @@ const save = async ({
   return await simulation.save();
 };
 
-module.exports = { save };
+const isRegistered = async ({ cpf, email, clientId }) => {
+  const simulations = await getClientSimulation({ cpf, email, clientId });
+
+  if (simulations && simulations.length) {
+    throw new createError.BadRequest('Cliente já cadastrado');
+  }
+  return false;
+};
+
+module.exports = { save, isRegistered };
