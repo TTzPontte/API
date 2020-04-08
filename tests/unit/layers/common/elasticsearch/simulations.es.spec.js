@@ -29,7 +29,7 @@ jest.mock(
   { virtual: true }
 );
 
-const SimulationsES = require('../../../../src/layers/common/elasticsearch/simulations.es');
+const SimulationsES = require('../../../../../src/layers/common/elasticsearch/simulations.es');
 
 describe('SimulationsES', () => {
   it('should get simulation source', async () => {

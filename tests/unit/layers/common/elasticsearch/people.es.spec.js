@@ -29,7 +29,7 @@ jest.mock(
   { virtual: true }
 );
 
-const PeopleES = require('../../../../src/layers/common/elasticsearch/people.es');
+const PeopleES = require('../../../../../src/layers/common/elasticsearch/people.es');
 
 describe('PeopleES', () => {
   it('should get people source', async () => {

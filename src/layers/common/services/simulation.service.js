@@ -1,6 +1,6 @@
 const { getNowDefaultDate, getDateIsoString } = require('../helpers/date');
+const Simulation = require('../models/simulation');
 const createError = require('http-errors');
-const SimulationModel = require('../models/simulation');
 const { getClientSimulation } = require('../elasticsearch/simulations.es');
 
 const save = async ({
@@ -19,15 +19,14 @@ const save = async ({
     skipMonth,
     sourceIp,
     clientId,
-    clientName,
-    cpf
+    clientName
   },
   calculated: { netLoan, grossLoan, installment, ltv, ltvMax, cet }
 }) => {
   const lastInstallment = installment[installment.length - 1].installment;
   const firstInstallment = installment[0].installment;
 
-  const simulation = new SimulationModel({
+  const simulation = new Simulation({
     valorImovel: propertyValue,
     loanMotivation: loanMotivation,
     cep: cep,
@@ -45,7 +44,6 @@ const save = async ({
       campaign: clientName,
       source: clientName,
       skipMonth: skipMonth,
-      cpf: cpf,
       loanDate: getNowDefaultDate()
     },
     accepted: {
@@ -58,7 +56,7 @@ const save = async ({
     valoresEmprestimeBruto: [grossLoan],
     parcelas: [[firstInstallment]],
     ultimaParcela: [[lastInstallment]],
-    ltv: [[ltv]],
+    lvt: [[ltv]],
     ltvMax: [[ltvMax]],
     cet: [[cet]],
     date: getDateIsoString(),
@@ -77,4 +75,26 @@ const isRegistered = async ({ cpf, email, clientId }) => {
   return false;
 };
 
-module.exports = { save, isRegistered };
+const getLastSimulation = async simulationId => {
+  try {
+    const { parametros, id, prazos, parcelas } = await Simulation.queryOne({ id: simulationId }).exec();
+    const { idade, cep, email, loanDate, rendaMensal, valImovel, valorEmprestimo } = parametros;
+    return {
+      id,
+      age: idade,
+      cep: cep,
+      date: loanDate,
+      installment: parcelas[0][0],
+      loanValue: valorEmprestimo,
+      loanValueSelected: valorEmprestimo,
+      propertyValue: valImovel,
+      rendaMensal: rendaMensal,
+      term: prazos[0],
+      email: email
+    };
+  } catch (error) {
+    throw new createError.BadRequest('Simulação não encontrada');
+  }
+};
+
+module.exports = { save, getLastSimulation, isRegistered };

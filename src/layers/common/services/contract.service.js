@@ -1,6 +1,9 @@
 const createError = require('http-errors');
 const ContractModel = require('../models/contract');
 const { getPeople } = require('../elasticsearch/people.es');
+const Property = require('./property.service');
+const People = require('./people.service');
+const Simulation = require('../services/simulation.service');
 
 const getContractByOwner = async contractOwner => {
   return await ContractModel.query({ contractOwner: { eq: contractOwner } })
@@ -22,4 +25,13 @@ const isRegistered = async ({ cpf, email }) => {
   return false;
 };
 
-module.exports = { isRegistered, getContractByOwner };
+const save = async ({ people, property, simulationId, ...data }) => {
+  const { id: contractOwner } = await People.save(people);
+  const { id: propertyId } = await Property.save(property);
+  const lastSimulation = await Simulation.getLastSimulation(simulationId);
+
+  const contract = new ContractModel({ ...data, propertyId, contractOwner, lastSimulation });
+  return await contract.save();
+};
+
+module.exports = { save, isRegistered, getContractByOwner };
