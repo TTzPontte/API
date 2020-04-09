@@ -137,3 +137,32 @@ Resources:
             RestApiId: !Ref API
             Path: "/v1/simulation"
             Method: POST
+
+  ContractSaveApiFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "ContractSaveApiFn-${Environment}"
+      Description: Save the contract done from partners
+      CodeUri: src/contracts
+      Handler: contract.handler
+      Tracing: Active
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !Sub "ApiAuditLog_${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Contract.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DBClients
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "People.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Property.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Simulations.${Environment}"
+      Events:
+        api1:
+          Type: Api
+          Properties:
+            RestApiId: !Ref API
+            Path: "/v1/contract"
+            Method: POST

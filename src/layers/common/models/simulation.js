@@ -36,8 +36,8 @@ const SimulationsSchema = new Schema({
   valoresEmprestimo: [{ type: Number }],
   ultimaParcela: [{ type: 'list', list: [Number] }],
   cet: [{ type: 'list', list: [Number] }],
-  ltv: [{ type: Number }],
-  ltvMax: [{ type: Number }],
+  ltv: [[{ type: Number }]],
+  ltvMax: [[{ type: Number }]],
   loanMotivation: [{ type: String }],
   clientApiId: String,
   status: {

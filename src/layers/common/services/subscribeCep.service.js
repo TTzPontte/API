@@ -48,7 +48,7 @@ const save = async ({
     clientApiId: clientId
   });
 
-  return await subscribeCep.save();
+  return subscribeCep.save();
 };
 
 module.exports = { save };

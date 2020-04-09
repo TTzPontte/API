@@ -1,6 +1,6 @@
 const { getNowDefaultDate, getDateIsoString } = require('../helpers/date');
+const Simulation = require('../models/simulation');
 const createError = require('http-errors');
-const SimulationModel = require('../models/simulation');
 const { getClientSimulation } = require('../elasticsearch/simulations.es');
 
 const save = async ({
@@ -27,7 +27,7 @@ const save = async ({
   const lastInstallment = installment[installment.length - 1].installment;
   const firstInstallment = installment[0].installment;
 
-  const simulation = new SimulationModel({
+  const simulation = new Simulation({
     valorImovel: propertyValue,
     loanMotivation: loanMotivation,
     cep: cep,
@@ -65,7 +65,7 @@ const save = async ({
     clientApiId: clientId
   });
 
-  return await simulation.save();
+  return simulation.save();
 };
 
 const isRegistered = async ({ cpf, email, clientId }) => {
@@ -77,4 +77,27 @@ const isRegistered = async ({ cpf, email, clientId }) => {
   return false;
 };
 
-module.exports = { save, isRegistered };
+const getLastSimulation = async simulationId => {
+  try {
+    const { parametros, id, prazos, parcelas } = await Simulation.queryOne({ id: simulationId }).exec();
+    const { idade, cep, email, loanDate, rendaMensal, valImovel, valorEmprestimo } = parametros;
+    const installments = parcelas[0];
+    return {
+      id,
+      age: idade,
+      cep: cep,
+      date: loanDate,
+      installment: installments[0],
+      loanValue: valorEmprestimo,
+      loanValueSelected: valorEmprestimo,
+      propertyValue: valImovel,
+      rendaMensal: rendaMensal,
+      term: prazos[0],
+      email: email
+    };
+  } catch (error) {
+    throw new createError.BadRequest('Simulação não encontrada');
+  }
+};
+
+module.exports = { save, getLastSimulation, isRegistered };
