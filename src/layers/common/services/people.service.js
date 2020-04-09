@@ -15,7 +15,7 @@ const save = async data => {
   }, Promise.resolve({}));
 
   const people = new People({ ...data, ...personas });
-  return await people.save();
+  return people.save();
 };
 
 module.exports = { save };

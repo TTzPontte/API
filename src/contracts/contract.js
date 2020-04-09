@@ -4,14 +4,10 @@ const { success } = require(`${path}/lambda/response`);
 const middy = require(`${path}/middy/middy`);
 
 const contract = async event => {
-  const { body } = event;
-  const contract = await Contract.save(body);
+  const { body, clientId } = event;
+  const contract = await Contract.save({ ...body, clientId });
 
-  const response = {
-    ...contract
-  };
-
-  return success(response);
+  return success({ ...contract });
 };
 
 module.exports = { handler: middy(contract), contract };

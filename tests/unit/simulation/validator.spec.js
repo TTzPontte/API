@@ -18,7 +18,7 @@ describe('simulation', () => {
       };
     });
     it('not throw', async () => {
-      expect(async () => await validate(data)).not.toThrow();
+      expect(async () => validate(data)).not.toThrow();
     });
     describe('throws error when', () => {
       describe('loan value', () => {
