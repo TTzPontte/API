@@ -21,6 +21,17 @@ Parameters:
 Conditions:
   Prod: !Equals [!Ref Project, prod]
 
+Mappings:
+  Config:
+    test:
+      esEndpoint: 'test'
+    dev:
+      esEndpoint: 'https://search-simulations-dev-utjmngpwpsdremjdqo2cupssmy.us-east-1.es.amazonaws.com'
+    staging:
+      esEndpoint: 'https://search-simulations-staging-44arqulu2bq6mmk7lfmramwv3u.us-east-1.es.amazonaws.com'
+    prod:
+      esEndpoint: 'https://search-simulations-prod-ckbzwabelmgkkrbvpyuio2lq6y.us-east-1.es.amazonaws.com'
+
 Globals:
   Function:
     Runtime: nodejs10.x
@@ -35,6 +46,7 @@ Globals:
       Variables:
         PROJECT: !Ref Project
         ENV: !Ref Environment
+        ES_ENDPOINT: !FindInMap [Config, !Ref Environment, esEndpoint]
 
   Api:
     Cors:
@@ -101,22 +113,6 @@ Resources:
         - { Key: Project, Value: !Ref Project }
         - { Key: Environment, Value: !Ref Environment }
 
-  SimulationHelloApiFn:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub "SimulationHelloApiFn-${Environment}"
-      Description: Save the simulations done from partners
-      CodeUri: src/simulation
-      Handler: hello.handler
-      Tracing: Active
-      Events:
-        api1:
-          Type: Api
-          Properties:
-            RestApiId: !Ref API
-            Path: "/v1/simulation"
-            Method: GET
-
   SimulationSaveApiFn:
     Type: AWS::Serverless::Function
     Properties:
@@ -140,4 +136,33 @@ Resources:
           Properties:
             RestApiId: !Ref API
             Path: "/v1/simulation"
+            Method: POST
+
+  ContractSaveApiFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "ContractSaveApiFn-${Environment}"
+      Description: Save the contract done from partners
+      CodeUri: src/contracts
+      Handler: contract.handler
+      Tracing: Active
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !Sub "ApiAuditLog_${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Contract.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DBClients
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "People.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Property.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Simulations.${Environment}"
+      Events:
+        api1:
+          Type: Api
+          Properties:
+            RestApiId: !Ref API
+            Path: "/v1/contract"
             Method: POST

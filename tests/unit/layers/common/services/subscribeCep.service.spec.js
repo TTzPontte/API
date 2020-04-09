@@ -1,5 +1,5 @@
-const layerPath = '../../../../src/layers/common/';
-const { save } = require(`${layerPath}services/simulation.service`);
+const layerPath = '../../../../../src/layers/common/';
+const { save } = require(`${layerPath}services/subscribeCep.service`);
 
 describe('Simulation service', () => {
   describe('save', () => {

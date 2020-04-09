@@ -1,5 +1,6 @@
 const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const yup = require(`${path}/node_modules/yup`);
+const createError = require(`${path}/node_modules/http-errors`);
 const { MIN_PROPERTY_VALUE, MIN_AGE, MAX_AGE, TERMS, MIN_LOAN_VALUE, LOAN_MOTIVATION, GRACE_PERIOD } = require('./constants');
 
 const validate = async fields => {
@@ -50,8 +51,21 @@ const validate = async fields => {
   });
 
   const isValid = await schema.isValid(fields);
-
-  return isValid;
+  if (!isValid) throw new createError.BadRequest('Campos inválidos');
 };
 
-module.exports = { validate };
+const isValidCep = ({ status }) => {
+  if (status === 'OK' || status === 'NOK') {
+    return true;
+  }
+  throw new createError.BadRequest('Cep inválido');
+};
+
+const isCovered = ({ status }) => {
+  if (status === 'OK') {
+    return true;
+  }
+  return false;
+};
+
+module.exports = { validate, isValidCep, isCovered };

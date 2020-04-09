@@ -1,14 +1,20 @@
 const { simulation } = require('../../../src/simulation/simulation');
 const Simulation = require('../../../src/layers/common/services/simulation.service');
 const Calculator = require('../../../src/layers/common/services/calculator.service');
+const Contract = require('../../../src/layers/common/services/contract.service');
+const Cep = require('../../../src/layers/common/services/cep.service');
 
 describe('simulation handler', () => {
-  let event, calculatedResult, saveResult;
+  let event, calculatedResult, saveResult, address;
   beforeEach(() => {
     calculatedResult = { statusCode: 200, netLoan: 45000 };
+    address = { status: 'OK' };
     saveResult = { id: '1' };
+    Cep.getAddress = jest.fn(() => address);
     Calculator.calculate = jest.fn(() => calculatedResult);
     Simulation.save = jest.fn(() => saveResult);
+    Simulation.isRegistered = jest.fn();
+    Contract.isRegistered = jest.fn();
 
     event = {
       body: {
@@ -46,8 +52,11 @@ describe('simulation handler', () => {
   describe('when send invalid payload', () => {
     it('returns badRequest', async () => {
       delete event.body.loanValue;
-      const response = await simulation(event);
-      expect(response.statusCode).toBe(400);
+      try {
+        await simulation(event);
+      } catch (error) {
+        expect(error.message).toBe('Campos inválidos');
+      }
     });
   });
 
