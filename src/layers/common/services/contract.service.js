@@ -6,7 +6,7 @@ const People = require('./people.service');
 const Simulation = require('../services/simulation.service');
 
 const getContractByOwner = async contractOwner => {
-  return await ContractModel.query({ contractOwner: { eq: contractOwner } })
+  return ContractModel.query({ contractOwner: { eq: contractOwner } })
     .using('ContractByOwner')
     .exec();
 };
@@ -31,7 +31,7 @@ const save = async ({ people, property, simulationId, ...data }) => {
   const lastSimulation = await Simulation.getLastSimulation(simulationId);
 
   const contract = new ContractModel({ ...data, propertyId, contractOwner, lastSimulation });
-  return await contract.save();
+  return contract.save();
 };
 
 module.exports = { save, isRegistered, getContractByOwner };

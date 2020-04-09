@@ -10,7 +10,7 @@ const sendMessage = async (body, accountId, nameSQS) => {
     DelaySeconds: 0
   };
 
-  return await sqs.sendMessage(params).promise();
+  return sqs.sendMessage(params).promise();
 };
 
 module.exports = { sendMessage };

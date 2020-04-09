@@ -19,7 +19,8 @@ const save = async ({
     skipMonth,
     sourceIp,
     clientId,
-    clientName
+    clientName,
+    cpf
   },
   calculated: { netLoan, grossLoan, installment, ltv, ltvMax, cet }
 }) => {
@@ -44,6 +45,7 @@ const save = async ({
       campaign: clientName,
       source: clientName,
       skipMonth: skipMonth,
+      cpf: cpf,
       loanDate: getNowDefaultDate()
     },
     accepted: {
@@ -56,14 +58,14 @@ const save = async ({
     valoresEmprestimeBruto: [grossLoan],
     parcelas: [[firstInstallment]],
     ultimaParcela: [[lastInstallment]],
-    lvt: [[ltv]],
+    ltv: [[ltv]],
     ltvMax: [[ltvMax]],
     cet: [[cet]],
     date: getDateIsoString(),
     clientApiId: clientId
   });
 
-  return await simulation.save();
+  return simulation.save();
 };
 
 const isRegistered = async ({ cpf, email, clientId }) => {
@@ -79,12 +81,13 @@ const getLastSimulation = async simulationId => {
   try {
     const { parametros, id, prazos, parcelas } = await Simulation.queryOne({ id: simulationId }).exec();
     const { idade, cep, email, loanDate, rendaMensal, valImovel, valorEmprestimo } = parametros;
+    const installments = parcelas[0];
     return {
       id,
       age: idade,
       cep: cep,
       date: loanDate,
-      installment: parcelas[0][0],
+      installment: installments[0],
       loanValue: valorEmprestimo,
       loanValueSelected: valorEmprestimo,
       propertyValue: valImovel,

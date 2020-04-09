@@ -153,6 +153,12 @@ Resources:
             TableName: !Sub "Contract.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "People.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Property.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Simulations.${Environment}"
       Events:
         api1:
           Type: Api
