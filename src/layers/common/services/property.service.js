@@ -1,8 +1,17 @@
+const createError = require('http-errors');
 const Property = require('../models/property');
+const { getAddress, isCovered, isValidCep } = require('./cep.service');
 
-const save = async data => {
-  const property = new Property({ ...data });
-  return property.save();
+const save = async (data, trackCode) => {
+  const address = await getAddress({ cep: data.address.cep, trackCode });
+  isValidCep(address);
+
+  if (isCovered(address)) {
+    const property = new Property({ ...data });
+    return property.save();
+  }
+
+  return createError.BadRequest('Região Não atendida');
 };
 
 module.exports = { save };

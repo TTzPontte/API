@@ -1,6 +1,6 @@
 const layerPath = '../../../../../src/layers/common/';
 const Invoke = require(`${layerPath}aws/invoke`);
-const { getAddress } = require(`${layerPath}services/cep.service`);
+const { getAddress, isValidCep, isCovered } = require(`${layerPath}services/cep.service`);
 
 describe('Cep service', () => {
   describe('getAddress', () => {
@@ -19,6 +19,34 @@ describe('Cep service', () => {
       };
       await getAddress(data);
       expect(Invoke.invoke).toHaveBeenCalledWith('CepGetFn', event);
+    });
+  });
+
+  describe('isValidCep', () => {
+    it('returns true if address is valid', async () => {
+      const address = { status: 'OK' };
+
+      expect(await isValidCep(address)).toBe(true);
+    });
+    it('throws invalid cep error', async () => {
+      const address = { status: 'INVALID' };
+
+      try {
+        await isValidCep(address);
+      } catch (error) {
+        expect(error.message).toBe('Cep inválido');
+      }
+    });
+  });
+  describe('isCovered', () => {
+    it('returns true if is covered', async () => {
+      const address = { status: 'OK' };
+
+      expect(await isCovered(address)).toBe(true);
+    });
+    it('returns false if is not covered', async () => {
+      const address = { status: 'NOK' };
+      expect(await isCovered(address)).toBe(false);
     });
   });
 });

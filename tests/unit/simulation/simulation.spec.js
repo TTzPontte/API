@@ -4,13 +4,17 @@ const Calculator = require('../../../src/layers/common/services/calculator.servi
 const Contract = require('../../../src/layers/common/services/contract.service');
 const Cep = require('../../../src/layers/common/services/cep.service');
 
+jest.mock('../../../src/layers/common/services/cep.service');
+
 describe('simulation handler', () => {
   let event, calculatedResult, saveResult, address;
   beforeEach(() => {
     calculatedResult = { statusCode: 200, netLoan: 45000 };
     address = { status: 'OK' };
     saveResult = { id: '1' };
-    Cep.getAddress = jest.fn(() => address);
+    Cep.getAddress.mockReturnValueOnce(address);
+    Cep.isValidCep.mockReturnValueOnce(true);
+    Cep.isCovered.mockReturnValueOnce(true);
     Calculator.calculate = jest.fn(() => calculatedResult);
     Simulation.save = jest.fn(() => saveResult);
     Simulation.isRegistered = jest.fn();

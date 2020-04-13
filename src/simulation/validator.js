@@ -54,18 +54,4 @@ const validate = async fields => {
   if (!isValid) throw new createError.BadRequest('Campos inválidos');
 };
 
-const isValidCep = ({ status }) => {
-  if (status === 'OK' || status === 'NOK') {
-    return true;
-  }
-  throw new createError.BadRequest('Cep inválido');
-};
-
-const isCovered = ({ status }) => {
-  if (status === 'OK') {
-    return true;
-  }
-  return false;
-};
-
-module.exports = { validate, isValidCep, isCovered };
+module.exports = { validate };

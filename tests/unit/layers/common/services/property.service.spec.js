@@ -1,5 +1,8 @@
 const layerPath = '../../../../../src/layers/common/';
-let { save } = require(`${layerPath}services/property.service`);
+const { save } = require(`${layerPath}services/property.service`);
+const { getAddress, isCovered, isValidCep } = require(`${layerPath}services/cep.service`);
+
+jest.mock('../../../../../src/layers/common/services/cep.service');
 
 describe('save property', () => {
   let property;
@@ -16,10 +19,12 @@ describe('save property', () => {
       suites: '1',
       type: 'Apartamento'
     };
+    getAddress.mockReturnValueOnce([]);
+    isValidCep.mockReturnValueOnce(true);
+    isCovered.mockReturnValueOnce(true);
   });
   it('saves property correctly', async () => {
     await save(property);
-
     expect(global.mockModelSave).toHaveBeenCalledTimes(1);
   });
 });

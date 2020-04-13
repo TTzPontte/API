@@ -26,7 +26,7 @@ const requestNewTemporaryPassword = async Username => {
     MessageAction: 'RESEND'
   };
 
-  return await CognitoService.adminCreateUser(params);
+  return CognitoService.adminCreateUser(params);
 };
 
 const buildAttributes = ({ email, cpf, phone }) => [
@@ -56,7 +56,7 @@ const createUser = async data => {
     ValidationData
   };
 
-  return await CognitoService.adminCreateUser(params);
+  return CognitoService.adminCreateUser(params);
 };
 
 const CognitoService = {
