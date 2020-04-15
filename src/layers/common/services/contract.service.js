@@ -3,7 +3,6 @@ const ContractModel = require('../models/contract');
 const { getPeople } = require('../elasticsearch/people.es');
 const Property = require('./property.service');
 const People = require('./people.service');
-const Simulation = require('../services/simulation.service');
 
 const getContractByOwner = async contractOwner => {
   return ContractModel.query({ contractOwner: { eq: contractOwner } })
@@ -25,10 +24,10 @@ const isRegistered = async ({ cpf, email }) => {
   return false;
 };
 
-const save = async ({ people, property, simulationId, ...data }) => {
+const save = async ({ people, property, lastSimulation, ...data }) => {
+  await isRegistered(people);
   const { id: contractOwner } = await People.save(people);
-  const { id: propertyId } = await Property.save(property);
-  const lastSimulation = await Simulation.getLastSimulation(simulationId);
+  const { id: propertyId } = await Property.save(property, lastSimulation.trackCode);
 
   const contract = new ContractModel({ ...data, propertyId, contractOwner, lastSimulation });
   return contract.save();

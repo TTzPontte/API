@@ -1,4 +1,5 @@
 const Invoke = require('../aws/invoke');
+const createError = require('http-errors');
 
 const getAddress = async ({ cep, trackCode }) => {
   const event = {
@@ -10,8 +11,21 @@ const getAddress = async ({ cep, trackCode }) => {
     }
   };
   const response = await Invoke.invoke('CepGetFn', event);
-
   return JSON.parse(response.body);
 };
 
-module.exports = { getAddress };
+const isValidCep = ({ status }) => {
+  if (status === 'OK' || status === 'NOK') {
+    return true;
+  }
+  throw new createError.BadRequest('Cep inválido');
+};
+
+const isCovered = ({ status }) => {
+  if (status === 'OK') {
+    return true;
+  }
+  return false;
+};
+
+module.exports = { getAddress, isValidCep, isCovered };
