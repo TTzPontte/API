@@ -110,6 +110,7 @@ const validate = async fields => {
           streetAddress: yup.string().required()
         })
         .required(),
+      phone: yup.string().required(),
       ...personaSchema
     })
     .required();

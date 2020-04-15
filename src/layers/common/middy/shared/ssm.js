@@ -8,7 +8,7 @@ const ssmCognito = () => {
     cache: true,
     cacheExpiryInMillis: 3 * 60 * 60,
     names: {
-      COGNITO_USER_POOL_ID: `${prefix}userPoolId`,
+      COGNITO_USER_POOL_ID: `${prefix}user_pool_id`,
       COGNITO_REGION: `${prefix}region`
     }
   });

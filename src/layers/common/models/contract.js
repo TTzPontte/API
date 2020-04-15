@@ -25,7 +25,8 @@ const ContractsSchema = new Schema({
     propertyValue: Number,
     rendaMensal: Number,
     term: Number,
-    email: String
+    email: String,
+    trackCode: String
   },
   makeUpIncome: [
     {
