@@ -37,6 +37,11 @@ jest.mock(
         promise: jest.fn()
       }))
     })),
+    CognitoIdentityServiceProvider: jest.fn(() => ({
+      adminCreateUser: jest.fn(() => ({
+        promise: jest.fn()
+      }))
+    })),
     Endpoint: jest.fn(() => ({ host: 'host' })),
     HttpRequest: jest.fn(() => ({})),
     config: {
