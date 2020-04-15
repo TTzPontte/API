@@ -10,7 +10,7 @@ const adminCreateUser = async params => {
 
   const defaultParams = {
     UserPoolId: COGNITO_USER_POOL_ID,
-    DesiredDeliveryMediums: ['EMAIL', 'SMS']
+    DesiredDeliveryMediums: ['EMAIL']
   };
 
   try {
@@ -29,19 +29,20 @@ const requestNewTemporaryPassword = async Username => {
   return CognitoService.adminCreateUser(params);
 };
 
-const buildAttributes = ({ email, cpf, phone }) => [
+const buildAttributes = ({ name, email, cpf, phone }) => [
+  { Name: 'name', Value: name },
   { Name: 'email', Value: email },
   { Name: 'phone_number', Value: phone },
   { Name: 'custom:cpf', Value: cpf }
 ];
 
 const buildValidationData = ({ trackCode, simulationId, loanValue, term, installment, loanValueSelected, phone }) => [
-  { Name: 'trackCode', Value: trackCode },
+  { Name: 'trackCode', Value: trackCode.toString() },
   { Name: 'simulationId', Value: simulationId },
-  { Name: 'loanValue', Value: loanValue },
-  { Name: 'term', Value: term },
-  { Name: 'installment', Value: installment },
-  { Name: 'loanValueSelected', Value: loanValueSelected },
+  { Name: 'loanValue', Value: loanValue.toString() },
+  { Name: 'term', Value: term.toString() },
+  { Name: 'installment', Value: installment.toString() },
+  { Name: 'loanValueSelected', Value: loanValueSelected.toString() },
   { Name: 'phone', Value: phone }
 ];
 

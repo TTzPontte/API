@@ -1,5 +1,7 @@
 const { contract } = require('../../../src/contracts/contract');
 const Contract = require('../../../src/layers/common/services/contract.service');
+const Simulation = require('../../../src/layers/common/services/simulation.service');
+const Cognito = require('../../../src/layers/common/services/cognito.service');
 const body = require('../../utils/contractBody');
 
 describe('contract handler', () => {
@@ -20,6 +22,8 @@ describe('contract handler', () => {
       }
     };
     Contract.save = jest.fn(() => saveResult);
+    Simulation.getLastSimulation = jest.fn(() => {});
+    Cognito.createUser = jest.fn(() => {});
   });
 
   it('return success', async () => {

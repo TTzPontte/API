@@ -21,7 +21,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
         describe('cep', () => {
@@ -30,7 +30,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -39,7 +39,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -49,7 +49,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -58,7 +58,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -68,7 +68,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -77,7 +77,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -87,7 +87,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -96,7 +96,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -106,7 +106,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -115,7 +115,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -125,7 +125,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -134,7 +134,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -144,7 +144,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -156,7 +156,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -165,7 +165,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -176,7 +176,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -185,7 +185,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -196,7 +196,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -205,7 +205,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -214,7 +214,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -225,7 +225,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -234,7 +234,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -246,7 +246,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -255,7 +255,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -264,7 +264,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -275,7 +275,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -284,7 +284,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -293,7 +293,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -304,7 +304,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -313,7 +313,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -325,7 +325,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -334,7 +334,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -345,7 +345,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
         it('is not a valid marital status', async () => {
@@ -353,7 +353,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
         it('not a string', async () => {
@@ -361,7 +361,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -372,7 +372,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
         it('is not a valid education level', async () => {
@@ -380,7 +380,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
         it('not a string', async () => {
@@ -388,7 +388,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -399,7 +399,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
         it('is not one of [Sim, Não]', async () => {
@@ -407,7 +407,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
         it('not a string', async () => {
@@ -415,7 +415,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -425,7 +425,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
         it('is not one of [Sim, Não]', async () => {
@@ -433,7 +433,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
         it('not a string', async () => {
@@ -441,7 +441,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -453,7 +453,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
           it('averageIncome is undefined', async () => {
@@ -461,7 +461,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -472,7 +472,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -486,7 +486,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
         describe('cep', () => {
@@ -495,7 +495,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -504,7 +504,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -514,7 +514,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -523,7 +523,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -533,7 +533,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -542,7 +542,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -552,7 +552,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -561,7 +561,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -571,7 +571,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -580,7 +580,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -590,7 +590,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
 
@@ -599,7 +599,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -609,7 +609,7 @@ describe('contract validator', () => {
             try {
               await validate(data);
             } catch (error) {
-              expect(error.message).toBe('Campos inválidos');
+              expect(error).toBeTruthy();
             }
           });
         });
@@ -621,7 +621,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -630,7 +630,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -639,7 +639,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -650,7 +650,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -659,7 +659,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -670,7 +670,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -679,7 +679,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -688,7 +688,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -698,7 +698,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -707,7 +707,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -716,7 +716,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -726,7 +726,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -735,7 +735,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -744,7 +744,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -754,7 +754,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -763,7 +763,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -772,7 +772,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -783,7 +783,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -792,7 +792,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -801,7 +801,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -812,7 +812,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -821,7 +821,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -830,7 +830,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -841,7 +841,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
 
@@ -850,7 +850,7 @@ describe('contract validator', () => {
           try {
             await validate(data);
           } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
+            expect(error).toBeTruthy();
           }
         });
       });
@@ -862,7 +862,7 @@ describe('contract validator', () => {
         try {
           await validate(data);
         } catch (error) {
-          expect(error.message).toBe('Campos inválidos');
+          expect(error).toBeTruthy();
         }
       });
 
@@ -871,7 +871,7 @@ describe('contract validator', () => {
         try {
           await validate(data);
         } catch (error) {
-          expect(error.message).toBe('Campos inválidos');
+          expect(error).toBeTruthy();
         }
       });
 
@@ -880,7 +880,7 @@ describe('contract validator', () => {
         try {
           await validate(data);
         } catch (error) {
-          expect(error.message).toBe('Campos inválidos');
+          expect(error).toBeTruthy();
         }
       });
     });
@@ -891,7 +891,7 @@ describe('contract validator', () => {
         try {
           await validate(data);
         } catch (error) {
-          expect(error.message).toBe('Campos inválidos');
+          expect(error).toBeTruthy();
         }
       });
 
@@ -900,7 +900,7 @@ describe('contract validator', () => {
         try {
           await validate(data);
         } catch (error) {
-          expect(error.message).toBe('Campos inválidos');
+          expect(error).toBeTruthy();
         }
       });
     });
@@ -911,7 +911,7 @@ describe('contract validator', () => {
         try {
           await validate(data);
         } catch (error) {
-          expect(error.message).toBe('Campos inválidos');
+          expect(error).toBeTruthy();
         }
       });
     });
@@ -922,7 +922,7 @@ describe('contract validator', () => {
         try {
           await validate(data);
         } catch (error) {
-          expect(error.message).toBe('Campos inválidos');
+          expect(error).toBeTruthy();
         }
       });
       it('has a length different from 14', async () => {
@@ -930,7 +930,7 @@ describe('contract validator', () => {
         try {
           await validate(data);
         } catch (error) {
-          expect(error.message).toBe('Campos inválidos');
+          expect(error).toBeTruthy();
         }
       });
     });
