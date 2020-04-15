@@ -36,12 +36,12 @@ const buildAttributes = ({ email, cpf, phone }) => [
 ];
 
 const buildValidationData = ({ trackCode, simulationId, loanValue, term, installment, loanValueSelected, phone }) => [
-  { Name: 'trackCode', Value: trackCode },
+  { Name: 'trackCode', Value: trackCode.toString() },
   { Name: 'simulationId', Value: simulationId },
-  { Name: 'loanValue', Value: loanValue },
-  { Name: 'term', Value: term },
-  { Name: 'installment', Value: installment },
-  { Name: 'loanValueSelected', Value: loanValueSelected },
+  { Name: 'loanValue', Value: loanValue.toString() },
+  { Name: 'term', Value: term.toString() },
+  { Name: 'installment', Value: installment.toString() },
+  { Name: 'loanValueSelected', Value: loanValueSelected.toString() },
   { Name: 'phone', Value: phone }
 ];
 
