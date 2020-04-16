@@ -1,5 +1,6 @@
 const { contract } = require('../../../src/contracts/contract');
 const Contract = require('../../../src/layers/common/services/contract.service');
+const body = require('../../utils/contractBody');
 
 describe('contract handler', () => {
   let event, saveResult;
@@ -9,14 +10,7 @@ describe('contract handler', () => {
     };
 
     event = {
-      body: {
-        people: {},
-        property: {},
-        simulationId: 'lR0B7sQVTDqSrhQ_RyaJKw',
-        makeUpIncome: [],
-        pendencies: [],
-        whoIsSecondPayer: 'Cônjuge'
-      },
+      body: body(),
       clientName: 'random-name',
       clientId: 'random-id',
       requestContext: {

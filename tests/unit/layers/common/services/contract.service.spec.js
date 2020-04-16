@@ -154,11 +154,11 @@ describe('Contract service', () => {
     it('saves contract correctly', async () => {
       People.save = jest.fn(() => ({ id: '1' }));
       Property.save = jest.fn(() => ({ id: '1' }));
-      Simulation.getLastSimulation = jest.fn(() => ({}));
+      Simulation.getLastSimulation = jest.fn(() => ({ trackCode: '12345' }));
 
       await save(contract);
       expect(People.save).toHaveBeenCalledWith(contract.people);
-      expect(Property.save).toHaveBeenCalledWith(contract.property);
+      expect(Property.save).toHaveBeenCalledWith(contract.property, '12345');
       expect(Simulation.getLastSimulation).toHaveBeenCalledWith(contract.simulationId);
       expect(global.mockModelSave).toHaveBeenCalledTimes(1);
     });

@@ -1,0 +1,66 @@
+const EDUCATION_LEVELS = {
+  INCOMPLETE_ELEMENTARY_SCHOOL: 'ENSINO FUNDAMENTAL INCOMPLETO',
+  ELEMENTARY_SCHOOL: 'ENSINO FUNDAMENTAL COMPLETO',
+  INCOMPLETE_HIGHSCHOOL: 'ENSINO MÉDIO INCOMPLETO',
+  HIGHSCHOOL: 'ENSINO MÉDIO COMPLETO',
+  INCOMPLETE_COLLEGE: 'ENSINO SUPERIOR INCOMPLETO',
+  COLLEGE: 'ENSINO SUPERIOR COMPLETO'
+};
+
+const INCOME_SOURCES = {
+  SALARIED: 'ASSALARIADO',
+  INDEPENDENT: 'AUTONOMO',
+  PUBLIC_EMPLOYEE: 'PÚBLICO'
+};
+
+const PERSONAS = {
+  mother: 'Mãe',
+  child: 'Filho ou Filha',
+  spouse: 'Cônjuge',
+  sibling: 'Irmão ou Irmã',
+  father: 'Pai',
+  others: 'outros'
+};
+
+const PROPERTY_TYPES = {
+  APARTMENT: 'Apartamento',
+  HOME: 'Casa',
+  BUILDING: 'Comercial'
+};
+
+const RESIDENTS = {
+  THIRD_PARTIES: 'Terceiros',
+  OWN: 'Próprio'
+};
+
+const MARITAL_STATUS = {
+  MARRIED: 'CASADO',
+  SINGLE: 'SOLTEIRO',
+  DIVORCED: 'DIVORCIADO',
+  WIDOWER: 'VIÚVO',
+  REGISTERED_STABLE_UNION: 'UNIÃO ESTÁVEL REGISTRADA',
+  NOT_REGISTERED_STABLE_UNION: 'UNIÃO ESTÁVEL NÃO REGISTRADA'
+};
+
+const PROPERTY_AGE = ['<=2', '3-5', '6-10', '11-20', '21-30', '31-40', '41-50', '>=51'];
+
+const BEDROOMS = ['1', '2', '3', '4', '5', '6', '7', '8'];
+
+const SUITES = ['0', ...BEDROOMS];
+
+const GARAGES = ['1', '2', '3', '4', '5+'];
+
+const suitesOptions = bedrooms => SUITES.slice(0, bedrooms + 1);
+
+module.exports = {
+  MARITAL_STATUS,
+  EDUCATION_LEVELS,
+  PROPERTY_TYPES,
+  PROPERTY_AGE,
+  BEDROOMS,
+  suitesOptions,
+  PERSONAS,
+  GARAGES,
+  INCOME_SOURCES,
+  RESIDENTS
+};

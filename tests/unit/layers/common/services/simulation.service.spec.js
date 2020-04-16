@@ -65,7 +65,8 @@ describe('Simulation service', () => {
           loanDate: '12321',
           rendaMensal: '321312',
           valImovel: '21312321',
-          valorEmprestimo: '1231231'
+          valorEmprestimo: '1231231',
+          trackCode: '32213121'
         },
         id: '1',
         prazos: [{ foo: 'bar' }],
@@ -75,7 +76,7 @@ describe('Simulation service', () => {
 
     it('returns simulation', async () => {
       const { id, parametros, parcelas, prazos } = simulation;
-      const { idade, cep, email, loanDate, rendaMensal, valImovel, valorEmprestimo } = parametros;
+      const { idade, cep, email, loanDate, rendaMensal, valImovel, valorEmprestimo, trackCode } = parametros;
       const expectedResult = {
         id,
         age: idade,
@@ -87,7 +88,8 @@ describe('Simulation service', () => {
         propertyValue: valImovel,
         rendaMensal: rendaMensal,
         term: prazos[0],
-        email: email
+        email,
+        trackCode
       };
       const exec = jest.fn(() => ({ ...simulation }));
       SimulationModel.queryOne = jest.fn(() => ({ exec }));
