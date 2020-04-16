@@ -4,6 +4,7 @@ const Contract = require(`${path}/services/contract.service`);
 const Simulation = require(`${path}/services/simulation.service`);
 const { success } = require(`${path}/lambda/response`);
 const middy = require(`${path}/middy/middy`);
+const translateBody = require('./translate');
 const { ssmCognito } = require(`${path}/middy/shared/ssm`);
 
 const contract = async event => {
@@ -12,15 +13,17 @@ const contract = async event => {
   const { body, clientId } = event;
   const { simulationId, people } = body;
 
-  const { email, phone, cpf } = people;
+  const { name, email, phone, cpf } = people;
 
   await validate({ ...body, clientId });
 
+  const translatedBody = translateBody(body);
+
   const lastSimulation = await Simulation.getLastSimulation(simulationId);
 
-  await Cognito.createUser({ ...lastSimulation, email, phone, cpf, simulationId });
+  await Cognito.createUser({ ...lastSimulation, name, email, phone, cpf, simulationId });
 
-  const contract = await Contract.save({ ...body, clientId, lastSimulation });
+  const contract = await Contract.save({ ...translatedBody, clientId, lastSimulation });
 
   return success({ ...contract });
 };
