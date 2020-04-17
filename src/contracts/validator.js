@@ -41,7 +41,7 @@ const getPersonasSchema = ({ people, whoIsSecondPayer }) =>
             .validCpf()
             .required(),
           name: yup.string().required(),
-          birth: yup.string().required(),
+          birth: yup.date().required(),
           email: yup
             .string()
             .email()
@@ -70,10 +70,7 @@ const validate = async fields => {
   const peopleSchema = yup
     .object()
     .shape({
-      birth: yup
-        .string()
-        .strict(true)
-        .required(),
+      birth: yup.date().required(),
       averageIncome: yup.number().required(),
       incomeSource: yup
         .string()
@@ -290,8 +287,7 @@ const validate = async fields => {
   });
 
   try {
-    const isValid = await schema.validate(fields);
-    return !!isValid;
+    return schema.validate(fields);
   } catch (err) {
     throw new createError.BadRequest(err.message);
   }

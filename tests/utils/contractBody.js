@@ -9,7 +9,7 @@ const body = () => ({
       streetAddress: 'Avenida João Simão de Castro'
     },
     averageIncome: 30000,
-    birth: '18-01-1997',
+    birth: '1997-01-18',
     cpf: '48548194057',
     child: {},
     children: true,

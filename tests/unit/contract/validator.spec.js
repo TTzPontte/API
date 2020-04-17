@@ -9,7 +9,7 @@ describe('contract validator', () => {
 
   describe('returns true when', () => {
     it('all data is correctly', async () => {
-      expect(await validate(data)).toBe(true);
+      expect(await validate(data)).toBeTruthy();
     });
   });
 
