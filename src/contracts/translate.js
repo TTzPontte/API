@@ -4,13 +4,18 @@ const { EDUCATION_LEVELS, MARITAL_STATUS, PERSONAS, PROPERTY_TYPES, INCOME_SOURC
 
 const find = (obj, compare) => Object.keys(obj).find(item => compare === item);
 
+const BOOL_VALUES = ['children', 'secondPayer', 'liveInProperty', 'hasSiblings'];
+
 const translate = ({ people, property, whoIsSecondPayer, ...body }) => {
+  const translateBoolValue = (obj, value) => ({ ...obj, [value]: people[value] ? 'Sim' : 'Não' });
   const level = find(EDUCATION_LEVELS, people.educationLevel);
   const marital = find(MARITAL_STATUS, people.maritalStatus);
   const type = find(PROPERTY_TYPES, property.type);
   const persona = find(PERSONAS, whoIsSecondPayer);
   const source = find(INCOME_SOURCES, people.incomeSource);
   const resident = find(RESIDENTS, property.isResident);
+
+  const boolValues = BOOL_VALUES.reduce(translateBoolValue, {});
 
   const personas = Object.keys(PERSONAS).reduce((obj, person) => {
     if (people[person] && !_.isEmpty(people[person])) {
@@ -31,13 +36,15 @@ const translate = ({ people, property, whoIsSecondPayer, ...body }) => {
     educationLevel: EDUCATION_LEVELS[level],
     maritalStatus: MARITAL_STATUS[marital],
     incomeSource: INCOME_SOURCES[source],
-    ...personas
+    ...personas,
+    ...boolValues
   };
 
   const translatedProperty = {
     ...property,
     type: PROPERTY_TYPES[type],
-    isResident: RESIDENTS[resident]
+    isResident: RESIDENTS[resident],
+    financed: property.finance ? 'Sim' : 'Não'
   };
 
   return {

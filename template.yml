@@ -147,6 +147,8 @@ Resources:
       Handler: contract.handler
       Tracing: Active
       Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'cognito/${Environment}/*'
         - SQSSendMessagePolicy:
             QueueName: !Sub "ApiAuditLog_${Environment}"
         - DynamoDBCrudPolicy:

@@ -2,6 +2,7 @@ const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const yup = require(`${path}/node_modules/yup`);
 const _ = require(`${path}/node_modules/lodash`);
 const createError = require(`${path}/node_modules/http-errors`);
+const validateCpf = require(`${path}/helpers/validateCpf`);
 let {
   MARITAL_STATUS,
   EDUCATION_LEVELS,
@@ -25,15 +26,22 @@ RESIDENTS = Object.keys(RESIDENTS);
 const isSecondPayer = ({ secondPayer, persona, whoIsSecondPayer }) => secondPayer === 'Sim' && whoIsSecondPayer === persona;
 const isSpouse = persona => (MARITAL_STATUS[1] || MARITAL_STATUS[3] || MARITAL_STATUS[4]) && persona === 'spouse';
 
+yup.addMethod(yup.string, 'validCpf', () => yup.string().test('validate', cpf => validateCpf(cpf)));
+
 const getPersonasSchema = ({ people, whoIsSecondPayer }) =>
   PERSONAS.reduce((obj, persona) => {
     if (people[persona] && !_.isEmpty(people[persona])) {
       const userSchema = yup
         .object()
         .shape({
-          cpf: yup.string().required(),
+          cpf: yup
+            .string()
+            .strict(true)
+            .length(11)
+            .validCpf()
+            .required(),
           name: yup.string().required(),
-          birth: yup.string().required(),
+          birth: yup.date().required(),
           email: yup
             .string()
             .email()
@@ -62,53 +70,98 @@ const validate = async fields => {
   const peopleSchema = yup
     .object()
     .shape({
-      birth: yup.string().required(),
+      birth: yup.date().required(),
       averageIncome: yup.number().required(),
       incomeSource: yup
         .string()
+        .strict(true)
         .oneOf(INCOME_SOURCES)
         .required(),
-      cnpj: yup.string().length(14),
+      cnpj: yup
+        .string()
+        .strict(true)
+        .length(14)
+        .when('cpf', {
+          is: cpf => !cpf,
+          then: yup
+            .string()
+            .strict(true)
+            .required()
+        }),
       email: yup
         .string()
+        .strict(true)
         .email()
         .required(),
       cpf: yup
         .string()
+        .strict(true)
         .length(11)
         .when('cnpj', {
           is: cnpj => !cnpj,
-          then: yup.string().required()
+          then: yup
+            .string()
+            .strict(true)
+            .required()
+        })
+        .validCpf(),
+      incomeSourceActivity: yup
+        .string()
+        .strict(true)
+        .when('cnpj', {
+          is: cnpj => cnpj,
+          then: yup
+            .string()
+            .strict(true)
+            .required()
         }),
-      incomeSourceActivity: yup.string().when('cnpj', {
-        is: cnpj => cnpj,
-        then: yup.string().required()
-      }),
-      children: yup
+      children: yup.boolean().required(),
+      maritalStatus: yup
         .string()
-        .oneOf(['Sim', 'Não'])
-        .required(),
-      maritalStatus: yup.string().oneOf(MARITAL_STATUS),
-      educationLevel: yup.string().oneOf(EDUCATION_LEVELS),
-      secondPayer: yup
+        .strict(true)
+        .oneOf(MARITAL_STATUS),
+      educationLevel: yup
         .string()
-        .oneOf(['Sim', 'Não'])
-        .required(),
-      liveInProperty: yup
-        .string()
-        .oneOf(['Sim', 'Não'])
-        .required(),
+        .strict(true)
+        .oneOf(EDUCATION_LEVELS),
+      secondPayer: yup.boolean().required(),
+      liveInProperty: yup.boolean().required(),
       address: yup
         .object()
         .shape({
-          cep: yup.string().required(),
-          city: yup.string().required(),
-          complement: yup.string().notRequired(),
-          neighborhood: yup.string().required(),
-          number: yup.string().required(),
-          state: yup.string().required(),
-          streetAddress: yup.string().required()
+          cep: yup
+            .string()
+            .strict(true)
+            .required(),
+          city: yup
+            .string()
+            .strict(true)
+            .required(),
+          complement: yup
+            .string()
+            .strict(true)
+            .notRequired(),
+          neighborhood: yup
+            .string()
+            .strict(true)
+            .required(),
+          number: yup
+            .string()
+            .strict(true)
+            .required(),
+          state: yup
+            .string()
+            .strict(true)
+            .required(),
+          streetAddress: yup
+            .string()
+            .strict(true)
+            .required()
         })
+        .required(),
+      phone: yup
+        .string()
+        .strict(true)
         .required(),
       ...personaSchema
     })
@@ -120,73 +173,124 @@ const validate = async fields => {
       address: yup
         .object()
         .shape({
-          cep: yup.string().required(),
-          city: yup.string().required(),
-          complement: yup.string().notRequired(),
-          neighborhood: yup.string().required(),
-          number: yup.string().required(),
-          state: yup.string().required(),
-          streetAddress: yup.string().required()
+          cep: yup
+            .string()
+            .strict(true)
+            .required(),
+          city: yup
+            .string()
+            .strict(true)
+            .required(),
+          complement: yup
+            .string()
+            .strict(true)
+            .notRequired(),
+          neighborhood: yup
+            .string()
+            .strict(true)
+            .required(),
+          number: yup
+            .string()
+            .strict(true)
+            .required(),
+          state: yup
+            .string()
+            .strict(true)
+            .required(),
+          streetAddress: yup
+            .string()
+            .strict(true)
+            .required()
         })
         .required(),
       type: yup
         .string()
+        .strict(true)
         .oneOf(PROPERTY_TYPES)
         .required(),
-      floorArea: yup.string().required(),
+      floorArea: yup
+        .string()
+        .strict(true)
+        .required(),
       age: yup
         .string()
+        .strict(true)
         .oneOf(PROPERTY_AGE)
         .required(),
       bedrooms: yup
         .string()
+        .strict(true)
         .oneOf(BEDROOMS)
         .required(),
       suites: yup
         .string()
+        .strict(true)
         .oneOf(suitesOptions(fields.property.bedrooms))
         .required(),
       isResident: yup
         .string()
+        .strict(true)
         .oneOf(RESIDENTS)
         .required(),
       whoIsOwner: yup
         .string()
+        .strict(true)
         .oneOf(PERSONAS)
         .when('isResident', {
           is: resident => resident === 'Terceiros',
-          then: yup.string().required()
+          then: yup
+            .string()
+            .strict(true)
+            .required()
         }),
       garages: yup
         .string()
+        .strict(true)
         .oneOf(GARAGES)
         .when('type', {
           is: type => type === PROPERTY_TYPES[0],
-          then: yup.string().required()
+          then: yup
+            .string()
+            .strict(true)
+            .required()
         }),
-      financed: yup
+      financed: yup.boolean().required(),
+      financingDebt: yup
         .string()
-        .oneOf(['Sim', 'Não'])
-        .required(),
-      financingDebt: yup.string().when('financed', {
-        is: financed => financed === 'Sim',
-        then: yup.string().required()
-      })
+        .strict(true)
+        .when('financed', {
+          is: financed => financed,
+          then: yup
+            .string()
+            .strict(true)
+            .required()
+        })
     })
     .required();
 
   const schema = yup.object().shape({
     people: peopleSchema,
     property: propertySchema,
-    whoIsSecondPayer: yup.string().oneOf(PERSONAS),
-    clientId: yup.string().required(),
-    legalName: yup.string(),
-    legalCNPJ: yup.string().length(14)
+    whoIsSecondPayer: yup
+      .string()
+      .strict(true)
+      .oneOf(PERSONAS),
+    clientId: yup
+      .string()
+      .strict(true)
+      .required(),
+    legalName: yup.string().strict(true),
+    legalCNPJ: yup
+      .string()
+      .strict(true)
+      .length(14)
   });
 
-  const isValid = await schema.isValid(fields);
-  if (!isValid) throw new createError.BadRequest('Campos inválidos');
-  return isValid;
+  try {
+    return schema.validate(fields);
+  } catch (err) {
+    throw new createError.BadRequest(err.message);
+  }
 };
 
-module.exports = { validate };
+module.exports = { validate, validateCpf };
