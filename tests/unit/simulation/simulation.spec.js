@@ -3,6 +3,7 @@ const Simulation = require('../../../src/layers/common/services/simulation.servi
 const Calculator = require('../../../src/layers/common/services/calculator.service');
 const Contract = require('../../../src/layers/common/services/contract.service');
 const Cep = require('../../../src/layers/common/services/cep.service');
+const { getSiteUrl } = require('../../../src/layers/common/helpers/url');
 
 jest.mock('../../../src/layers/common/services/cep.service');
 
@@ -19,6 +20,7 @@ describe('simulation handler', () => {
     Simulation.save = jest.fn(() => saveResult);
     Simulation.isRegistered = jest.fn();
     Contract.isRegistered = jest.fn();
+    process.env.ENV = 'dev';
 
     event = {
       body: {
@@ -46,6 +48,7 @@ describe('simulation handler', () => {
   it('return success', async () => {
     const expectedResult = {
       ...saveResult,
+      registrationUrl: `${getSiteUrl()}/cadastro/1`,
       simulation: { ...calculatedResult }
     };
     const response = await simulation(event);
