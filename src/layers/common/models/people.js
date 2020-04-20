@@ -4,6 +4,17 @@ const { v4: uuid } = require('uuid');
 
 const { ENV } = process.env;
 
+const personSchema = {
+  id: String,
+  name: String,
+  cpf: String,
+  birth: String,
+  email: String,
+  incomeSource: String,
+  incomeSourceActivity: String,
+  averageIncome: String
+};
+
 const PeopleSchema = new Schema({
   id: {
     type: String,
@@ -45,21 +56,11 @@ const PeopleSchema = new Schema({
   ],
   secondPayer: String,
   hasSiblings: String,
-  spouse: {
-    id: String
-  },
-  sibling: {
-    id: String
-  },
-  mother: {
-    id: String
-  },
-  father: {
-    id: String
-  },
-  child: {
-    id: String
-  }
+  spouse: personSchema,
+  sibling: personSchema,
+  mother: personSchema,
+  father: personSchema,
+  child: personSchema
 });
 
 module.exports = Dynamoose.model(`People.${ENV}`, PeopleSchema, {

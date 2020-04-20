@@ -80,7 +80,7 @@ const isRegistered = async ({ cpf, email, clientId }) => {
 const getLastSimulation = async simulationId => {
   try {
     const { parametros, id, prazos, parcelas } = await Simulation.queryOne({ id: simulationId }).exec();
-    const { idade, cep, email, loanDate, rendaMensal, valImovel, valorEmprestimo, trackCode } = parametros;
+    const { idade, cep, email, loanDate, rendaMensal, valImovel, valorEmprestimo, trackCode, campaign, source } = parametros;
     const installments = parcelas[0];
     return {
       id,
@@ -94,7 +94,9 @@ const getLastSimulation = async simulationId => {
       rendaMensal: rendaMensal,
       term: prazos[0],
       email: email,
-      trackCode
+      trackCode,
+      campaign,
+      source
     };
   } catch (error) {
     throw new createError.BadRequest('Simulação não encontrada');

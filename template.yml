@@ -130,6 +130,8 @@ Resources:
             TableName: !Ref DBClients
         - LambdaInvokePolicy:
             FunctionName: !Sub 'SimulatorCalculatorFn-${Environment}'
+        - LambdaInvokePolicy:
+            FunctionName: !Sub 'CepGetFn-${Environment}'
       Events:
         api1:
           Type: Api
@@ -161,6 +163,19 @@ Resources:
             TableName: !Sub "Property.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Simulations.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "User.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Process.${Environment}"
+        - LambdaInvokePolicy:
+            FunctionName: !Sub 'CepGetFn-${Environment}'
+        - Version: '2012-10-17'
+          Statement:
+            -
+              Effect: Allow
+              Action:
+                - 'cognito-idp:AdminCreateUser'
+              Resource: '*'
       Events:
         api1:
           Type: Api

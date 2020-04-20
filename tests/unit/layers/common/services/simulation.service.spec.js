@@ -76,7 +76,7 @@ describe('Simulation service', () => {
 
     it('returns simulation', async () => {
       const { id, parametros, parcelas, prazos } = simulation;
-      const { idade, cep, email, loanDate, rendaMensal, valImovel, valorEmprestimo, trackCode } = parametros;
+      const { idade, cep, email, loanDate, rendaMensal, valImovel, valorEmprestimo, trackCode, campaign, source } = parametros;
       const expectedResult = {
         id,
         age: idade,
@@ -89,7 +89,9 @@ describe('Simulation service', () => {
         rendaMensal: rendaMensal,
         term: prazos[0],
         email,
-        trackCode
+        trackCode,
+        source,
+        campaign
       };
       const exec = jest.fn(() => ({ ...simulation }));
       SimulationModel.queryOne = jest.fn(() => ({ exec }));
