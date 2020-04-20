@@ -31,7 +31,17 @@ const PropertiesSchema = new Schema({
   garages: String,
   haveRegistration: String,
   registrationNumber: String,
-  type: String
+  type: String,
+  documents: {
+    type: 'map',
+    map: {},
+    default: {}
+  },
+  photos: {
+    type: 'map',
+    map: {},
+    default: {}
+  }
 });
 
 module.exports = Dynamoose.model(`Property.${ENV}`, PropertiesSchema, {

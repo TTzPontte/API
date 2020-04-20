@@ -10,7 +10,11 @@ const UsersSchema = new Schema({
     type: String,
     hashKey: true
   },
-  trackingCodes: String,
+  trackingCodes: [
+    {
+      type: String
+    }
+  ],
   peopleId: String,
   campaign: String,
   source: String

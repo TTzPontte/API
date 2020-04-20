@@ -4,6 +4,20 @@ const { v4: uuid } = require('uuid');
 
 const { ENV } = process.env;
 
+const addressSchema = {
+  type: 'map',
+  map: {
+    cep: String,
+    city: String,
+    complement: String,
+    neighborhood: String,
+    number: String,
+    state: String,
+    streetAddress: String
+  },
+  default: {}
+};
+
 const personSchema = {
   id: String,
   name: String,
@@ -12,7 +26,13 @@ const personSchema = {
   email: String,
   incomeSource: String,
   incomeSourceActivity: String,
-  averageIncome: String
+  averageIncome: String,
+  address: addressSchema,
+  documents: {
+    type: 'map',
+    map: {},
+    default: {}
+  }
 };
 
 const PeopleSchema = new Schema({
@@ -23,15 +43,7 @@ const PeopleSchema = new Schema({
   },
   email: String,
   accounts: [],
-  address: {
-    cep: String,
-    city: String,
-    complement: String,
-    neighborhood: String,
-    number: String,
-    state: String,
-    streetAddress: String
-  },
+  address: addressSchema,
   averageIncome: Number,
   bacen: Boolean,
   birth: String,
@@ -60,7 +72,12 @@ const PeopleSchema = new Schema({
   sibling: personSchema,
   mother: personSchema,
   father: personSchema,
-  child: personSchema
+  child: personSchema,
+  documents: {
+    type: 'map',
+    map: {},
+    default: {}
+  }
 });
 
 module.exports = Dynamoose.model(`People.${ENV}`, PeopleSchema, {
