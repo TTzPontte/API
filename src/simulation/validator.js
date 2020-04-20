@@ -2,6 +2,9 @@ const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const yup = require(`${path}/node_modules/yup`);
 const createError = require(`${path}/node_modules/http-errors`);
 const { MIN_PROPERTY_VALUE, MIN_AGE, MAX_AGE, TERMS, MIN_LOAN_VALUE, LOAN_MOTIVATION, GRACE_PERIOD } = require('./constants');
+const { validateCpf } = require(`${path}/helpers/validator`);
+
+yup.addMethod(yup.string, 'validCpf', () => yup.string().test('validate', cpf => validateCpf(cpf)));
 
 const validate = async fields => {
   const schema = yup.object().shape({
@@ -22,7 +25,8 @@ const validate = async fields => {
     cpf: yup
       .string()
       .length(11)
-      .required(),
+      .required()
+      .validCpf(),
     phone: yup
       .string()
       .length(19)
