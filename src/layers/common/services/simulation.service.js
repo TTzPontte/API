@@ -72,7 +72,7 @@ const isRegistered = async ({ cpf, email, clientId }) => {
   const simulations = await getClientSimulation({ cpf, email, clientId });
 
   if (simulations && simulations.length) {
-    throw new createError.BadRequest('Cliente já cadastrado');
+    throw new createError.Conflict('Customer already exists');
   }
   return false;
 };
@@ -99,7 +99,7 @@ const getLastSimulation = async simulationId => {
       source
     };
   } catch (error) {
-    throw new createError.BadRequest('Simulação não encontrada');
+    throw new createError.NotFound('Simulation not found');
   }
 };
 

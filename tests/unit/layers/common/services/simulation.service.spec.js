@@ -49,7 +49,7 @@ describe('Simulation service', () => {
       try {
         await isRegistered({ email, clientId, cpf });
       } catch (error) {
-        expect(error.message).toBe('Cliente já cadastrado');
+        expect(error.message).toBe('Customer already exists');
       }
     });
   });
