@@ -31,20 +31,22 @@ const save = async ({ people, property, lastSimulation, ...data }) => {
 
   await isRegistered(people);
   const { name, email, phone, cpf } = people;
-  const { User: cognitoUser } = await Cognito.createUser({ ...lastSimulation, name, email, phone, cpf, simulationId: lastSimulation.id });
+  const { id: simulationId, source, campaign, trackCode } = lastSimulation;
+
+  const { User: cognitoUser } = await Cognito.createUser({ ...lastSimulation, name, email, phone, cpf, simulationId });
 
   const { id: contractOwner } = await People.save(people);
-  const { id: propertyId } = await Property.save(property, lastSimulation.trackCode);
+  const { id: propertyId } = await Property.save(property, trackCode);
 
   await User.save({
     id: cognitoUser.Username,
-    trackingCode: lastSimulation.trackCode,
+    trackingCode: trackCode,
     peopleId: contractOwner,
-    campaign: lastSimulation.campaign,
-    source: lastSimulation.source
+    campaign: campaign,
+    source: source
   });
 
-  const contract = new ContractModel({ ...data, propertyId, contractOwner, lastSimulation });
+  const contract = new ContractModel({ ...data, propertyId, contractOwner, lastSimulation, source, campaign });
   const savedContract = await contract.save();
 
   await Process.save({
