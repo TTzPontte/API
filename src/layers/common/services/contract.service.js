@@ -19,7 +19,7 @@ const isRegistered = async ({ cpf, email }) => {
     for (const person of people) {
       const contract = await getContractByOwner(person.id);
       if (contract && contract.length) {
-        throw new createError.BadRequest('Cliente já cadastrado');
+        throw new createError.Conflict('Customer already exists');
       }
     }
   }

@@ -11,7 +11,7 @@ const save = async (data, trackCode) => {
     return property.save();
   }
 
-  return createError.BadRequest('Região Não atendida');
+  return createError.BadRequest('Region not supported');
 };
 
 module.exports = { save };
