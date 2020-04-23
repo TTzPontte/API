@@ -1,7 +1,17 @@
 const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const yup = require(`${path}/node_modules/yup`);
 const createError = require(`${path}/node_modules/http-errors`);
-const { MIN_PROPERTY_VALUE, MIN_AGE, MAX_AGE, TERMS, MIN_LOAN_VALUE, LOAN_MOTIVATION, GRACE_PERIOD } = require('./constants');
+const {
+  MIN_PROPERTY_VALUE,
+  MIN_AGE,
+  MAX_AGE,
+  TERMS,
+  MIN_LOAN_VALUE,
+  LOAN_MOTIVATION,
+  GRACE_PERIOD,
+  MAX_LOAN_VALUE,
+  PHONE_REG_EXP
+} = require('./constants');
 const { validateCpf } = require(`${path}/helpers/validator`);
 
 yup.addMethod(yup.string, 'validCpf', () => yup.string().test('validate', cpf => validateCpf(cpf)));
@@ -11,6 +21,7 @@ const validate = async fields => {
     loanValue: yup
       .number()
       .moreThan(MIN_LOAN_VALUE)
+      .max(MAX_LOAN_VALUE)
       .required(),
     propertyValue: yup
       .number()
@@ -24,15 +35,18 @@ const validate = async fields => {
       .max(MAX_AGE),
     cpf: yup
       .string()
+      .strict()
       .length(11)
       .required()
       .validCpf(),
     phone: yup
       .string()
-      .length(19)
+      .matches(PHONE_REG_EXP)
+      .strict()
       .required(),
     cep: yup
       .string()
+      .strict()
       .length(8)
       .required(),
     terms: yup
@@ -41,6 +55,7 @@ const validate = async fields => {
       .required(),
     email: yup
       .string()
+      .strict()
       .email()
       .required(),
     loanMotivation: yup.array().of(yup.string().oneOf(LOAN_MOTIVATION)),
@@ -54,8 +69,12 @@ const validate = async fields => {
       .notRequired()
   });
 
-  const isValid = await schema.isValid(fields);
-  if (!isValid) throw new createError.BadRequest('Campos inválidos');
+  try {
+    const isValid = await schema.validate(fields);
+    return isValid;
+  } catch (err) {
+    throw new createError.BadRequest(err.message);
+  }
 };
 
 module.exports = { validate };

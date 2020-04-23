@@ -29,8 +29,8 @@ describe('simulation handler', () => {
         monthlyIncome: 6000,
         loanMotivation: ['RENOVATE_HOUSE', 'ANOTHER_REASON'],
         age: 27,
-        cpf: '77752683019',
-        phone: '+55 (99) 99999-9999',
+        cpf: '25124330058',
+        phone: '+5586998599070',
         cep: '93347300',
         terms: 210,
         email: 'teste@gmail.com'
@@ -59,11 +59,7 @@ describe('simulation handler', () => {
   describe('when send invalid payload', () => {
     it('returns badRequest', async () => {
       delete event.body.loanValue;
-      try {
-        await simulation(event);
-      } catch (error) {
-        expect(error.message).toBe('Campos inválidos');
-      }
+      await expect(simulation(event)).rejects.toThrow();
     });
   });
 

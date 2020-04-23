@@ -18,8 +18,7 @@ const PERSONAS = {
   child: 'Filho ou Filha',
   spouse: 'Cônjuge',
   sibling: 'Irmão ou Irmã',
-  father: 'Pai',
-  others: 'outros'
+  father: 'Pai'
 };
 
 const PROPERTY_TYPES = {
@@ -35,11 +34,11 @@ const RESIDENTS = {
 
 const MARITAL_STATUS = {
   MARRIED: 'CASADO',
+  REGISTERED_STABLE_UNION: 'UNIÃO ESTÁVEL REGISTRADA',
+  NOT_REGISTERED_STABLE_UNION: 'UNIÃO ESTÁVEL NÃO REGISTRADA',
   SINGLE: 'SOLTEIRO',
   DIVORCED: 'DIVORCIADO',
-  WIDOWER: 'VIÚVO',
-  REGISTERED_STABLE_UNION: 'UNIÃO ESTÁVEL REGISTRADA',
-  NOT_REGISTERED_STABLE_UNION: 'UNIÃO ESTÁVEL NÃO REGISTRADA'
+  WIDOWER: 'VIÚVO'
 };
 
 const PROPERTY_AGE = ['<=2', '3-5', '6-10', '11-20', '21-30', '31-40', '41-50', '>=51'];
@@ -52,6 +51,8 @@ const GARAGES = ['1', '2', '3', '4', '5+'];
 
 const suitesOptions = bedrooms => SUITES.slice(0, bedrooms + 1);
 
+const PHONE_REG_EXP = /^(\+\d{2}\d{2})(\d{4,5}\d{4})$/;
+
 module.exports = {
   MARITAL_STATUS,
   EDUCATION_LEVELS,
@@ -62,5 +63,6 @@ module.exports = {
   PERSONAS,
   GARAGES,
   INCOME_SOURCES,
-  RESIDENTS
+  RESIDENTS,
+  PHONE_REG_EXP
 };

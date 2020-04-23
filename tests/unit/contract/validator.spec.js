@@ -18,134 +18,42 @@ describe('contract validator', () => {
       describe('address', () => {
         it('is undefined', async () => {
           delete data.people.address;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         describe('cep', () => {
           it('is undefined', async () => {
             delete data.people.address.cep;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.people.address.cep = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('city', () => {
           it('is undefined', async () => {
             delete data.people.address.city;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.people.address.city = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('neighborhood', () => {
           it('is undefined', async () => {
             delete data.people.address.neighborhood;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.people.address.neighborhood = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('number', () => {
           it('is undefined', async () => {
             delete data.people.address.number;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.people.address.number = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('state', () => {
           it('is undefined', async () => {
             delete data.people.address.state;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.people.address.state = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('streetAddress', () => {
           it('is undefined', async () => {
             delete data.people.address.streetAddress;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.people.address.streetAddress = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-        });
-        describe('complement', () => {
-          it('not a string', async () => {
-            data.people.address.complement = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
       });
@@ -153,89 +61,53 @@ describe('contract validator', () => {
       describe('averageIncome', () => {
         it('is undefined', async () => {
           delete data.people.averageIncome;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a number', async () => {
-          data.people.averageIncome = '123123123';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          data.people.averageIncome = 'al';
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('birth', () => {
         it('is undefined', async () => {
           delete data.people.birth;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a number', async () => {
           data.people.birth = '123123123';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('children', () => {
         it('is undefined', async () => {
           delete data.people.children;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.people.children = 2313213;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
-        it('is not one of [Sim, Não]', async () => {
+        it('is not boolean', async () => {
           data.people.children = 'A';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('cnpj', () => {
         it('not a string', async () => {
           data.people.cnpj = 2313213;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('has a length different from 14', async () => {
           data.people.cnpj = '2313213';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -243,78 +115,46 @@ describe('contract validator', () => {
         it('is undefined when cnpj is undefined', async () => {
           delete data.people.cpf;
           delete data.people.cnpj;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.people.cpf = 2313213;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('has a length different from 11', async () => {
           data.people.cpf = '2313213';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('email', () => {
         it('is undefined', async () => {
           delete data.people.email;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.people.email = 2313213;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a email', async () => {
           data.people.email = '2313213';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('incomeSource', () => {
         it('is undefined', async () => {
           delete data.people.incomeSource;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.people.incomeSource = 2313213;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -322,127 +162,86 @@ describe('contract validator', () => {
         it('is undefined and cnpj exists', async () => {
           data.people.cnpj = '12345678912345';
           delete data.people.incomeSourceActivity;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.people.incomeSourceActivity = 2313213;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('maritalStatus', () => {
         it('is undefined', async () => {
           delete data.people.maritalStatus;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         it('is not a valid marital status', async () => {
           data.people.maritalStatus = 'al';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         it('not a string', async () => {
           data.people.maritalStatus = 2313213;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('educationLevel', () => {
         it('is undefined', async () => {
           delete data.people.educationLevel;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         it('is not a valid education level', async () => {
           data.people.educationLevel = 'al';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         it('not a string', async () => {
           data.people.educationLevel = 2313213;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('secondPayer', () => {
         it('is undefined', async () => {
           delete data.people.secondPayer;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
-        it('is not one of [Sim, Não]', async () => {
+        it('is not boolean', async () => {
           data.people.secondPayer = 'al';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         it('not a string', async () => {
           data.people.secondPayer = 2313213;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
       describe('liveInProperty', () => {
         it('is undefined', async () => {
           delete data.people.liveInProperty;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
-        it('is not one of [Sim, Não]', async () => {
+        it('is not boolean', async () => {
           data.people.liveInProperty = 'al';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         it('not a string', async () => {
           data.people.liveInProperty = 2313213;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
+        });
+      });
+
+      describe('phone', () => {
+        it('is undefined', async () => {
+          delete data.people.phone;
+          await expect(validate(data)).rejects.toThrow();
+        });
+        it('is invalid', async () => {
+          data.people.phone = '9859-9070';
+          await expect(validate(data)).rejects.toThrow();
+        });
+        it('not a string', async () => {
+          data.people.phone = 2313213;
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -450,30 +249,18 @@ describe('contract validator', () => {
         describe('secondPayer', () => {
           it('incomeSource is undefined', async () => {
             delete data.people.mother.incomeSource;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
           it('averageIncome is undefined', async () => {
             delete data.people.mother.averageIncome;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
 
         describe('spouse', () => {
           it('is undefined', async () => {
             delete data.people.spouse;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
       });
@@ -483,134 +270,42 @@ describe('contract validator', () => {
       describe('address', () => {
         it('is undefined', async () => {
           delete data.property.address;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         describe('cep', () => {
           it('is undefined', async () => {
             delete data.property.address.cep;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.property.address.cep = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('city', () => {
           it('is undefined', async () => {
             delete data.property.address.city;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.property.address.city = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('neighborhood', () => {
           it('is undefined', async () => {
             delete data.property.address.neighborhood;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.property.address.neighborhood = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('number', () => {
           it('is undefined', async () => {
             delete data.property.address.number;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.property.address.number = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('state', () => {
           it('is undefined', async () => {
             delete data.property.address.state;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.property.address.state = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('streetAddress', () => {
           it('is undefined', async () => {
             delete data.property.address.streetAddress;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-
-          it('not a string', async () => {
-            data.property.address.streetAddress = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
-          });
-        });
-        describe('complement', () => {
-          it('not a string', async () => {
-            data.property.address.complement = 123123123;
-            try {
-              await validate(data);
-            } catch (error) {
-              expect(error).toBeTruthy();
-            }
+            await expect(validate(data)).rejects.toThrow();
           });
         });
       });
@@ -618,320 +313,178 @@ describe('contract validator', () => {
       describe('type', () => {
         it('is undefined', async () => {
           delete data.property.type;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('is not a valid type', async () => {
           data.property.type = 'al';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.property.type = 123123123;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('floorArea', () => {
         it('is undefined', async () => {
           delete data.property.floorArea;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.property.floorArea = 123123123;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('age', () => {
         it('is undefined', async () => {
           delete data.property.age;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('is not a valid age', async () => {
           data.property.age = 'al';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.property.age = 123123123;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
       describe('bedrooms', () => {
         it('is undefined', async () => {
           delete data.property.bedrooms;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('is not a valid bedrooms', async () => {
           data.property.bedrooms = 'al';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.property.bedrooms = 123123123;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
       describe('suites', () => {
         it('is undefined', async () => {
           delete data.property.suites;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('is not a valid suites', async () => {
           data.property.suites = 'al';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.property.suites = 123123123;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
       describe('isResident', () => {
         it('is undefined', async () => {
           delete data.property.isResident;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('is not a valid isResident', async () => {
           data.property.isResident = 'al';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.property.isResident = 123123123;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('garages', () => {
         it('is undefined when type is Apartamento', async () => {
           delete data.property.garages;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('is not a valid garages', async () => {
           data.property.garages = 'al';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.property.garages = 123123123;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('financed', () => {
         it('is undefined', async () => {
           delete data.property.financed;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('is not a valid financed', async () => {
           data.property.financed = 'al';
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.property.financed = 123123123;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('financingDebt', () => {
-        it('is undefined when financed is Sim', async () => {
+        it('is undefined when financed is true', async () => {
           delete data.property.financingDebt;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          data.property.financed = true;
+          await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
           data.property.financingDebt = 123123123;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error).toBeTruthy();
-          }
+          data.property.financed = true;
+          await expect(validate(data)).rejects.toThrow();
         });
       });
     });
 
     describe('whoIsSecondPayer', () => {
-      it('is undefined', async () => {
-        delete data.property.whoIsSecondPayer;
-        try {
-          await validate(data);
-        } catch (error) {
-          expect(error).toBeTruthy();
-        }
+      it('is undefined when secondPayer is true', async () => {
+        delete data.whoIsSecondPayer;
+        delete data.people.secondPayer;
+
+        await expect(validate(data)).rejects.toThrow();
       });
 
       it('is not a valid whoIsSecondPayer', async () => {
-        data.property.financed = 'al';
-        try {
-          await validate(data);
-        } catch (error) {
-          expect(error).toBeTruthy();
-        }
+        data.whoIsSecondPayer = 'al';
+
+        await expect(validate(data)).rejects.toThrow();
       });
 
       it('not a string', async () => {
-        data.property.whoIsSecondPayer = 123123123;
-        try {
-          await validate(data);
-        } catch (error) {
-          expect(error).toBeTruthy();
-        }
+        data.whoIsSecondPayer = 123123123;
+
+        await expect(validate(data)).rejects.toThrow();
       });
     });
 
     describe('clientId', () => {
       it('is undefined', async () => {
-        delete data.property.clientId;
-        try {
-          await validate(data);
-        } catch (error) {
-          expect(error).toBeTruthy();
-        }
+        delete data.clientId;
+
+        await expect(validate(data)).rejects.toThrow();
       });
 
       it('not a string', async () => {
-        data.property.clientId = 123123123;
-        try {
-          await validate(data);
-        } catch (error) {
-          expect(error).toBeTruthy();
-        }
-      });
-    });
+        data.clientId = 123123123;
 
-    describe('legalName', () => {
-      it('not a string', async () => {
-        data.property.legalName = 123123123;
-        try {
-          await validate(data);
-        } catch (error) {
-          expect(error).toBeTruthy();
-        }
-      });
-    });
-
-    describe('legalCnpj', () => {
-      it('not a string', async () => {
-        data.property.legalCnpj = 123123123;
-        try {
-          await validate(data);
-        } catch (error) {
-          expect(error).toBeTruthy();
-        }
-      });
-      it('has a length different from 14', async () => {
-        data.property.legalCnpj = 123;
-        try {
-          await validate(data);
-        } catch (error) {
-          expect(error).toBeTruthy();
-        }
+        await expect(validate(data)).rejects.toThrow();
       });
     });
   });
