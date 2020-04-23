@@ -33,11 +33,11 @@ const translate = ({ people, property, whoIsSecondPayer, ...body }) => {
 
   const translatedPeople = {
     ...people,
+    ...personas,
+    ...boolValues,
     educationLevel: EDUCATION_LEVELS[level],
     maritalStatus: MARITAL_STATUS[marital],
-    incomeSource: INCOME_SOURCES[source],
-    ...personas,
-    ...boolValues
+    incomeSource: INCOME_SOURCES[source]
   };
 
   const translatedProperty = {

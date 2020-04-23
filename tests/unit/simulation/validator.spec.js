@@ -11,7 +11,7 @@ describe('simulation', () => {
         loanMotivation: ['RENOVATE_HOUSE', 'ANOTHER_REASON'],
         age: 27,
         cpf: '00011122233',
-        phone: '+55 (51) 99999-9999',
+        phone: '+5551999999999',
         cep: '93347300',
         terms: 210,
         email: 'fabiano.furlan@gmail.com'
@@ -24,20 +24,16 @@ describe('simulation', () => {
       describe('loan value', () => {
         it('has value below than 30.000', async () => {
           data.loanValue = 29999;
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
+        });
+        it('has a higher value than 5.000.000', async () => {
+          data.loanValue = 6000000;
+          await expect(validate(data)).rejects.toThrow();
         });
         it('not a number', async () => {
           data.loanValue = '29999';
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -45,20 +41,12 @@ describe('simulation', () => {
         it('has value below than 200.000', async () => {
           data.propertyValue = 190000;
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         it('not a number', async () => {
           data.propertyValue = '200000';
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -66,20 +54,12 @@ describe('simulation', () => {
         it('not an array', async () => {
           data.loanMotivation = 'PAY_OFF_DEBTS';
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         it('not in available options', async () => {
           data.loanMotivation = ['NONE'];
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -87,11 +67,7 @@ describe('simulation', () => {
         it('has invalid length', async () => {
           data.cpf = '55';
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -99,11 +75,7 @@ describe('simulation', () => {
         it('has invalid length', async () => {
           data.phone = '55 51 99999-9999';
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -111,11 +83,7 @@ describe('simulation', () => {
         it('not in available options', async () => {
           data.terms = 220;
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -123,11 +91,7 @@ describe('simulation', () => {
         it('not is an email', async () => {
           data.terms = 'test@';
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -135,11 +99,7 @@ describe('simulation', () => {
         it('not in available options', async () => {
           data.gracePeriod = 4;
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -147,11 +107,7 @@ describe('simulation', () => {
         it('not in available options', async () => {
           data.skipMonth = 13;
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -159,20 +115,12 @@ describe('simulation', () => {
         it('has less than 18', async () => {
           data.age = 17;
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         it('has more than 75', async () => {
           data.age = 76;
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
 
@@ -180,20 +128,12 @@ describe('simulation', () => {
         it('has invalid length', async () => {
           data.cep = '999999';
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
         it('has invalid type', async () => {
           data.cep = 999999300;
 
-          try {
-            await validate(data);
-          } catch (error) {
-            expect(error.message).toBe('Campos inválidos');
-          }
+          await expect(validate(data)).rejects.toThrow();
         });
       });
     });
