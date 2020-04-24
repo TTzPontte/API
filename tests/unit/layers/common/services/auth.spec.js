@@ -8,14 +8,12 @@ describe('Auth service', () => {
     let secret;
     let clientId;
     let clientName;
-    let body;
 
     beforeEach(async () => {
       secret = 'bxHlMZb6393HftaOLFkk1pR8g-0dj9YP0CXzD-jHdHpPox10l-qEZFwJcvE-XRmKI4TH9Kyg3URBmwBq4Tp6rQ==';
       clientId = 'ramdomId';
       clientName = 'fakerName';
-      body = { test: 'test' };
-      token = await jwt.sign({ clientId, body }, secret);
+      token = await jwt.sign({ clientId }, secret);
     });
 
     it('returns a successfully response', async () => {
@@ -27,7 +25,7 @@ describe('Auth service', () => {
 
       const response = await Auth.verify(token);
 
-      expect(response).toStrictEqual({ clientId, clientName, body });
+      expect(response).toStrictEqual({ clientId, clientName, clientSecret: secret });
     });
 
     it('throws an Unauthorized error if token is not a jwt', async () => {

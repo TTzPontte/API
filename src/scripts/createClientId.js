@@ -1,7 +1,7 @@
+const jwt = require('jsonwebtoken');
 const uuidAPIKey = require('uuid-apikey');
 const crypto = require('crypto');
 const Clients = require('../layers/common/models/clients');
-const jwt = require('jsonwebtoken');
 const args = process.argv.slice(2);
 const clientName = args[0];
 

@@ -2,6 +2,7 @@ const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const { validate } = require('./validator');
 const { parser } = require('./parser');
 const { success, badRequest } = require(`${path}/lambda/response`);
+const { getSiteUrl } = require(`${path}/helpers/url`);
 const Simulation = require(`${path}/services/simulation.service`);
 const Subscribe = require(`${path}/services/subscribeCep.service`);
 const Calculator = require(`${path}/services/calculator.service`);
@@ -21,12 +22,13 @@ const simulation = async event => {
 
     const calculated = await Calculator.calculate(data);
 
-    if (calculated.statusCode !== 400) {
+    if (calculated.netLoan) {
       if (isCovered(address)) {
         const simulation = await Simulation.save({ data, calculated });
 
         const response = {
           id: simulation.id,
+          registrationUrl: `${getSiteUrl()}/cadastro/${simulation.id}`,
           simulation: calculated
         };
 

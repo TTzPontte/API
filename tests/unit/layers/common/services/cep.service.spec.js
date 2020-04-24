@@ -34,7 +34,7 @@ describe('Cep service', () => {
       try {
         await isValidCep(address);
       } catch (error) {
-        expect(error.message).toBe('Cep inválido');
+        expect(error.message).toBe('Invalid CEP');
       }
     });
   });

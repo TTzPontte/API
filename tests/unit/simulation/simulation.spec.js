@@ -3,6 +3,7 @@ const Simulation = require('../../../src/layers/common/services/simulation.servi
 const Calculator = require('../../../src/layers/common/services/calculator.service');
 const Contract = require('../../../src/layers/common/services/contract.service');
 const Cep = require('../../../src/layers/common/services/cep.service');
+const { getSiteUrl } = require('../../../src/layers/common/helpers/url');
 
 jest.mock('../../../src/layers/common/services/cep.service');
 
@@ -19,6 +20,7 @@ describe('simulation handler', () => {
     Simulation.save = jest.fn(() => saveResult);
     Simulation.isRegistered = jest.fn();
     Contract.isRegistered = jest.fn();
+    process.env.ENV = 'dev';
 
     event = {
       body: {
@@ -27,8 +29,8 @@ describe('simulation handler', () => {
         monthlyIncome: 6000,
         loanMotivation: ['RENOVATE_HOUSE', 'ANOTHER_REASON'],
         age: 27,
-        cpf: '11122233344',
-        phone: '+55 (99) 99999-9999',
+        cpf: '25124330058',
+        phone: '+5586998599070',
         cep: '93347300',
         terms: 210,
         email: 'teste@gmail.com'
@@ -46,6 +48,7 @@ describe('simulation handler', () => {
   it('return success', async () => {
     const expectedResult = {
       ...saveResult,
+      registrationUrl: `${getSiteUrl()}/cadastro/1`,
       simulation: { ...calculatedResult }
     };
     const response = await simulation(event);
@@ -56,11 +59,7 @@ describe('simulation handler', () => {
   describe('when send invalid payload', () => {
     it('returns badRequest', async () => {
       delete event.body.loanValue;
-      try {
-        await simulation(event);
-      } catch (error) {
-        expect(error.message).toBe('Campos inválidos');
-      }
+      await expect(simulation(event)).rejects.toThrow();
     });
   });
 

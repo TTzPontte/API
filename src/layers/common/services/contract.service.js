@@ -3,6 +3,8 @@ const ContractModel = require('../models/contract');
 const { getPeople } = require('../elasticsearch/people.es');
 const Property = require('./property.service');
 const People = require('./people.service');
+const User = require('./user.service');
+const Process = require('./process.service');
 
 const getContractByOwner = async contractOwner => {
   return ContractModel.query({ contractOwner: { eq: contractOwner } })
@@ -17,7 +19,7 @@ const isRegistered = async ({ cpf, email }) => {
     for (const person of people) {
       const contract = await getContractByOwner(person.id);
       if (contract && contract.length) {
-        throw new createError.BadRequest('Cliente já cadastrado');
+        throw new createError.Conflict('Customer already exists');
       }
     }
   }
@@ -25,12 +27,35 @@ const isRegistered = async ({ cpf, email }) => {
 };
 
 const save = async ({ people, property, lastSimulation, ...data }) => {
-  await isRegistered(people);
-  const { id: contractOwner } = await People.save(people);
-  const { id: propertyId } = await Property.save(property, lastSimulation.trackCode);
+  const Cognito = require('./cognito.service');
 
-  const contract = new ContractModel({ ...data, propertyId, contractOwner, lastSimulation });
-  return contract.save();
+  await isRegistered(people);
+  const { name, email, phone, cpf } = people;
+  const { id: simulationId, source, campaign, trackCode } = lastSimulation;
+
+  const { User: cognitoUser } = await Cognito.createUser({ ...lastSimulation, name, email, phone, cpf, simulationId });
+
+  const { id: contractOwner } = await People.save(people);
+  const { id: propertyId } = await Property.save(property, trackCode);
+
+  await User.save({
+    id: cognitoUser.Username,
+    trackingCode: trackCode,
+    peopleId: contractOwner,
+    campaign: campaign,
+    source: source
+  });
+
+  const contract = new ContractModel({ ...data, propertyId, contractOwner, lastSimulation, source, campaign });
+  const savedContract = await contract.save();
+
+  await Process.save({
+    contractId: savedContract.id,
+    suites: property.suites,
+    ...data
+  });
+
+  return savedContract;
 };
 
 module.exports = { save, isRegistered, getContractByOwner };

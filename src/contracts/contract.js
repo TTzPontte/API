@@ -11,17 +11,13 @@ const contract = async event => {
   const Cognito = require(`${path}/services/cognito.service`);
 
   const { body, clientId } = event;
-  const { simulationId, people } = body;
-
-  const { name, email, phone, cpf } = people;
+  const { simulationId } = body;
 
   await validate({ ...body, clientId });
 
   const translatedBody = translateBody(body);
 
   const lastSimulation = await Simulation.getLastSimulation(simulationId);
-
-  await Cognito.createUser({ ...lastSimulation, name, email, phone, cpf, simulationId });
 
   const contract = await Contract.save({ ...translatedBody, clientId, lastSimulation });
 

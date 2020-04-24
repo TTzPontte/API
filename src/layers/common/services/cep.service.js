@@ -18,7 +18,7 @@ const isValidCep = ({ status }) => {
   if (status === 'OK' || status === 'NOK') {
     return true;
   }
-  throw new createError.BadRequest('Cep inválido');
+  throw new createError.BadRequest('Invalid CEP');
 };
 
 const isCovered = ({ status }) => {

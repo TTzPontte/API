@@ -13,6 +13,11 @@ const SimulationsSchema = new Schema({
   cep: String,
   date: String,
   idade: Number,
+  accepted: {
+    ip: String,
+    time: String,
+    check: Boolean
+  },
   parametros: {
     cep: String,
     email: String,

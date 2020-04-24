@@ -26,10 +26,13 @@ Mappings:
     test:
       esEndpoint: 'test'
     dev:
+      domain: 'apidev.pontte.com.br'
       esEndpoint: 'https://search-simulations-dev-utjmngpwpsdremjdqo2cupssmy.us-east-1.es.amazonaws.com'
     staging:
+      domain: 'sandbox.pontte.com.br'
       esEndpoint: 'https://search-simulations-staging-44arqulu2bq6mmk7lfmramwv3u.us-east-1.es.amazonaws.com'
     prod:
+      domain: 'api.pontte.com.br'
       esEndpoint: 'https://search-simulations-prod-ckbzwabelmgkkrbvpyuio2lq6y.us-east-1.es.amazonaws.com'
 
 Globals:
@@ -62,7 +65,7 @@ Resources:
     Type: "AWS::ApiGateway::DomainName"
     Properties:
       DomainName:
-        !If [Prod, "api.pontte.com.br", !Sub "api${Environment}.pontte.com.br"]
+        !FindInMap [Config, !Ref Environment, domain]
       CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
 
   API:
@@ -128,10 +131,14 @@ Resources:
             TableName: !Sub "Simulations.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "People.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Contract.${Environment}"
         - LambdaInvokePolicy:
             FunctionName: !Sub 'SimulatorCalculatorFn-${Environment}'
         - LambdaInvokePolicy:
-          FunctionName: !Sub 'CepGetFn-${Environment}'
+            FunctionName: !Sub 'CepGetFn-${Environment}'
       Events:
         api1:
           Type: Api
@@ -163,6 +170,10 @@ Resources:
             TableName: !Sub "Property.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Simulations.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "User.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Process.${Environment}"
         - LambdaInvokePolicy:
             FunctionName: !Sub 'CepGetFn-${Environment}'
         - Version: '2012-10-17'

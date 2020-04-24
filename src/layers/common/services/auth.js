@@ -9,11 +9,11 @@ const parseToken = token => {
 
 const verify = async token => {
   try {
-    const { clientId, body } = await jwt.decode(token);
+    const { clientId } = await jwt.decode(token);
     const { clientSecret, clientName } = await Clients.queryOne({ clientId }).exec();
     await jwt.verify(token, clientSecret);
 
-    return { clientId, clientName, body };
+    return { clientId, clientName, clientSecret };
   } catch {
     throw new createError.Unauthorized();
   }
