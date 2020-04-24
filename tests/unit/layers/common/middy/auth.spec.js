@@ -11,7 +11,7 @@ describe('Auth Middleware', () => {
   const secret = 'bxHlMZb6393HftaOLFkk1pR8g-0dj9YP0CXzD-jHdHpPox10l-qEZFwJcvE-XRmKI4TH9Kyg3URBmwBq4Tp6rQ==';
 
   beforeEach(async () => {
-    token = await jwt.sign({ clientId: 'ramdomId', body: { test: 'test' } }, secret);
+    token = await jwt.sign({ clientId: 'ramdomId' }, secret);
     handler = {
       event: {
         headers: {
@@ -19,7 +19,7 @@ describe('Auth Middleware', () => {
         }
       }
     };
-    Auth.verify = jest.fn(() => ({ body: '', clientId: '1', clientName: 'test' }));
+    Auth.verify = jest.fn(() => ({ clientSecret: '', clientId: '1', clientName: 'test' }));
   });
 
   it('returns a successfully response', async () => {
