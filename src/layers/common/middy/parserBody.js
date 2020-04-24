@@ -7,6 +7,9 @@ module.exports = () => {
       const { event } = handler;
       const { body, clientSecret } = event;
       const { payload } = JSON.parse(body);
+
+      if (!payload) return;
+
       try {
         const { body } = await jwt.verify(payload, clientSecret);
         event.body = { ...body };
