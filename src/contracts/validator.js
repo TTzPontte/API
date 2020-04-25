@@ -79,6 +79,8 @@ const validate = async fields => {
     .object()
     .shape(
       {
+        name: yup.string().required(),
+        nickname: yup.string(),
         birth: yup.date().required(),
         averageIncome: yup.number().required(),
         incomeSource: yup

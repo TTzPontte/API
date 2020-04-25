@@ -11,7 +11,7 @@ module.exports = () => {
       if (!payload) return;
 
       try {
-        const { body } = await jwt.verify(payload, clientSecret);
+        const body = await jwt.verify(payload, clientSecret);
         event.body = { ...body };
       } catch (err) {
         throw new createError.Unauthorized();
