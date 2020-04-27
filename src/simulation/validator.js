@@ -1,7 +1,7 @@
 const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const yup = require(`${path}/node_modules/yup`);
 const createError = require(`${path}/node_modules/http-errors`);
-const {
+let {
   MIN_PROPERTY_VALUE,
   MIN_AGE,
   MAX_AGE,
@@ -12,6 +12,7 @@ const {
   MAX_LOAN_VALUE,
   PHONE_REG_EXP
 } = require('./constants');
+LOAN_MOTIVATION = Object.keys(LOAN_MOTIVATION);
 const { validateCpf } = require(`${path}/helpers/validator`);
 
 yup.addMethod(yup.string, 'validCpf', () => yup.string().test('validate', cpf => validateCpf(cpf)));
