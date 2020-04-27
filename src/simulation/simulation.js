@@ -15,8 +15,6 @@ const simulation = async event => {
   const data = await parser(event);
   await validate(data);
 
-  console.log(data)
-
   const address = await getAddress(data);
 
   if (isValidCep(address)) {
