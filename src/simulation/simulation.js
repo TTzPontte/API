@@ -26,7 +26,7 @@ const simulation = async event => {
     if (calculated.netLoan) {
       if (isCovered(address)) {
         const translatedData = translateBody(data);
-        const simulation = await Simulation.save({ translatedData, calculated });
+        const simulation = await Simulation.save({ data: translatedData, calculated });
 
         const response = {
           id: simulation.id,
