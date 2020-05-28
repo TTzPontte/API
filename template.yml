@@ -17,6 +17,7 @@ Parameters:
       - test
       - staging
       - prod
+      - refactoring
 
 Conditions:
   Prod: !Equals [!Ref Project, prod]
@@ -34,7 +35,10 @@ Mappings:
     prod:
       domain: 'api.pontte.com.br'
       esEndpoint: 'https://search-simulations-prod-ckbzwabelmgkkrbvpyuio2lq6y.us-east-1.es.amazonaws.com'
-      
+    refactoring:
+      domain: 'apirefactoring.pontte.com.br'
+      esEndpoint: 'https://search-simulations-refactoring-766fr26isiln3mashjapbmoq6i.us-east-1.es.amazonaws.com'
+
 Globals:
   Function:
     Runtime: nodejs10.x
