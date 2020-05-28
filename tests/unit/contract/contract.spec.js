@@ -22,7 +22,7 @@ describe('contract handler', () => {
       }
     };
     Contract.save = jest.fn(() => saveResult);
-    Simulation.getLastSimulation = jest.fn(() => {});
+    Simulation.getLastContract = jest.fn(() => {});
     Cognito.createUser = jest.fn(() => {});
   });
 

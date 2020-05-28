@@ -1,7 +1,7 @@
 const { getNowDefaultDate, getDateIsoString } = require('../helpers/date');
-const Simulation = require('../models/simulation');
+const Contract = require('../models/contract');
 const createError = require('http-errors');
-const { getClientSimulation } = require('../elasticsearch/simulations.es');
+const { getClientContract } = require('../elasticsearch/contractsReport.es');
 
 const save = async ({
   data: {
@@ -27,37 +27,37 @@ const save = async ({
   const lastInstallment = installment[installment.length - 1].installment;
   const firstInstallment = installment[0].installment;
 
-  const simulation = new Simulation({
-    valorImovel: propertyValue,
-    loanMotivation: loanMotivation,
-    cep: cep,
-    idade: age,
-    parametros: {
-      valorEmprestimo: loanValue,
-      valImovel: propertyValue,
-      rendaMensal: monthlyIncome,
-      idade: age,
-      cep: cep,
-      email: email,
-      phone: phone,
-      trackCode: trackCode,
-      gracePeriod: gracePeriod,
-      campaign: clientName,
-      source: clientName,
-      skipMonth: skipMonth,
-      cpf: cpf,
-      loanDate: getNowDefaultDate()
+  const simulation = new Contract({
+    simulation: {
+      parameters: {
+        propertyValue: propertyValue,
+        cep: cep,
+        loanValue: loanValue,
+        age: age,
+        monthlyIncome: monthlyIncome,
+        email: email,
+        phone: phone,
+        loanDate: getNowDefaultDate(),
+        cpf: cpf
+      },
+      loanMotivation: loanMotivation,
+      skipMonth: skipMonth
     },
+    terms: [terms],
+    loanValue: [netLoan],
+    loanValuesGross: [grossLoan],
+    installments: [[firstInstallment]],
+    lastInstallments: [[lastInstallment]],
+    campaign: clientName,
+    source: clientName,
+    trackCode: trackCode,
+    gracePeriod: gracePeriod,
     accepted: {
       ip: sourceIp,
       time: getDateIsoString(),
       check: true
     },
-    prazos: [terms],
-    valoresEmprestimo: [netLoan],
-    valoresEmprestimeBruto: [grossLoan],
-    parcelas: [[firstInstallment]],
-    ultimaParcela: [[lastInstallment]],
+
     ltv: [[ltv]],
     ltvMax: [[ltvMax]],
     cet: [[cet]],
@@ -69,30 +69,31 @@ const save = async ({
 };
 
 const isRegistered = async ({ cpf, email, clientId }) => {
-  const simulations = await getClientSimulation({ cpf, email, clientId });
+  const contracts = await getClientContract({ cpf, email, clientId });
 
-  if (simulations && simulations.length) {
+  if (contracts && contracts.length) {
     throw new createError.Conflict('Customer already exists');
   }
   return false;
 };
 
-const getLastSimulation = async simulationId => {
+const getLastContract = async simulationId => {
   try {
-    const { parametros, id, prazos, parcelas } = await Simulation.queryOne({ id: simulationId }).exec();
-    const { idade, cep, email, loanDate, rendaMensal, valImovel, valorEmprestimo, trackCode, campaign, source } = parametros;
-    const installments = parcelas[0];
+    const { trackCode, campaign, source, id, simulation } = await Contract.queryOne({ id: simulationId }).exec();
+    const { parameters, terms, installments, loanValueSelected } = simulation;
+    const { age, cep, email, loanDate, monthlyIncome, propertyValue, loanValue } = parameters;
+    const installment = installments[0];
     return {
       id,
-      age: idade,
+      age: age,
       cep: cep,
       date: loanDate,
-      installment: installments[0],
-      loanValue: valorEmprestimo,
-      loanValueSelected: valorEmprestimo,
-      propertyValue: valImovel,
-      rendaMensal: rendaMensal,
-      term: prazos[0],
+      installment: installment[0],
+      loanValue: loanValue,
+      loanValueSelected: loanValueSelected,
+      propertyValue: propertyValue,
+      monthlyIncome: monthlyIncome,
+      term: terms[0],
       email: email,
       trackCode,
       campaign,
@@ -103,4 +104,4 @@ const getLastSimulation = async simulationId => {
   }
 };
 
-module.exports = { save, getLastSimulation, isRegistered };
+module.exports = { save, getLastContract, isRegistered };
