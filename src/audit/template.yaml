@@ -16,6 +16,7 @@ Parameters:
       - test
       - staging
       - prod
+      - refactoring
 
 Conditions:
   Prod: !Equals [!Ref Project, prod]

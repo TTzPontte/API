@@ -1,10 +1,10 @@
 const layerPath = '../../../../../src/layers/common/';
-const { getClientSimulation } = require(`${layerPath}elasticsearch/simulations.es`);
-const { save, isRegistered, getLastSimulation } = require(`${layerPath}services/simulation.service`);
-const SimulationModel = require(`${layerPath}models/simulation`);
+const { getClientContract } = require(`${layerPath}elasticsearch/contractsReport.es`);
+const { save, isRegistered, getLastContract } = require(`${layerPath}services/simulation.service`);
+const ContractModel = require(`${layerPath}models/contract`);
 const faker = require('faker');
 
-jest.mock('../../../../../src/layers/common/elasticsearch/simulations.es');
+jest.mock('../../../../../src/layers/common/elasticsearch/contractsReport.es');
 
 describe('Simulation service', () => {
   describe('save', () => {
@@ -40,12 +40,12 @@ describe('Simulation service', () => {
       cpf = '00011122233';
     });
     it('returns false if not registered', async () => {
-      getClientSimulation.mockReturnValueOnce([]);
+      getClientContract.mockReturnValueOnce([]);
 
       expect(await isRegistered({ email, clientId, cpf })).toBe(false);
     });
     it('returns error if is registered', async () => {
-      getClientSimulation.mockReturnValueOnce([{ name: 'name' }]);
+      getClientContract.mockReturnValueOnce([{ name: 'name' }]);
       try {
         await isRegistered({ email, clientId, cpf });
       } catch (error) {
@@ -54,49 +54,53 @@ describe('Simulation service', () => {
     });
   });
 
-  describe('getLastSimulation', () => {
-    let simulation;
+  describe('getLastContract', () => {
+    let contract;
     beforeEach(() => {
-      simulation = {
-        parametros: {
-          idade: '21',
-          cep: '1312321',
-          email: 'test@gmail.com',
-          loanDate: '12321',
-          rendaMensal: '321312',
-          valImovel: '21312321',
-          valorEmprestimo: '1231231',
-          trackCode: '32213121'
+      contract = {
+        simulation: {
+          parameters: {
+            age: '21',
+            cep: '1312321',
+            email: 'test@gmail.com',
+            loanDate: '12321',
+            monthlyIncome: '321312',
+            propertyValue: '21312321',
+            loanValue: '1231231'
+          },
+          terms: [{ foo: 'bar' }],
+          installments: [[{ foo: 'bar' }]],
+          loanValueSelected: '1231231'
         },
         id: '1',
-        prazos: [{ foo: 'bar' }],
-        parcelas: [[{ foo: 'bar' }]]
+        trackCode: '32213121'
       };
     });
 
     it('returns simulation', async () => {
-      const { id, parametros, parcelas, prazos } = simulation;
-      const { idade, cep, email, loanDate, rendaMensal, valImovel, valorEmprestimo, trackCode, campaign, source } = parametros;
+      const { trackCode, campaign, source, id, simulation } = contract;
+      const { parameters, terms, installments, loanValueSelected } = simulation;
+      const { age, cep, email, loanDate, monthlyIncome, propertyValue, loanValue } = parameters;
       const expectedResult = {
         id,
-        age: idade,
+        age: age,
         cep: cep,
         date: loanDate,
-        installment: parcelas[0][0],
-        loanValue: valorEmprestimo,
-        loanValueSelected: valorEmprestimo,
-        propertyValue: valImovel,
-        rendaMensal: rendaMensal,
-        term: prazos[0],
+        installment: installments[0][0],
+        loanValue: loanValue,
+        loanValueSelected: loanValueSelected,
+        propertyValue: propertyValue,
+        monthlyIncome: monthlyIncome,
+        term: terms[0],
         email,
         trackCode,
         source,
         campaign
       };
-      const exec = jest.fn(() => ({ ...simulation }));
-      SimulationModel.queryOne = jest.fn(() => ({ exec }));
+      const exec = jest.fn(() => ({ ...contract }));
+      ContractModel.queryOne = jest.fn(() => ({ exec }));
 
-      expect(await getLastSimulation('2312312')).toStrictEqual(expectedResult);
+      expect(await getLastContract('2312312')).toStrictEqual(expectedResult);
     });
   });
 });

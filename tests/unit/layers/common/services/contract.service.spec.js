@@ -59,7 +59,7 @@ describe('Contract service', () => {
   describe('save contract', () => {
     it('saves contract correctly', async () => {
       const cognitoUser = { User: { Username: 'Test' } };
-      const lastSimulation = { id: '1', trackCode: '12345', campaign: 'api', source: 'api' };
+      const lastContract = { id: '1', trackCode: '12345', campaign: 'api', source: 'api' };
 
       const { people, property } = contract;
       const { name, email, phone, cpf } = people;
@@ -71,14 +71,14 @@ describe('Contract service', () => {
       global.mockModelSave = jest.fn(() => ({ id: 'contract-id-1' }));
       Process.save = jest.fn(() => ({ id: '1' }));
 
-      await save({ ...contract, lastSimulation });
-      expect(Cognito.createUser).toHaveBeenCalledWith({ ...lastSimulation, name, email, phone, cpf, simulationId: lastSimulation.id });
+      await save({ ...contract, lastContract });
+      expect(Cognito.createUser).toHaveBeenCalledWith({ ...lastContract, name, email, phone, cpf });
       expect(User.save).toHaveBeenCalledWith({
         id: cognitoUser.User.Username,
-        trackingCode: lastSimulation.trackCode,
+        trackingCode: lastContract.trackCode,
         peopleId: '1',
-        campaign: lastSimulation.campaign,
-        source: lastSimulation.source
+        campaign: lastContract.campaign,
+        source: lastContract.source
       });
       expect(People.save).toHaveBeenCalledWith(people);
       expect(Property.save).toHaveBeenCalledWith(property, '12345');

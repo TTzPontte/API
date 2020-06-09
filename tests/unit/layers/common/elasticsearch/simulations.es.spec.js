@@ -29,31 +29,31 @@ jest.mock(
   { virtual: true }
 );
 
-const SimulationsES = require('../../../../../src/layers/common/elasticsearch/simulations.es');
+const ContractsES = require('../../../../../src/layers/common/elasticsearch/contractsReport.es');
 
-describe('SimulationsES', () => {
+describe('ContractsES', () => {
   it('should get simulation source', async () => {
     const email = faker.internet.email();
     const clientId = faker.random.uuid();
     const cpf = '00011122233';
 
-    const result = await SimulationsES.getClientSimulation({ cpf, email, clientId });
+    const result = await ContractsES.getClientContract({ cpf, email, clientId });
 
     const query = {
-      index: 'pontte',
-      type: 'simulations',
+      index: 'contract',
+      type: 'report',
       body: {
         query: {
           bool: {
             should: [
               {
                 term: {
-                  'parametros.cpf': cpf
+                  'simulation.parameters.cpf': cpf
                 }
               },
               {
                 term: {
-                  'parametros.email': email
+                  'simulation.parameters.email': email
                 }
               }
             ],
