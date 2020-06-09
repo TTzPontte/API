@@ -72,7 +72,7 @@ describe('Contract service', () => {
       Process.save = jest.fn(() => ({ id: '1' }));
 
       await save({ ...contract, lastContract });
-      expect(Cognito.createUser).toHaveBeenCalledWith({ ...lastContract, name, email, phone, cpf, simulationId: lastContract.id });
+      expect(Cognito.createUser).toHaveBeenCalledWith({ ...lastContract, name, email, phone, cpf });
       expect(User.save).toHaveBeenCalledWith({
         id: cognitoUser.User.Username,
         trackingCode: lastContract.trackCode,
