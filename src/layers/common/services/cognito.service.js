@@ -36,9 +36,9 @@ const buildAttributes = ({ name, email, cpf, phone }) => [
   { Name: 'custom:cpf', Value: cpf }
 ];
 
-const buildValidationData = ({ trackCode, simulationId, loanValue, term, installment, loanValueSelected, phone }) => [
+const buildValidationData = ({ trackCode, id, loanValue, term, installment, loanValueSelected, phone }) => [
   { Name: 'trackCode', Value: trackCode.toString() },
-  { Name: 'simulationId', Value: simulationId },
+  { Name: 'simulationId', Value: id },
   { Name: 'loanValue', Value: loanValue.toString() },
   { Name: 'term', Value: term.toString() },
   { Name: 'installment', Value: installment.toString() },

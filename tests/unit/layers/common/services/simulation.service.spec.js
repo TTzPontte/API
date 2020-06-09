@@ -78,29 +78,10 @@ describe('Simulation service', () => {
     });
 
     it('returns simulation', async () => {
-      const { trackCode, campaign, source, id, simulation } = contract;
-      const { parameters, terms, installments, loanValueSelected } = simulation;
-      const { age, cep, email, loanDate, monthlyIncome, propertyValue, loanValue } = parameters;
-      const expectedResult = {
-        id,
-        age: age,
-        cep: cep,
-        date: loanDate,
-        installment: installments[0][0],
-        loanValue: loanValue,
-        loanValueSelected: loanValueSelected,
-        propertyValue: propertyValue,
-        monthlyIncome: monthlyIncome,
-        term: terms[0],
-        email,
-        trackCode,
-        source,
-        campaign
-      };
       const exec = jest.fn(() => ({ ...contract }));
       ContractModel.queryOne = jest.fn(() => ({ exec }));
 
-      expect(await getLastContract('2312312')).toStrictEqual(expectedResult);
+      expect(await getLastContract('2312312')).toStrictEqual(contract);
     });
   });
 });

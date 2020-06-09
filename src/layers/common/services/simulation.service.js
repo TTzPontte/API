@@ -77,26 +77,7 @@ const isRegistered = async ({ cpf, email, clientId }) => {
 
 const getLastContract = async simulationId => {
   try {
-    const { trackCode, campaign, source, id, simulation } = await Contract.queryOne({ id: simulationId }).exec();
-    const { parameters, terms, installments, loanValueSelected } = simulation;
-    const { age, cep, email, loanDate, monthlyIncome, propertyValue, loanValue } = parameters;
-    const installment = installments[0];
-    return {
-      id,
-      age: age,
-      cep: cep,
-      date: loanDate,
-      installment: installment[0],
-      loanValue: loanValue,
-      loanValueSelected: loanValueSelected,
-      propertyValue: propertyValue,
-      monthlyIncome: monthlyIncome,
-      term: terms[0],
-      email: email,
-      trackCode,
-      campaign,
-      source
-    };
+    return await Contract.queryOne({ id: simulationId }).exec()
   } catch (error) {
     throw new createError.NotFound('Simulation not found');
   }
