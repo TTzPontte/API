@@ -77,7 +77,7 @@ const isRegistered = async ({ cpf, email, clientId }) => {
 
 const getLastContract = async simulationId => {
   try {
-    return await Contract.queryOne({ id: simulationId }).exec()
+    return await Contract.queryOne({ id: simulationId }).exec();
   } catch (error) {
     throw new createError.NotFound('Simulation not found');
   }
