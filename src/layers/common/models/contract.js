@@ -25,8 +25,65 @@ const ContractsSchema = new Schema(
         propertyValue: Number,
         loanValue: Number,
         loanDate: String,
-        cpf: String
+        cpf: String,
+        skipMonth: Number,
+        gracePeriod: Number
       },
+      loanMotivation: [
+        {
+          type: String
+        }
+      ],
+      terms: {
+        type: 'list',
+        list: [Number]
+      },
+      installments: {
+        type: 'list',
+        list: [
+          {
+            type: 'list',
+            list: [Number]
+          }
+        ]
+      },
+      lastInstallmentslastInstallments: {
+        type: 'list',
+        list: [
+          {
+            type: 'list',
+            list: [Number]
+          }
+        ]
+      },
+      ltv: {
+        type: 'list',
+        list: [
+          {
+            type: 'list',
+            list: [Number]
+          }
+        ]
+      },
+      ltvMax: {
+        type: 'list',
+        list: [
+          {
+            type: 'list',
+            list: [Number]
+          }
+        ]
+      },
+      cet: {
+        type: 'list',
+        list: [
+          {
+            type: 'list',
+            list: [Number]
+          }
+        ]
+      },
+      loanValuesGross: Number,
       date: Date,
       installment: Number,
       loanValueSelected: Number,
