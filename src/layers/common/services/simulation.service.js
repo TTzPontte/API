@@ -22,7 +22,7 @@ const save = async ({
     clientName,
     cpf
   },
-  calculated: { netLoan, grossLoan, installment, ltv, ltvMax, cet }
+  calculated: { grossLoan, installment, ltv, ltvMax, cet }
 }) => {
   const lastInstallment = installment[installment.length - 1].installment;
   const firstInstallment = installment[0].installment;
@@ -38,30 +38,28 @@ const save = async ({
         email: email,
         phone: phone,
         loanDate: getNowDefaultDate(),
-        cpf: cpf
+        cpf: cpf,
+        skipMonth: skipMonth,
+        gracePeriod: gracePeriod
       },
       loanMotivation: loanMotivation,
-      skipMonth: skipMonth
+      terms: [terms],
+      loanValuesGross: [grossLoan],
+      installments: [[firstInstallment]],
+      lastInstallments: [[lastInstallment]],
+      accepted: {
+        ip: sourceIp,
+        time: getDateIsoString(),
+        check: true
+      },
+      ltv: [[ltv]],
+      ltvMax: [[ltvMax]],
+      cet: [[cet]],
+      date: getDateIsoString()
     },
-    terms: [terms],
-    loanValue: [netLoan],
-    loanValuesGross: [grossLoan],
-    installments: [[firstInstallment]],
-    lastInstallments: [[lastInstallment]],
     campaign: clientName,
     source: clientName,
     trackCode: trackCode,
-    gracePeriod: gracePeriod,
-    accepted: {
-      ip: sourceIp,
-      time: getDateIsoString(),
-      check: true
-    },
-
-    ltv: [[ltv]],
-    ltvMax: [[ltvMax]],
-    cet: [[cet]],
-    date: getDateIsoString(),
     clientApiId: clientId
   });
 
@@ -79,26 +77,7 @@ const isRegistered = async ({ cpf, email, clientId }) => {
 
 const getLastContract = async simulationId => {
   try {
-    const { trackCode, campaign, source, id, simulation } = await Contract.queryOne({ id: simulationId }).exec();
-    const { parameters, terms, installments, loanValueSelected } = simulation;
-    const { age, cep, email, loanDate, monthlyIncome, propertyValue, loanValue } = parameters;
-    const installment = installments[0];
-    return {
-      id,
-      age: age,
-      cep: cep,
-      date: loanDate,
-      installment: installment[0],
-      loanValue: loanValue,
-      loanValueSelected: loanValueSelected,
-      propertyValue: propertyValue,
-      monthlyIncome: monthlyIncome,
-      term: terms[0],
-      email: email,
-      trackCode,
-      campaign,
-      source
-    };
+    return await Contract.queryOne({ id: simulationId }).exec();
   } catch (error) {
     throw new createError.NotFound('Simulation not found');
   }
