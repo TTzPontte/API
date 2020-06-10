@@ -47,7 +47,7 @@ const ContractsSchema = new Schema(
           }
         ]
       },
-      lastInstallmentslastInstallments: {
+      lastInstallments: {
         type: 'list',
         list: [
           {
