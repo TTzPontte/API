@@ -4,16 +4,16 @@ const MIN_PROPERTY_VALUE = 200000;
 const MIN_AGE = 18;
 const MAX_AGE = 75;
 
-const LOAN_MOTIVATION = [
-  'PAY_OFF_DEBTS',
-  'OPEN_OWN_BUSINESS',
-  'INVESTING_OWN_BUSINESS',
-  'FUND_STUDIES',
-  'RENOVATE_HOUSE',
-  'PAY_MARRIAGE',
-  'ANOTHER_REASON',
-  'JUST_CURIOSITY'
-];
+const LOAN_MOTIVATION = {
+  PAY_OFF_DEBTS: 'Quitar dívidas',
+  OPEN_OWN_BUSINESS: 'Abrir o meu negócio',
+  FUND_STUDIES: 'Financiar meus estudos',
+  INVESTING_OWN_BUSINESS: 'Investir no meu negócio',
+  RENOVATE_HOUSE: 'Reformar a minha casa',
+  PAY_MARRIAGE: 'Pagar meu casamento',
+  ANOTHER_REASON: 'Outro Motivo',
+  JUST_CURIOSITY: 'Apenas curiosidade'
+};
 
 const PHONE_REG_EXP = /^(\+\d{2}\d{2})(\d{4,5}\d{4})$/;
 

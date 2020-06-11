@@ -26,14 +26,17 @@ const isRegistered = async ({ cpf, email }) => {
   return false;
 };
 
-const save = async ({ people, property, lastSimulation, ...data }) => {
+const save = async ({ people, property, lastContract, ...data }) => {
   const Cognito = require('./cognito.service');
 
   await isRegistered(people);
   const { name, email, phone, cpf } = people;
-  const { id: simulationId, source, campaign, trackCode } = lastSimulation;
+  const { id, source, campaign, trackCode, simulation } = lastContract;
+  const {
+    parameters: { loanValue }
+  } = simulation;
 
-  const { User: cognitoUser } = await Cognito.createUser({ ...lastSimulation, name, email, phone, cpf, simulationId });
+  const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, cpf, id });
 
   const { id: contractOwner } = await People.save(people);
   const { id: propertyId } = await Property.save(property, trackCode);
@@ -46,7 +49,7 @@ const save = async ({ people, property, lastSimulation, ...data }) => {
     source: source
   });
 
-  const contract = new ContractModel({ ...data, propertyId, contractOwner, lastSimulation, source, campaign });
+  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwner, source, campaign });
   const savedContract = await contract.save();
 
   await Process.save({

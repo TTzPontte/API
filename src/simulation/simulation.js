@@ -9,6 +9,7 @@ const Calculator = require(`${path}/services/calculator.service`);
 const Contract = require(`${path}/services/contract.service`);
 const { getAddress, isValidCep, isCovered } = require(`${path}/services/cep.service`);
 const middy = require(`${path}/middy/middy`);
+const translateBody = require('./translate');
 
 const simulation = async event => {
   const data = await parser(event);
@@ -24,7 +25,8 @@ const simulation = async event => {
 
     if (calculated.netLoan) {
       if (isCovered(address)) {
-        const simulation = await Simulation.save({ data, calculated });
+        const translatedData = translateBody(data);
+        const simulation = await Simulation.save({ data: translatedData, calculated });
 
         const response = {
           id: simulation.id,
@@ -35,7 +37,7 @@ const simulation = async event => {
         return success({ ...response });
       } else {
         await Subscribe.save({ data, calculated });
-        return badRequest('Região não atendida');
+        return badRequest('Region not supported');
       }
     }
   }

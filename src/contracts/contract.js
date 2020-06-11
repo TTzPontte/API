@@ -17,9 +17,9 @@ const contract = async event => {
 
   const translatedBody = translateBody(body);
 
-  const lastSimulation = await Simulation.getLastSimulation(simulationId);
+  const lastContract = await Simulation.getLastContract(simulationId);
 
-  const contract = await Contract.save({ ...translatedBody, clientId, lastSimulation });
+  const contract = await Contract.save({ ...translatedBody, clientId, lastContract });
 
   return success({ ...contract });
 };

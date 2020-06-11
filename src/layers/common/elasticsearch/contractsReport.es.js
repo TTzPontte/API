@@ -1,21 +1,21 @@
 const es = require('./aws_es_client');
 
-const getClientSimulation = async ({ cpf, email, clientId }) => {
+const getClientContract = async ({ cpf, email, clientId }) => {
   const query = {
-    index: 'pontte',
-    type: 'simulations',
+    index: 'contract',
+    type: 'report',
     body: {
       query: {
         bool: {
           should: [
             {
               term: {
-                'parametros.cpf': cpf
+                'simulation.parameters.cpf': cpf
               }
             },
             {
               term: {
-                'parametros.email': email
+                'simulation.parameters.email': email
               }
             }
           ],
@@ -39,4 +39,4 @@ const getClientSimulation = async ({ cpf, email, clientId }) => {
   return data;
 };
 
-module.exports = { getClientSimulation };
+module.exports = { getClientContract };
