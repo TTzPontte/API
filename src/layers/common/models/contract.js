@@ -27,13 +27,13 @@ const ContractsSchema = new Schema(
         loanDate: String,
         cpf: String,
         skipMonth: Number,
-        gracePeriod: Number
+        gracePeriod: Number,
+        loanMotivation: [
+          {
+            type: String
+          }
+        ]
       },
-      loanMotivation: [
-        {
-          type: String
-        }
-      ],
       terms: {
         type: 'list',
         list: [Number]
