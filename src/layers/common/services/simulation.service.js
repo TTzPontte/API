@@ -40,9 +40,10 @@ const save = async ({
         loanDate: getNowDefaultDate(),
         cpf: cpf,
         skipMonth: skipMonth,
-        gracePeriod: gracePeriod
+        gracePeriod: gracePeriod,
+        loanMotivation: loanMotivation
       },
-      loanMotivation: loanMotivation,
+      loanValueSelected: loanValue,
       terms: [terms],
       term: terms,
       loanValuesGross: [grossLoan],
