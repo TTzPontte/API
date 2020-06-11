@@ -44,7 +44,9 @@ const save = async ({
       },
       loanMotivation: loanMotivation,
       terms: [terms],
+      term: terms,
       loanValuesGross: [grossLoan],
+      installment: firstInstallment,
       installments: [[firstInstallment]],
       lastInstallments: [[lastInstallment]],
       accepted: {

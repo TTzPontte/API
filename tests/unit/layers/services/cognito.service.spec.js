@@ -11,8 +11,8 @@ describe('create user', () => {
     trackCode: faker.random.uuid(),
     simulationId: faker.random.uuid(),
     loanValue: faker.random.number(),
-    terms: [faker.random.number()],
-    installments: [faker.random.number()],
+    term: faker.random.number(),
+    installment: faker.random.number(),
     loanValueSelected: faker.random.number()
   };
 
