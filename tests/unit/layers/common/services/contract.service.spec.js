@@ -59,7 +59,12 @@ describe('Contract service', () => {
   describe('save contract', () => {
     it('saves contract correctly', async () => {
       const cognitoUser = { User: { Username: 'Test' } };
-      const lastContract = { id: '1', trackCode: '12345', campaign: 'api', source: 'api' };
+      const simulation = { terms: [0], installments: [0], parameters: { loanValue: 0 } };
+      const {
+        parameters: { loanValue }
+      } = simulation;
+      const id = '1';
+      const lastContract = { id, trackCode: '12345', campaign: 'api', source: 'api', simulation };
 
       const { people, property } = contract;
       const { name, email, phone, cpf } = people;
@@ -72,7 +77,7 @@ describe('Contract service', () => {
       Process.save = jest.fn(() => ({ id: '1' }));
 
       await save({ ...contract, lastContract });
-      expect(Cognito.createUser).toHaveBeenCalledWith({ ...lastContract, name, email, phone, cpf });
+      expect(Cognito.createUser).toHaveBeenCalledWith({ ...lastContract, ...simulation, loanValue, name, email, phone, cpf, id });
       expect(User.save).toHaveBeenCalledWith({
         id: cognitoUser.User.Username,
         trackingCode: lastContract.trackCode,
