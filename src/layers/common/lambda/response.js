@@ -44,6 +44,8 @@ const notFound = buildError(404);
 
 const notAcceptable = buildError(406);
 
+const conflict = buildError(409);
+
 const failure = buildError(500);
 
 module.exports = {
@@ -51,6 +53,7 @@ module.exports = {
   success,
   noContent,
   notAcceptable,
+  conflict,
   failure,
   badRequest,
   unauthorized,
