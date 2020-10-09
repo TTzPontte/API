@@ -83,7 +83,7 @@ const ContractsSchema = new Schema(
           }
         ]
       },
-      loanValuesGross: [Number],
+      loanValuesGross: [[Number]],
       date: Date,
       installment: Number,
       loanValueSelected: Number,
