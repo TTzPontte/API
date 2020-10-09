@@ -18,6 +18,8 @@ const translate = ({ people, property, whoIsSecondPayer, ...body }) => {
   const boolValues = BOOL_VALUES.reduce(translateBoolValue, {});
 
   const personas = Object.keys(PERSONAS).reduce((obj, person) => {
+    console.log('obj', obj);
+    console.log('person', person);
     if (people[person] && !_.isEmpty(people[person])) {
       const { incomeSource } = people[person];
       return {
@@ -28,6 +30,7 @@ const translate = ({ people, property, whoIsSecondPayer, ...body }) => {
         }
       };
     }
+    console.log(obj);
     return obj;
   }, {});
 
