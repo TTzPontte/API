@@ -46,7 +46,7 @@ const save = async ({
       loanValueSelected: loanValue,
       terms: [terms],
       term: terms,
-      loanValuesGross: [grossLoan],
+      loanValuesGross: [[grossLoan]],
       installment: firstInstallment,
       installments: [[firstInstallment]],
       lastInstallments: [[lastInstallment]],
