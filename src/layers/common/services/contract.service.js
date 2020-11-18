@@ -13,6 +13,7 @@ const getContractByOwner = async contractOwner => {
 };
 
 const isRegistered = async ({ email, documentNumber }) => {
+  console.log('documentNumber -> ', documentNumber);
   const entity = await getEntity({ email, documentNumber });
   console.log('entity -> ', entity);
 
