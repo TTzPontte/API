@@ -6,13 +6,13 @@ const find = (obj, compare) => Object.keys(obj).find(item => compare === item);
 
 const BOOL_VALUES = ['children', 'secondPayer', 'liveInProperty', 'hasSiblings'];
 
-const translate = ({ people, property, whoIsSecondPayer, ...body }) => {
-  const translateBoolValue = (obj, value) => ({ ...obj, [value]: people[value] ? 'Sim' : 'Não' });
-  const level = find(EDUCATION_LEVELS, people.educationLevel);
-  const marital = find(MARITAL_STATUS, people.maritalStatus);
+const translate = ({ entity, property, secondPayers, ...body }) => {
+  const translateBoolValue = (obj, value) => ({ ...obj, [value]: entity[value] ? 'Sim' : 'Não' });
+  const level = find(EDUCATION_LEVELS, entity.educationLevel);
+  const marital = find(MARITAL_STATUS, entity.maritalStatus);
   const type = find(PROPERTY_TYPES, property.type);
-  const persona = find(PERSONAS, whoIsSecondPayer);
-  const source = find(INCOME_SOURCES, people.incomeSource);
+  const persona = find(PERSONAS, ...secondPayers);
+  const source = find(INCOME_SOURCES, entity.incomeSource);
   const resident = find(RESIDENTS, property.isResident);
 
   const boolValues = BOOL_VALUES.reduce(translateBoolValue, {});
@@ -20,12 +20,12 @@ const translate = ({ people, property, whoIsSecondPayer, ...body }) => {
   const personas = Object.keys(PERSONAS).reduce((obj, person) => {
     console.log('obj', obj);
     console.log('person', person);
-    if (people[person] && !_.isEmpty(people[person])) {
-      const { incomeSource } = people[person];
+    if (entity[person] && !_.isEmpty(entity[person])) {
+      const { incomeSource } = entity[person];
       return {
         ...obj,
         [person]: {
-          ...people[person],
+          ...entity[person],
           incomeSource: INCOME_SOURCES[find(INCOME_SOURCES, incomeSource)]
         }
       };
@@ -34,8 +34,8 @@ const translate = ({ people, property, whoIsSecondPayer, ...body }) => {
     return obj;
   }, {});
 
-  const translatedPeople = {
-    ...people,
+  const translatedEntity = {
+    ...entity,
     ...personas,
     ...boolValues,
     educationLevel: EDUCATION_LEVELS[level],
@@ -52,9 +52,9 @@ const translate = ({ people, property, whoIsSecondPayer, ...body }) => {
 
   return {
     ...body,
-    people: translatedPeople,
+    entity: translatedEntity,
     property: translatedProperty,
-    whoIsSecondPayer: PERSONAS[persona]
+    secondPayers: PERSONAS[persona]
   };
 };
 

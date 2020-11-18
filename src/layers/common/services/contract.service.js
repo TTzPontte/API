@@ -1,8 +1,8 @@
 const createError = require('http-errors');
 const ContractModel = require('../models/contract');
-const { getPeople } = require('../elasticsearch/people.es');
+const { getEntity } = require('../elasticsearch/entity.es');
 const Property = require('./property.service');
-const People = require('./people.service');
+const Entity = require('./entity.service');
 const User = require('./user.service');
 const Process = require('./process.service');
 
@@ -12,11 +12,11 @@ const getContractByOwner = async contractOwner => {
     .exec();
 };
 
-const isRegistered = async ({ cpf, email }) => {
-  const people = await getPeople({ cpf, email });
+const isEntityRegistered = async ({ email, documentNumber }) => {
+  const entity = await getEntity({ email, documentNumber });
 
-  if (people && people.length) {
-    for (const person of people) {
+  if (entity && entity.length) {
+    for (const person of entity) {
       const contract = await getContractByOwner(person.id);
       if (contract && contract.length) {
         throw new createError.Conflict('Customer already exists');
@@ -26,11 +26,11 @@ const isRegistered = async ({ cpf, email }) => {
   return false;
 };
 
-const save = async ({ people, property, lastContract, ...data }) => {
+const save = async ({ entity, property, lastContract, ...data }) => {
   const Cognito = require('./cognito.service');
 
-  await isRegistered(people);
-  const { name, email, phone, cpf } = people;
+  await isEntityRegistered(entity);
+  const { name, email, phone, cpf } = entity;
   const { id, source, campaign, trackCode, simulation } = lastContract;
   const {
     parameters: { loanValue }
@@ -38,13 +38,13 @@ const save = async ({ people, property, lastContract, ...data }) => {
 
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, cpf, id });
 
-  const { id: contractOwner } = await People.save(people);
+  const { id: contractOwner } = await Entity.save(entity);
   const { id: propertyId } = await Property.save(property, trackCode);
 
   await User.save({
     id: cognitoUser.Username,
     trackingCode: trackCode,
-    peopleId: contractOwner,
+    entityId: contractOwner,
     campaign: campaign,
     source: source
   });
@@ -61,4 +61,4 @@ const save = async ({ people, property, lastContract, ...data }) => {
   return savedContract;
 };
 
-module.exports = { save, isRegistered, getContractByOwner };
+module.exports = { save, isEntityRegistered, getContractByOwner };
