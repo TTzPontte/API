@@ -28,7 +28,6 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
         }
       };
     }
-    console.log(obj);
     return obj;
   }, {});
 

@@ -14,6 +14,7 @@ const getContractByOwner = async contractOwner => {
 
 const isRegistered = async ({ email, documentNumber }) => {
   console.log('documentNumber -> ', documentNumber);
+  console.log('email -> ', email);
   const entity = await getEntity({ email, documentNumber });
   console.log('entity -> ', entity);
 
@@ -31,6 +32,8 @@ const isRegistered = async ({ email, documentNumber }) => {
 
 const save = async ({ entity, property, lastContract, ...data }) => {
   const Cognito = require('./cognito.service');
+
+  console.log('entity -> ', entity);
 
   await isRegistered(entity);
   const { name, email, phone, cpf } = entity;
