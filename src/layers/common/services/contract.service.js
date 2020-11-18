@@ -15,16 +15,16 @@ const getContractByOwner = async contractOwner => {
 const isRegistered = async ({ email, documentNumber }) => {
   console.log('documentNumber -> ', documentNumber);
   console.log('email -> ', email);
-  const entity = await getEntity({ email, documentNumber });
+  // const entity = await getEntity({ email, documentNumber });
 
-  if (entity && entity.length) {
-    for (const person of entity) {
-      const contract = await getContractByOwner(person.id);
-      if (contract && contract.length) {
-        throw new createError.Conflict('Customer already exists');
-      }
-    }
-  }
+  // if (entity && entity.length) {
+  //   for (const person of entity) {
+  //     const contract = await getContractByOwner(person.id);
+  //     if (contract && contract.length) {
+  //       throw new createError.Conflict('Customer already exists');
+  //     }
+  //   }
+  // }
   return false;
 };
 
