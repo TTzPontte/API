@@ -16,11 +16,9 @@ const isRegistered = async ({ email, documentNumber }) => {
   console.log('documentNumber -> ', documentNumber);
   console.log('email -> ', email);
   const entity = await getEntity({ email, documentNumber });
-  console.log('entity -> ', entity);
 
   if (entity && entity.length) {
     for (const person of entity) {
-      console.log('person -> ', person);
       const contract = await getContractByOwner(person.id);
       if (contract && contract.length) {
         throw new createError.Conflict('Customer already exists');
@@ -33,16 +31,14 @@ const isRegistered = async ({ email, documentNumber }) => {
 const save = async ({ entity, property, lastContract, ...data }) => {
   const Cognito = require('./cognito.service');
 
-  console.log('entity -> ', entity);
-
   await isRegistered(entity);
-  const { name, email, phone, cpf } = entity;
+  const { name, email, phone, documentNumber } = entity;
   const { id, source, campaign, trackCode, simulation } = lastContract;
   const {
     parameters: { loanValue }
   } = simulation;
 
-  const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, cpf, id });
+  const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
 
   const { id: contractOwner } = await Entity.save(entity);
   const { id: propertyId } = await Property.save(property, trackCode);
