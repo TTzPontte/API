@@ -8,12 +8,14 @@ const translateBody = require('./translate');
 const { ssmCognito } = require(`${path}/middy/shared/ssm`);
 
 const contract = async event => {
-  const Cognito = require(`${path}/services/cognito.service`);
 
   const { body, clientId } = event;
   const { simulationId } = body;
+  
+  console.log('event -> ', event);
+  console.log('body -> ', body);
 
-  await validate({ ...body, clientId });
+  // await validate({ ...body, clientId });
 
   const translatedBody = translateBody(body);
 

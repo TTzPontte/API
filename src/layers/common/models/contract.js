@@ -114,7 +114,7 @@ const ContractsSchema = new Schema(
         role: String
       }
     ],
-    SecondPlayers: [
+    secondPayers: [
       {
         type: String
       }
