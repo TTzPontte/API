@@ -12,7 +12,6 @@ const contract = async event => {
   const { body, clientId } = event;
   const { simulationId } = body;
   
-  console.log('event -> ', event);
   console.log('body -> ', body);
 
   // await validate({ ...body, clientId });
