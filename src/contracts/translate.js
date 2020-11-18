@@ -11,15 +11,13 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
   const level = find(EDUCATION_LEVELS, entity.educationLevel);
   const marital = find(MARITAL_STATUS, entity.maritalStatus);
   const type = find(PROPERTY_TYPES, property.type);
-  const persona = find(PERSONAS, ...secondPayers);
+  const persona = find(PERSONAS, secondPayers);
   const source = find(INCOME_SOURCES, entity.incomeSource);
   const resident = find(RESIDENTS, property.isResident);
 
   const boolValues = BOOL_VALUES.reduce(translateBoolValue, {});
 
   const personas = Object.keys(PERSONAS).reduce((obj, person) => {
-    console.log('obj', obj);
-    console.log('person', person);
     if (entity[person] && !_.isEmpty(entity[person])) {
       const { incomeSource } = entity[person];
       return {
