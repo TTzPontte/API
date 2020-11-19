@@ -13,9 +13,9 @@ let {
   PHONE_REG_EXP
 } = require('./constants');
 LOAN_MOTIVATION = Object.keys(LOAN_MOTIVATION);
-const { validateCpf } = require(`${path}/helpers/validator`);
+const { validateDocumentNumber } = require(`${path}/helpers/validator`);
 
-yup.addMethod(yup.string, 'validCpf', () => yup.string().test('validate', cpf => validateCpf(cpf)));
+yup.addMethod(yup.string, 'validDocumentNumber', () => yup.string().test('validate', documentNumber => validateDocumentNumber(documentNumber)));
 
 const validate = async fields => {
   const schema = yup.object().shape({
@@ -34,12 +34,12 @@ const validate = async fields => {
       .required()
       .min(MIN_AGE)
       .max(MAX_AGE),
-    cpf: yup
+    documentNumber: yup
       .string()
       .strict()
       .length(11)
       .required()
-      .validCpf(),
+      .validDocumentNumber(),
     phone: yup
       .string()
       .matches(PHONE_REG_EXP)
