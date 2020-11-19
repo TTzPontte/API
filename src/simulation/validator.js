@@ -37,7 +37,6 @@ const validate = async fields => {
     documentNumber: yup
       .string()
       .strict()
-      .length(11)
       .required()
       .validDocumentNumber(),
     phone: yup

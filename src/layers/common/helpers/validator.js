@@ -28,13 +28,12 @@ const validateCpf = documentNumber => {
 
   for (let i = 0; i < 10; i++) {
     if (`${firstNineDigits}${checker}` === Array(12).join(String(i))) {
-      console.log('não passou nos bang');
+      console.log('não  passou nos bang');
       return false;
     }
   }
 
   console.log('passou nos bang');
-
 
   const checker1 = calc(firstNineDigits, 9);
   const checker2 = calc(`${firstNineDigits}${checker1}`, 10);
@@ -42,6 +41,7 @@ const validateCpf = documentNumber => {
   console.log('checker1', checker1);
   console.log('checker2', checker2);
   console.log('checker all', checker1.toString() + checker2.toString());
+  console.log('checker ', checker);
   return checker.toString() === checker1.toString() + checker2.toString();
 };
 
