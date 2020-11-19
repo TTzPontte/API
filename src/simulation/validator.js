@@ -15,7 +15,7 @@ let {
 LOAN_MOTIVATION = Object.keys(LOAN_MOTIVATION);
 const { validateCpf } = require(`${path}/helpers/validator`);
 
-yup.addMethod(yup.string, 'validCpf', () => yup.string().test('validate', cpf => validateCpf(documentNumber)));
+yup.addMethod(yup.string, 'validCpf', () => yup.string().test('validate', documentNumber => validateCpf(documentNumber)));
 
 const validate = async fields => {
   const schema = yup.object().shape({
