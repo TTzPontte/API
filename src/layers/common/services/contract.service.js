@@ -6,8 +6,8 @@ const Entity = require('./entity.service');
 const User = require('./user.service');
 const Process = require('./process.service');
 
-const getContractByOwner = async contractOwners => {
-  return ContractModel.query({ contractOwners: { eq: contractOwners } })
+const getContractByOwner = async contractOwner => {
+  return ContractModel.query({ contractOwners: { eq: contractOwner } })
     .using('ContractByOwner')
     .exec();
 };
@@ -18,7 +18,7 @@ const isRegistered = async ({ email, documentNumber }) => {
   if (entity && entity.length) {
     for (const person of entity) {
       console.log('person', person);
-      const contract = await getContractByOwner([person.id]);
+      const contract = await getContractByOwner(person.id);
       if (contract && contract.length) {
         throw new createError.Conflict('Customer already exists');
       }
