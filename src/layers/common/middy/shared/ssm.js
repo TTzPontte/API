@@ -14,10 +14,10 @@ const ssmCognito = () => {
   });
 };
 
-const ssmDefaultStatusGroup = () =>
+const ssmDefaultStatusGroup = () => {
   const prefix = `/cognito/${ENV}/`;
 
-  ssm({
+  return ssm({
     cache: true,
     cacheExpiryInMillis: 3 * 60 * 60,
     names: {
@@ -25,5 +25,6 @@ const ssmDefaultStatusGroup = () =>
         COGNITO_USER_POOL_ID: `${prefix}user_pool_id`
     }
   });
+};
 
 module.exports = { ssmCognito, ssmDefaultStatusGroup };
