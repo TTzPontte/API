@@ -50,7 +50,7 @@ const save = async ({ entity, property, lastContract, ...data }) => {
     source: source
   });
 
-    const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwners: [contractOwner], source, campaign });
+    const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwner, contractOwners: [contractOwner], source, campaign });
   const savedContract = await contract.save();
 
   await Process.save({
