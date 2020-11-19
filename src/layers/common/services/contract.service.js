@@ -6,8 +6,8 @@ const Entity = require('./entity.service');
 const User = require('./user.service');
 const Process = require('./process.service');
 
-const getContractByOwner = async contractOwners => {
-  return ContractModel.query({ contractOwners: { eq: contractOwners } })
+const getContractByOwner = async contractOwner => {
+  return ContractModel.query({ contractOwner: { eq: contractOwner } })
     .using('ContractByOwner')
     .exec();
 };
@@ -18,7 +18,7 @@ const isRegistered = async ({ email, documentNumber }) => {
   if (entity && entity.length) {
     for (const person of entity) {
       console.log('person', person);
-      const contract = await getContractByOwner([person.id]);
+      const contract = await getContractByOwner(person.id);
       if (contract && contract.length) {
         throw new createError.Conflict('Customer already exists');
       }
@@ -39,18 +39,18 @@ const save = async ({ entity, property, lastContract, ...data }) => {
 
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
 
-  const { id: contractOwners } = await Entity.save(entity);
+  const { id: contractOwner } = await Entity.save(entity);
   const { id: propertyId } = await Property.save(property, trackCode);
 
   await User.save({
     id: cognitoUser.Username,
     trackingCode: trackCode,
-    peopleId: contractOwners[0],
+    peopleId: contractOwner,
     campaign: campaign,
     source: source
   });
 
-  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwners, source, campaign });
+  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwner, source, campaign });
   const savedContract = await contract.save();
 
   await Process.save({
