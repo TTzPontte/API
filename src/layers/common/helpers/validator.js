@@ -11,6 +11,7 @@ const calc = (string, size) => {
 };
 
 const validateDocumentNumber = async documentNumber => {
+  console.log('documentNumber -> ', documentNumber);
   if (documentNumber.length == 11) {
     validateCpf(documentNumber);
   } else if (documentNumber.length == 14) {
@@ -19,6 +20,7 @@ const validateDocumentNumber = async documentNumber => {
 };
 
 const validateCpf = documentNumber => {
+  console.log('validateCpf');
   if (!documentNumber || documentNumber.length !== 11) return false;
 
   const firstNineDigits = documentNumber.substring(0, 9);
@@ -51,6 +53,7 @@ const calcCnpj = (number, documentNumber) => {
 };
 
 const validateCnpj = documentNumber => {
+  console.log('validateCnpj');
   if (!documentNumber || documentNumber.length !== 14) return false;
 
   if (/^(\d)\1+$/.test(documentNumber)) return false;
