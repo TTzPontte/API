@@ -13,7 +13,7 @@ const translateBody = require('./translate');
 
 const simulation = async event => {
   const data = await parser(event);
-  // await validate(data);
+  await validate(data);
 
   const address = await getAddress(data);
 
