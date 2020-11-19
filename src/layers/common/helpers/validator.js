@@ -11,7 +11,6 @@ const calc = (string, size) => {
 };
 
 const validateDocumentNumber = async documentNumber => {
-  console.log('documentNumber -> ', documentNumber);
   if (documentNumber.length == 11) {
     validateCpf(documentNumber);
   } else if (documentNumber.length == 14) {
@@ -27,12 +26,9 @@ const validateCpf = documentNumber => {
 
   for (let i = 0; i < 10; i++) {
     if (`${firstNineDigits}${checker}` === Array(12).join(String(i))) {
-      console.log('não  passou nos bang');
       return false;
     }
   }
-
-  console.log('passou nos bang');
 
   const checker1 = calc(firstNineDigits, 9);
   const checker2 = calc(`${firstNineDigits}${checker1}`, 10);
@@ -56,7 +52,6 @@ const calcCnpj = (number, documentNumber) => {
 };
 
 const validateCnpj = documentNumber => {
-  console.log('validateCnpj');
   if (!documentNumber || documentNumber.length !== 14) return false;
 
   if (/^(\d)\1+$/.test(documentNumber)) return false;
