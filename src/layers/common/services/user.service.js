@@ -8,6 +8,9 @@ const save = async ({ id, trackingCode, peopleId, campaign, source }) => {
     campaign,
     source
   });
+
+  console.log('user saved -> ', user);
+
   return user.save();
 };
 
