@@ -17,7 +17,6 @@ const isRegistered = async ({ email, documentNumber }) => {
 
   if (entity && entity.length) {
     for (const person of entity) {
-      console.log('person', person);
       const contract = await getContractByOwner(person.id);
       if (contract && contract.length) {
         throw new createError.Conflict('Customer already exists');
@@ -38,8 +37,6 @@ const save = async ({ entity, property, lastContract, ...data }) => {
   } = simulation;
 
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
-  console.log('cognitoUser', cognitoUser);
-
   const { id: contractOwner } = await Entity.save(entity);
   const { id: propertyId } = await Property.save(property, trackCode);
 
