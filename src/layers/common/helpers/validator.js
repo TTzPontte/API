@@ -20,7 +20,6 @@ const validateDocumentNumber = async documentNumber => {
 };
 
 const validateCpf = documentNumber => {
-  console.log('validateCpf');
   if (!documentNumber || documentNumber.length !== 11) return false;
 
   const firstNineDigits = documentNumber.substring(0, 9);
@@ -38,10 +37,6 @@ const validateCpf = documentNumber => {
   const checker1 = calc(firstNineDigits, 9);
   const checker2 = calc(`${firstNineDigits}${checker1}`, 10);
 
-  console.log('checker1', checker1);
-  console.log('checker2', checker2);
-  console.log('checker all', checker1.toString() + checker2.toString());
-  console.log('checker ', checker);
   return checker.toString() === checker1.toString() + checker2.toString();
 };
 

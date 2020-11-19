@@ -13,10 +13,14 @@ const getContractByOwner = async contractOwner => {
 };
 
 const isRegistered = async ({ email, documentNumber }) => {
+  console.log('email', email);
+  console.log('documentNumber', documentNumber);
   const entity = await getEntity({ email, documentNumber });
+  console.log('entity', entity);
 
   if (entity && entity.length) {
     for (const person of entity) {
+      console.log('person', person);
       const contract = await getContractByOwner(person.id);
       if (contract && contract.length) {
         throw new createError.Conflict('Customer already exists');
