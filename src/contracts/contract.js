@@ -12,7 +12,7 @@ const contract = async event => {
   const { body, clientId } = event;
   const { simulationId } = body;
 
-  // await validate({ ...body, clientId });
+  await validate({ ...body, clientId });
 
   const translatedBody = translateBody(body);
 

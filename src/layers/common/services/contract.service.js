@@ -51,7 +51,6 @@ const save = async ({ entity, property, lastContract, ...data }) => {
 
   const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwner, source, campaign });
   const savedContract = await contract.save();
-  console.log('contrato salvo -> ', savedContract);
 
   await Process.save({
     contractId: savedContract.id,
