@@ -6,8 +6,8 @@ const Entity = require('./entity.service');
 const User = require('./user.service');
 const Process = require('./process.service');
 
-const getContractByOwner = async contractOwner => {
-  return ContractModel.query({ contractOwner: { eq: contractOwner } })
+const getContractByOwner = async contractOwners => {
+  return ContractModel.query({ contractOwners: { eq: contractOwners } })
     .using('ContractByOwner')
     .exec();
 };
