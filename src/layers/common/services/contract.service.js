@@ -38,6 +38,7 @@ const save = async ({ entity, property, lastContract, ...data }) => {
   } = simulation;
 
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
+  console.log('cognitoUser', cognitoUser);
 
   const { id: contractOwner } = await Entity.save(entity);
   const { id: propertyId } = await Property.save(property, trackCode);
@@ -50,7 +51,7 @@ const save = async ({ entity, property, lastContract, ...data }) => {
     source: source
   });
 
-    const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwner, contractOwners: [contractOwner], source, campaign });
+  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwner, contractOwners: [contractOwner], source, campaign });
   const savedContract = await contract.save();
 
   await Process.save({
