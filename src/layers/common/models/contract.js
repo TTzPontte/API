@@ -14,6 +14,7 @@ const ContractsSchema = new Schema(
     },
     propertyId: String,
     contractManager: String,
+    contractOwner: String,
     contractOwners: [
       {
         type: String

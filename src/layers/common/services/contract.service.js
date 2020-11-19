@@ -7,7 +7,7 @@ const User = require('./user.service');
 const Process = require('./process.service');
 
 const getContractByOwner = async contractOwner => {
-  return ContractModel.query({ contractOwners: { eq: contractOwner } })
+  return ContractModel.query({ contractOwner: { eq: contractOwner } })
     .using('ContractByOwner')
     .exec();
 };
@@ -50,7 +50,7 @@ const save = async ({ entity, property, lastContract, ...data }) => {
     source: source
   });
 
-  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwner, source, campaign });
+    const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwners: [contractOwner], source, campaign });
   const savedContract = await contract.save();
 
   await Process.save({
