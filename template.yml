@@ -98,6 +98,94 @@ Resources:
         Project: !Ref Project
         Environment: !Ref Environment
 
+  # # API: Users
+  UsersApp:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: src/users/template.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+        CognitoUserPoolArn: !Sub "arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${CognitoUserPoolId}"
+        APIDomainName: !Ref APIDomainName
+        DbUserName: !Sub "${Project}-users.${Environment}"
+        CORSAllowedOrigin: !FindInMap [Constants, Cors, AllowedOrigin]
+
+  # # API: Cognito
+  CognitoApp:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: src/cognito/template.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+        DbUserName: !Sub "${Project}-users.${Environment}"
+
+  # # API: Contracts
+  ContractsApp:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: src/contracts/template.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+        ESEndpoint: !Ref ESEndpoint
+        CognitoUserPoolArn: !Sub "arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${CognitoUserPoolId}"
+        APIDomainName: !Ref APIDomainName
+        ArnStreamDBContract: !Ref ArnStreamDBContract
+        BucketNameUpload: !Ref BucketNameUpload
+        MandrillAPIKey: !Ref MandrillAPIKey
+        CORSAllowedOrigin: !FindInMap [ Constants, Cors, AllowedOrigin ]
+
+
+  # # API: Uploads
+  UploadsApp:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: src/uploads/template.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+        CognitoUserPoolArn: !Sub "arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${CognitoUserPoolId}"
+        APIDomainName: !Ref APIDomainName
+        BucketNameUpload: !Ref BucketNameUpload
+        CORSAllowedOrigin: !FindInMap [ Constants, Cors, AllowedOrigin ]
+
+  # # API: Contracts
+  SimulationsApp:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: src/simulations/template.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+        ESEndpoint: !Ref ESEndpoint
+        CognitoUserPoolArn: !Sub "arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${CognitoUserPoolId}"
+        APIDomainName: !Ref APIDomainName
+
+  PeopleApp:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: src/people/template.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+        ESEndpoint: !Ref ESEndpoint
+        APIDomainName: !Ref APIDomainName
+        CognitoUserPoolArn: !Sub "arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${CognitoUserPoolId}"
+
+  EntityApp:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: src/entity/template.yaml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+        ESEndpoint: !Ref ESEndpoint
+        APIDomainName: !Ref APIDomainName
+        CognitoUserPoolArn: !Sub "arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${CognitoUserPoolId}"
+        CORSAllowedOrigin: !FindInMap [ Constants, Cors, AllowedOrigin ]
+
   DBClients:
     Type: AWS::DynamoDB::Table
     Properties:

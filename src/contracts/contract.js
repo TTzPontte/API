@@ -17,7 +17,6 @@ const contract = async event => {
   const translatedBody = translateBody(body);
 
   const lastContract = await Simulation.getLastContract(simulationId);
-  console.log('lastContract -> ', lastContract);
 
   const contract = await Contract.save({ ...translatedBody, clientId, lastContract });
 
