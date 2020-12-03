@@ -10,7 +10,8 @@ const calc = (string, size) => {
   return lastSumChecker < 2 ? 0 : 11 - lastSumChecker;
 };
 
-const validateDocumentNumber = async documentNumber => {
+const validateDocumentNumber = ( tracking=null, documentNumber ) => {
+    console.log(`tracking: ${tracking} - documentNumber: ${documentNumber}`);
   if (documentNumber.length == 11) {
     validateCpf(documentNumber);
   } else if (documentNumber.length == 14) {
@@ -20,7 +21,6 @@ const validateDocumentNumber = async documentNumber => {
 
 const validateCpf = documentNumber => {
   if (!documentNumber || documentNumber.length !== 11) return false;
-
   const firstNineDigits = documentNumber.substring(0, 9);
   const checker = documentNumber.substring(9, 11);
 
