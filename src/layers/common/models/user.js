@@ -10,6 +10,7 @@ const UsersSchema = new Schema({
     type: String,
     hashKey: true
   },
+  cpf: String,
   trackingCodes: [
     {
       type: String
