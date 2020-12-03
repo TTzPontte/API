@@ -41,8 +41,10 @@ const save = async ({ entity, property, lastContract, ...data }) => {
   const { id: propertyId } = await Property.save(property, trackCode);
 
   // Log to debug User.save
+  console.log('cognitoUser -> ', cognitoUser);
   console.log('User.save -> ', {
     id: cognitoUser.Username,
+    // cpf: cognitoUser.
     trackingCode: trackCode,
     peopleId: contractOwner,
     campaign: campaign,
@@ -51,6 +53,7 @@ const save = async ({ entity, property, lastContract, ...data }) => {
 
   await User.save({
     id: cognitoUser.Username,
+    // cpf: cognitoUser.
     trackingCode: trackCode,
     peopleId: contractOwner,
     campaign: campaign,
