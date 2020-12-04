@@ -2,7 +2,7 @@ const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const yup = require(`${path}/node_modules/yup`);
 const _ = require(`${path}/node_modules/lodash`);
 const createError = require(`${path}/node_modules/http-errors`);
-const { validateCpf, validateCnpj, validateDocumentNumber } = require(`${path}/helpers/validator`);
+const { validateDocumentNumber } = require(`${path}/helpers/validator`);
 
 let {
   MARITAL_STATUS,
@@ -33,7 +33,6 @@ const isSpouse = (persona, maritalStatus) => {
 const isPropertyOwner = ({ whoIsOwner, persona, isResident }) => isResident === 'THIRD_PARTIES' && whoIsOwner === persona;
 
 yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', documentNumber => validateDocumentNumber(documentNumber)));
-yup.addMethod(yup.string, 'validCnpj', () => yup.string().test('validate', cnpj => validateCnpj(cnpj)));
 
 const getPersonasSchema = ({ property: { whoIsOwner }, entity: { secondPayers } }) =>
   PERSONAS.reduce((obj, persona) => {
@@ -273,4 +272,4 @@ const validate = async fields => {
   }
 };
 
-module.exports = { validate, validateCpf, validateCnpj, validateDocumentNumber };
+module.exports = { validate, validateDocumentNumber };
