@@ -10,12 +10,11 @@ const calc = (string, size) => {
   return lastSumChecker < 2 ? 0 : 11 - lastSumChecker;
 };
 
-const validateDocumentNumber = ( tracking=null, documentNumber ) => {
-    console.log(`tracking: ${tracking} - documentNumber: ${documentNumber}`);
+const validateDocumentNumber = ( documentNumber ) => {
   if (documentNumber.length == 11) {
-    validateCpf(documentNumber);
+    return validateCpf(documentNumber);
   } else if (documentNumber.length == 14) {
-    validateCnpj(documentNumber);
+    return validateCnpj(documentNumber);
   }
 };
 

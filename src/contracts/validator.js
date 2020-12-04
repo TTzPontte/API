@@ -32,11 +32,8 @@ const isSpouse = (persona, maritalStatus) => {
 };
 const isPropertyOwner = ({ whoIsOwner, persona, isResident }) => isResident === 'THIRD_PARTIES' && whoIsOwner === persona;
 
-yup.addMethod(yup.string, 'validCpf', () => yup.string().test('validate', documentNumber => validateCpf(documentNumber)));
-// yup.addMethod(yup.string, 'validCnpj', () => yup.string().test('validate', cnpj => validateCnpj(cnpj)));
-// yup.addMethod(yup.string, 'validDocNumber', ( tracking ) => yup.string().test(
-//   'validate', documentNumber => validateDocumentNumber(tracking, documentNumber)
-//   ));
+yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', documentNumber => validateDocumentNumber(documentNumber)));
+yup.addMethod(yup.string, 'validCnpj', () => yup.string().test('validate', cnpj => validateCnpj(cnpj)));
 
 const getPersonasSchema = ({ property: { whoIsOwner }, entity: { secondPayers } }) =>
   PERSONAS.reduce((obj, persona) => {
@@ -47,7 +44,7 @@ const getPersonasSchema = ({ property: { whoIsOwner }, entity: { secondPayers } 
           .strict()
           .length(11)
           .required()
-          .validCpf(),
+          .documentNumber(),
         name: yup.string().required(),
         birth: yup.date().required(),
         email: yup
@@ -95,7 +92,7 @@ const validate = async fields => {
           .strict()
           .length(11)
           .required()
-          .validCpf(),
+          .documentNumber(),
         email: yup
           .string()
           .strict()
