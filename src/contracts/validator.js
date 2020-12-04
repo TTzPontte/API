@@ -2,8 +2,7 @@ const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const yup = require(`${path}/node_modules/yup`);
 const _ = require(`${path}/node_modules/lodash`);
 const createError = require(`${path}/node_modules/http-errors`);
-// const { validateCpf, validateCnpj, validateDocumentNumber } = require(`${path}/helpers/validator`);
-const { validateCpf, validateCnpj, validateDocumentNumber } = require('./valid');
+const { validateCpf, validateCnpj, validateDocumentNumber } = require(`${path}/helpers/validator`);
 
 let {
   MARITAL_STATUS,
@@ -33,11 +32,11 @@ const isSpouse = (persona, maritalStatus) => {
 };
 const isPropertyOwner = ({ whoIsOwner, persona, isResident }) => isResident === 'THIRD_PARTIES' && whoIsOwner === persona;
 
-// yup.addMethod(yup.string, 'validCpf', () => yup.string().test('validate', cpf => validateCpf(cpf)));
+yup.addMethod(yup.string, 'validCpf', () => yup.string().test('validate', documentNumber => validateCpf(documentNumber)));
 // yup.addMethod(yup.string, 'validCnpj', () => yup.string().test('validate', cnpj => validateCnpj(cnpj)));
-yup.addMethod(yup.string, 'validDocNumber', ( tracking ) => yup.string().test(
-  'validate', documentNumber => validateDocumentNumber(tracking, documentNumber)
-  ));
+// yup.addMethod(yup.string, 'validDocNumber', ( tracking ) => yup.string().test(
+//   'validate', documentNumber => validateDocumentNumber(tracking, documentNumber)
+//   ));
 
 const getPersonasSchema = ({ property: { whoIsOwner }, entity: { secondPayers } }) =>
   PERSONAS.reduce((obj, persona) => {
@@ -48,7 +47,7 @@ const getPersonasSchema = ({ property: { whoIsOwner }, entity: { secondPayers } 
           .strict()
           .length(11)
           .required()
-          .validDocNumber("getPersonasSchema"),
+          .validCpf(),
         name: yup.string().required(),
         birth: yup.date().required(),
         email: yup
@@ -94,8 +93,9 @@ const validate = async fields => {
         documentNumber: yup
           .string()
           .strict()
+          .length(11)
           .required()
-          .validDocNumber("entitySchema"),
+          .validCpf(),
         email: yup
           .string()
           .strict()
@@ -266,7 +266,7 @@ const validate = async fields => {
 
   try {
     const { isResident, whoIsOwner } = _.get(fields, 'property', {});
-    const { secondPayers } = _.get(fields, 'entity', {});
+    const secondPayers = _.get(fields, 'secondPayers', [])[0];
     await entitySchema.validate({ ...fields.entity, isResident, whoIsOwner });
     await propertySchema.validate(fields.property);
     const isValid = await schema.validate({ ...fields, secondPayers });
