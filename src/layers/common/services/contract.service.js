@@ -37,6 +37,7 @@ const save = async ({ entity, property, lastContract, ...data }) => {
   } = simulation;
 
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
+  console.log('entity body -> ', entity);
   const { id: contractOwner } = await Entity.save(entity);
   const { id: propertyId } = await Property.save(property, trackCode);
 
