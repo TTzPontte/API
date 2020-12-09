@@ -41,7 +41,6 @@ const getPersonasSchema = ({ property: { whoIsOwner }, entity: { secondPayers } 
         documentNumber: yup
           .string()
           .strict()
-          .length(11)
           .required()
           .documentNumber(),
         name: yup.string().required(),
@@ -89,7 +88,6 @@ const validate = async fields => {
         documentNumber: yup
           .string()
           .strict()
-          .length(11)
           .required()
           .documentNumber(),
         email: yup
