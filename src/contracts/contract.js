@@ -1,5 +1,5 @@
 const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
-const { validate } = require('./validator');
+const { validate } = require('./new_validator');
 const Contract = require(`${path}/services/contract.service`);
 const Simulation = require(`${path}/services/simulation.service`);
 const { success } = require(`${path}/lambda/response`);
