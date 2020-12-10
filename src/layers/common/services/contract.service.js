@@ -45,7 +45,7 @@ const save = async ({ entity, property, lastContract, ...data }) => {
     id: cognitoUser.Username,
     cpf: documentNumber,
     trackingCode: trackCode,
-    peopleId: contractOwner,
+    entityId: contractOwner,
     campaign: campaign,
     source: source
   });

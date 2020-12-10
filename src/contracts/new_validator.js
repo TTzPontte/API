@@ -90,7 +90,7 @@ const getAddressSchema = () => {
     return { addressSchema };
 };
 
-const getIncomeSchema = ({ entity: { secondPayers } }) =>
+const getIncomeSchema = ({ fields: { secondPayers } }) =>
   PERSONAS.reduce((obj, persona) => {
     const incomeSchema = yup
       .array()
@@ -243,13 +243,23 @@ const getAboutSchema = () => {
 };
 
 const validate = async fields => {
-  const relationsSchema = getRelationsSchema(fields);
-  const addressSchema = getAddressSchema(fields);
-  const incomeSchema = getIncomeSchema(fields);
-  const filesSchema = getFilesSchema(fields);
-  const idWallCompaniesSchema = getIdWallCompaniesSchema(fields);
-  const documentsSchema = getDocumentsSchema(fields);
-  const aboutSchema = getAboutSchema(fields);
+  const {
+    relations,
+    address,
+    income,
+    files,
+    idWallCompanies,
+    documents,
+    about
+  } = fields.entity;
+
+  const relationsSchema = getRelationsSchema(relations);
+  const addressSchema = getAddressSchema(address);
+  const incomeSchema = getIncomeSchema({ income, fields });
+  const filesSchema = getFilesSchema(files);
+  const idWallCompaniesSchema = getIdWallCompaniesSchema(idWallCompanies);
+  const documentsSchema = getDocumentsSchema(documents);
+  const aboutSchema = getAboutSchema(about);
 
   const entitySchema = yup
     .object({
@@ -358,16 +368,19 @@ const validate = async fields => {
         .string()
         .oneOf(RESIDENTS)
         .required(),
-      whoIsOwner: yup
-        .string()
-        .oneOf(PERSONAS)
-        .when('isResident', {
-          is: resident => resident === 'THIRD_PARTIES',
-          then: yup
-            .string()
-            .strict()
-            .required()
-        }),
+      owners: yup
+        .array()
+        .of(
+          yup
+          .string(PERSONAS)
+          .when('isResident', {
+            is: resident => resident === 'THIRD_PARTIES',
+            then: yup
+              .string()
+              .strict()
+              .required()
+          })
+        ),
       garages: yup
         .string()
         .oneOf(GARAGES)
@@ -394,10 +407,12 @@ const validate = async fields => {
 
     const schema = yup.object().shape({
       secondPayers: yup
-        .string()
-        .strict()
-        .oneOf(PERSONAS)
-        .required(),
+        .array()
+        .of(
+          yup
+          .string(PERSONAS)
+          .required(),
+        ),
       clientId: yup
         .string()
         .strict()
@@ -405,11 +420,13 @@ const validate = async fields => {
     });
 
     try {
-      const { isResident, whoIsOwner } = _.get(fields, 'property', {});
+      console.log('entrei no try');
+      const { isResident, owners } = _.get(fields, 'property', {});
       const secondPayers = _.get(fields, 'secondPayers', [])[0];
-      await entitySchema.validate({ ...fields.entity, isResident, whoIsOwner });
+      await entitySchema.validate({ ...fields.entity, isResident, owners });
       await propertySchema.validate(fields.property);
       const isValid = await schema.validate({ ...fields, secondPayers });
+      console.log('isValid -> ', isValid);
       return isValid;
     } catch (err) {
       throw new createError.BadRequest(err.message);

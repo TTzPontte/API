@@ -16,7 +16,7 @@ const UsersSchema = new Schema({
       type: String
     }
   ],
-  peopleId: String,
+  entityId: String,
   campaign: String,
   source: String
 });
