@@ -5,7 +5,7 @@ const save = async ({ id, cpf, trackingCode, peopleId, campaign, source }) => {
     id,
     cpf,
     trackingCodes: [trackingCode],
-    peopleId,
+    entityId,
     campaign,
     source
   });
