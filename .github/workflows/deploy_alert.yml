@@ -1,0 +1,38 @@
+name: Deploy Alert
+
+on:
+  push:
+    branches:
+      - master
+      - staging
+      - develop
+
+jobs:
+  InformDeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Notify slack PROD
+        uses: pullreminders/slack-action@master
+        if: "endsWith(github.ref, 'master')"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN_GIT_ACTION }}
+        with:
+          args: '{\"channel\":\"C010FF5DQ72\",\"text\":\":ship: PROD\n:package: [API]\n:date: [NOW]\"}'
+
+      - name: Notify slack STAGING
+        uses: pullreminders/slack-action@master
+        if: "endsWith(github.ref, 'staging')"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN_GIT_ACTION }}
+        with:
+          args: '{\"channel\":\"C010FF5DQ72\",\"text\":\":ship: STAGING\n:package: [API]\n:date: [NOW]\"}'
+
+      - name: Notify slack DEV
+        uses: pullreminders/slack-action@master
+        if: "endsWith(github.ref, 'develop')"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN_GIT_ACTION }}
+        with:
+          args: '{\"channel\":\"C010FF5DQ72\",\"text\":\":ship: DEV\n:package: [API]\n:date: [NOW]\"}'
