@@ -12,6 +12,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
   const marital = find(MARITAL_STATUS, entity.maritalStatus);
   const type = find(PROPERTY_TYPES, property.type);
   const persona = find(PERSONAS, secondPayers);
+  console.log('persona -> ', persona);
   const source = find(INCOME_SOURCES, entity.incomeSource);
   const resident = find(RESIDENTS, property.isResident);
 

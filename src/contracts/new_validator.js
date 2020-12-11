@@ -29,18 +29,16 @@ const isSecondPayers = ({ secondPayers, persona }) => secondPayers === persona;
 
 yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', documentNumber => validateDocumentNumber(documentNumber)));
 
-const getRelationsSchema = () => {
+const getRelationsSchema = async relations => {
   const relationsSchema = yup
     .object()
     .shape({
     participation: yup
           .string()
-          .strict()
-          .required(),
+          .strict(),
         id: yup
           .string()
-          .strict()
-          .required(),
+          .strict(),
         type: yup
           .array()
           .of(
@@ -52,7 +50,7 @@ const getRelationsSchema = () => {
   return { relationsSchema };
 };
 
-const getAddressSchema = () => {
+const getAddressSchema = async address => {
   const addressSchema = yup
     .object()
     .shape({
@@ -90,7 +88,7 @@ const getAddressSchema = () => {
     return { addressSchema };
 };
 
-const getIncomeSchema = ({ fields: { secondPayers } }) =>
+const getIncomeSchema = ({ secondPayers }) =>
   PERSONAS.reduce((obj, persona) => {
     const incomeSchema = yup
       .array()
@@ -128,7 +126,7 @@ const getIncomeSchema = ({ fields: { secondPayers } }) =>
     return { ...obj, [persona]: incomeSchema };
   }, {});
 
-const getFilesSchema = () => {
+const getFilesSchema = async files => {
   const filesSchema = yup
     .array()
     .of(
@@ -164,7 +162,7 @@ const getFilesSchema = () => {
     return { filesSchema };
 };
 
-const getIdWallCompaniesSchema = () => {
+const getIdWallCompaniesSchema = async idWallCompanies => {
   const idWallCompaniesSchema = yup
     .array()
     .of(
@@ -190,7 +188,7 @@ const getIdWallCompaniesSchema = () => {
   return { idWallCompaniesSchema };
 };
 
-const getDocumentsSchema = () => {
+const getDocumentsSchema = async income => {
   const documentsSchema = yup
     .array()
     .of(
@@ -211,7 +209,7 @@ const getDocumentsSchema = () => {
   return { documentsSchema };
 };
 
-const getAboutSchema = () => {
+const getAboutSchema = async about => {
   const aboutSchema = yup
     .object()
     .shape({
@@ -253,9 +251,11 @@ const validate = async fields => {
     about
   } = fields.entity;
 
+  const { secondPayers } = fields.secondPayers;
+
   const relationsSchema = getRelationsSchema(relations);
   const addressSchema = getAddressSchema(address);
-  const incomeSchema = getIncomeSchema({ income, fields });
+  const incomeSchema = getIncomeSchema({ income, secondPayers });
   const filesSchema = getFilesSchema(files);
   const idWallCompaniesSchema = getIdWallCompaniesSchema(idWallCompanies);
   const documentsSchema = getDocumentsSchema(documents);
@@ -300,7 +300,7 @@ const validate = async fields => {
         .array(),
       ...relationsSchema,
       ...addressSchema,
-      ...incomeSchema,
+      // ...incomeSchema,
       ...filesSchema,
       ...idWallCompaniesSchema,
       ...documentsSchema,
@@ -411,6 +411,7 @@ const validate = async fields => {
         .of(
           yup
           .string(PERSONAS)
+          .strict()
           .required(),
         ),
       clientId: yup
@@ -420,13 +421,12 @@ const validate = async fields => {
     });
 
     try {
-      console.log('entrei no try');
       const { isResident, owners } = _.get(fields, 'property', {});
-      const secondPayers = _.get(fields, 'secondPayers', [])[0];
+      const { clientId } = fields;
+      const secondPayers = _.get(fields, 'secondPayers', []);
       await entitySchema.validate({ ...fields.entity, isResident, owners });
       await propertySchema.validate(fields.property);
-      const isValid = await schema.validate({ ...fields, secondPayers });
-      console.log('isValid -> ', isValid);
+      const isValid = await schema.validate({ clientId, secondPayers });
       return isValid;
     } catch (err) {
       throw new createError.BadRequest(err.message);
