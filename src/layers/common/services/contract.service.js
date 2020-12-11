@@ -26,7 +26,7 @@ const isRegistered = async ({ email, documentNumber }) => {
   return false;
 };
 
-const save = async ({ entity, property, lastContract, ...data }) => {
+const save = async ({ entity, property, lastContract, secondPayers, ...data }) => {
   const Cognito = require('./cognito.service');
 
   await isRegistered(entity);
@@ -49,7 +49,7 @@ const save = async ({ entity, property, lastContract, ...data }) => {
     source: source
   });
 
-  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwner, contractOwners: [contractOwner], source, campaign });
+  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwner, contractOwners: [contractOwner], source, campaign, secondPayers });
   const savedContract = await contract.save();
 
   await Process.save({
