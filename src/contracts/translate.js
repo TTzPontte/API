@@ -11,9 +11,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
   const level = find(EDUCATION_LEVELS, entity.educationLevel);
   const marital = find(MARITAL_STATUS, entity.maritalStatus);
   const type = find(PROPERTY_TYPES, property.type);
-  console.log('secondPayers -> ', secondPayers);
   const persona = find(PERSONAS, secondPayers[0]);
-  console.log('persona -> ', persona);
   const source = find(INCOME_SOURCES, entity.incomeSource);
   const resident = find(RESIDENTS, property.isResident);
 
@@ -53,7 +51,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
     ...body,
     entity: translatedEntity,
     property: translatedProperty,
-    secondPayers: PERSONAS[persona]
+    secondPayers: [PERSONAS[persona]]
   };
 };
 
