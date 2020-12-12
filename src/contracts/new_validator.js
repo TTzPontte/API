@@ -188,7 +188,7 @@ const getIdWallCompaniesSchema = async idWallCompanies => {
   return { idWallCompaniesSchema };
 };
 
-const getDocumentsSchema = async income => {
+const getDocumentsSchema = async documents => {
   const documentsSchema = yup
     .array()
     .of(
@@ -300,7 +300,7 @@ const validate = async fields => {
         .array(),
       ...relationsSchema,
       ...addressSchema,
-      // ...incomeSchema,
+      ...incomeSchema,
       ...filesSchema,
       ...idWallCompaniesSchema,
       ...documentsSchema,
