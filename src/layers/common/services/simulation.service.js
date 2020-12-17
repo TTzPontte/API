@@ -1,3 +1,4 @@
+const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const { getNowDefaultDate, getDateIsoString } = require('../helpers/date');
 const Contract = require('../models/contract');
 const createError = require('http-errors');
