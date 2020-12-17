@@ -15,13 +15,8 @@ const ssmCognito = () => {
 };
 
 const ssmDefaultStatusGroup = () => {
-
-  return ssm({
-    cache: true,
-    cacheExpiryInMillis: 3 * 60 * 60,
-    names: {
-        STATUS_GROUP_DEFAULT_ID: `/statusGroup/${ENV}/defaultId`
-    }
+  return ssm.getParameter({
+      Name: `/statusGroup/${ENV}/defaultId`
   });
 };
 

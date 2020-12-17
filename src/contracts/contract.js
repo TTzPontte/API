@@ -5,9 +5,10 @@ const Simulation = require(`${path}/services/simulation.service`);
 const { success } = require(`${path}/lambda/response`);
 const middy = require(`${path}/middy/middy`);
 const translateBody = require('./translate');
-const { ssmCognito } = require(`${path}/middy/shared/ssm`);
+const { ssmCognito, ssmDefaultStatusGroup } = require(`${path}/middy/shared/ssm`);
 
 const contract = async event => {
+  console.log('ssmDefaultStatusGroup -> ', ssmDefaultStatusGroup);
 
   const { body, clientId } = event;
   const { simulationId } = body;
