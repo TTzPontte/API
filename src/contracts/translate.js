@@ -11,9 +11,13 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
   const level = find(EDUCATION_LEVELS, entity.educationLevel);
   const marital = find(MARITAL_STATUS, entity.maritalStatus);
   const type = find(PROPERTY_TYPES, property.type);
-  const persona = find(PERSONAS, secondPayers[0]);
   const source = find(INCOME_SOURCES, entity.incomeSource);
   const resident = find(RESIDENTS, property.isResident);
+  
+  const translatedSecondPayers = secondPayers.map((secondPayer) => {
+    const persona = find(PERSONAS, secondPayer);
+    return PERSONAS[persona]
+  });
 
   const boolValues = BOOL_VALUES.reduce(translateBoolValue, {});
 
@@ -51,7 +55,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
     ...body,
     entity: translatedEntity,
     property: translatedProperty,
-    secondPayers: [PERSONAS[persona]]
+    secondPayers: translatedSecondPayers
   };
 };
 
