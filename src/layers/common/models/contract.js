@@ -121,7 +121,8 @@ const ContractsSchema = new Schema(
       }
     ],
     clientId: String,
-    trackCode: String
+    trackCode: String,
+    statusGroupContractId: String
   })
 );
 

@@ -2,6 +2,8 @@ const { getNowDefaultDate, getDateIsoString } = require('../helpers/date');
 const Contract = require('../models/contract');
 const createError = require('http-errors');
 const { getClientContract } = require('../elasticsearch/contractsReport.es');
+const _ = require(`${path}/node_modules/lodash`);
+const { ssmDefaultStatusGroup } = require(`${path}/middy/shared/ssm`);
 
 const save = async ({
   data: {
@@ -26,6 +28,7 @@ const save = async ({
 }) => {
   const lastInstallment = installment[installment.length - 1].installment;
   const firstInstallment = installment[0].installment;
+  const { Value } = _.get(ssmDefaultStatusGroup, "Parameter", {});
 
   const simulation = new Contract({
     simulation: {
@@ -63,6 +66,7 @@ const save = async ({
     campaign: clientName,
     source: clientName,
     trackCode: trackCode,
+    statusGroupContractId: Value,
     clientApiId: clientId
   });
 
