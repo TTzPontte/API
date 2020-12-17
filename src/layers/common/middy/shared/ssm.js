@@ -15,9 +15,9 @@ const ssmCognito = () => {
 };
 
 const ssmDefaultStatusGroup = () => {
-  return await ssm.getParameters({
+  return ssm.getParameters({
     Names: [`/my-app/staging/userName`]
-  }).promise();
+  });
 };
 
 module.exports = { ssmCognito, ssmDefaultStatusGroup };
