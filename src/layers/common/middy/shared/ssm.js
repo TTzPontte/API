@@ -16,7 +16,7 @@ const ssmCognito = () => {
 
 const ssmDefaultStatusGroup = () => {
   return ssm.getParameters({
-    Names: [`/my-app/staging/userName`]
+    Names: [`/statusGroup/${ENV}/defaultId`]
   });
 };
 
