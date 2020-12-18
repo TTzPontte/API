@@ -1,5 +1,8 @@
 const aws = require('aws-sdk');
-var ssm2 = new aws.SSM();
+
+aws.config.update({
+  region: 'us-east-1'
+})
 
 const { ssm } = require('middy/middlewares');
 const { ENV } = process.env;
@@ -17,19 +20,42 @@ const ssmCognito = () => {
   });
 };
 
-const ssmDefaultStatusGroup = () => {
-  const params = {
-    cache: true,
-    cacheExpiryInMillis: 3 * 60 * 60,
-    names: {
-      STATUS_GROUP_DEFAULT_ID: `/statusGroup/${ENV}/defaultId`
-    }
+// const ssmDefaultStatusGroup = () => {
+//   const params = {
+//     cache: true,
+//     cacheExpiryInMillis: 3 * 60 * 60,
+//     names: {
+//       STATUS_GROUP_DEFAULT_ID: `/statusGroup/${ENV}/defaultId`
+//     }
+//   };
+
+//   const request = ssm2.getParameter(params);
+
+//   return request;
+
+// };
+
+const parameterStore = new AWS.SSM()
+
+const getParam = param => {
+  return new Promise((res, rej) => {
+    parameterStore.getParameter({
+      Name: param
+    }, (err, data) => {
+        if (err) {
+          return rej(err)
+        }
+        return res(data)
+    });
+  });
+};
+
+const ssmDefaultStatusGroup = async () => {
+  const param = await getParam(`/statusGroup/${ENV}/defaultId`)
+  return {
+    statusCode: 200,
+    body: JSON.stringify(param)
   };
-
-  const request = ssm2.getParameter(params);
-
-  return request;
-
 };
 
 module.exports = { ssmCognito, ssmDefaultStatusGroup };

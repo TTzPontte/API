@@ -51,7 +51,18 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     source: source
   });
 
-  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractManager: contractOwner, contractOwners: [contractOwner], source, campaign, secondPayers, statusGroupContractId: ssmDefaultStatusGroup });
+  const contract = new ContractModel({ 
+    ...lastContract, 
+    ...data, 
+    propertyId, 
+    contractManager: contractOwner, 
+    contractOwners: [contractOwner], 
+    source, 
+    campaign, 
+    secondPayers, 
+    statusGroupContractId: ssmDefaultStatusGroup()
+  });
+  
   const savedContract = await contract.save();
 
   await Process.save({
