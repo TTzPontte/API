@@ -17,15 +17,19 @@ const ssmCognito = () => {
   });
 };
 
-const ssmDefaultStatusGroup = () => {
-  const params = {
-    Name: `/statusGroup/${ENV}/defaultId`
-  };
+const ssmGetParam = async () => {
 
-  const request = ssm2.getParameter(params);
+}
 
-  return request.send();
-
-};
+async function ssmDefaultStatusGroup()
+{
+   var params = {
+       Name: `/statusGroup/${ENV}/defaultId` 
+   };
+   
+   var request = await ssm.getParameter(params).promise();
+   
+   return request.Parameter.Value;          
+}
 
 module.exports = { ssmCognito, ssmDefaultStatusGroup };
