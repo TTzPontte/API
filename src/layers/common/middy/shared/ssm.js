@@ -24,15 +24,7 @@ const ssmDefaultStatusGroup = () => {
 
   const request = ssm2.getParameter(params);
 
-  request.on('success', function(response) {
-    return response;
-  });
-
-  request.on('error', function(err) {
-      throw err;
-    });
-
-  request.send();
+  return request.send();
 
 };
 
