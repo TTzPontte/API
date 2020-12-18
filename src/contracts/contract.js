@@ -8,8 +8,8 @@ const translateBody = require('./translate');
 const { ssmCognito, ssmDefaultStatusGroup } = require(`${path}/middy/shared/ssm`);
 
 const contract = async event => {
-
-  console.log('ssmDefaultStatusGroup -> ', await ssmDefaultStatusGroup());
+  
+  console.log('ssmDefaultStatusGroup -> ', ssmDefaultStatusGroup());
   
   const { body, clientId } = event;
   const { simulationId } = body;
