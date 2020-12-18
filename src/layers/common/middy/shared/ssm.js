@@ -28,7 +28,7 @@ const ssmDefaultStatusGroup = () => {
 
   const request = ssm2.getParameter(params);
 
-  return request.Parameter.Value;
+  return request;
 
 };
 
