@@ -1,3 +1,6 @@
+const aws = require('aws-sdk');
+var ssm2 = new aws.SSM();
+
 const { ssm } = require('middy/middlewares');
 const { ENV } = process.env;
 
@@ -19,7 +22,7 @@ const ssmDefaultStatusGroup = () => {
     Name: `/statusGroup/${ENV}/defaultId`
   };
 
-  const request = ssm.getParameter(params);
+  const request = ssm2.getParameter(params);
 
   request.on('success', function(response) {
     return response.data;
