@@ -17,18 +17,18 @@ const ssmCognito = () => {
   });
 };
 
-const ssmGetParam = async () => {
-
-}
-
 const ssmDefaultStatusGroup = () => {
   const params = {
-    Name: `/statusGroup/${ENV}/defaultId`
+    cache: true,
+    cacheExpiryInMillis: 3 * 60 * 60,
+    names: {
+      STATUS_GROUP_DEFAULT_ID: `/statusGroup/${ENV}/defaultId`
+    }
   };
 
   const request = ssm2.getParameter(params);
 
-  return request.send();
+  return request.Parameter.Value;
 
 };
 
