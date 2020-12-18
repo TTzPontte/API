@@ -1,4 +1,3 @@
-const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const createError = require('http-errors');
 const ContractModel = require('../models/contract');
 const { getEntity } = require('../elasticsearch/entity.es');
@@ -6,7 +5,6 @@ const Property = require('./property.service');
 const Entity = require('./entity.service');
 const User = require('./user.service');
 const Process = require('./process.service');
-const { ssmDefaultStatusGroup } = require(`${path}/middy/shared/ssm`);
 
 const getContractByOwner = async contractOwner => {
   return ContractModel.query({ contractOwner: { eq: contractOwner } })
@@ -51,9 +49,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     source: source
   });
 
-  const statusGroupContractId = async () => {
-    return await ssmDefaultStatusGroup()
-  };
+  const { STATUS_GROUP_DEFAULT_ID } = process.env;
 
   const contract = new ContractModel({ 
     ...lastContract, 
@@ -64,7 +60,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     source, 
     campaign, 
     secondPayers, 
-    statusGroupContractId: statusGroupContractId()
+    statusGroupContractId: STATUS_GROUP_DEFAULT_ID
   });
   
   const savedContract = await contract.save();
