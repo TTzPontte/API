@@ -20,21 +20,6 @@ const ssmCognito = () => {
   });
 };
 
-// const ssmDefaultStatusGroup = () => {
-//   const params = {
-//     cache: true,
-//     cacheExpiryInMillis: 3 * 60 * 60,
-//     names: {
-//       STATUS_GROUP_DEFAULT_ID: `/statusGroup/${ENV}/defaultId`
-//     }
-//   };
-
-//   const request = ssm2.getParameter(params);
-
-//   return request;
-
-// };
-
 const parameterStore = new aws.SSM()
 
 const getParam = param => {

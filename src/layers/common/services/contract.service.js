@@ -60,7 +60,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     source, 
     campaign, 
     secondPayers, 
-    statusGroupContractId: ssmDefaultStatusGroup()
+    statusGroupContractId: await ssmDefaultStatusGroup()
   });
   
   const savedContract = await contract.save();

@@ -65,7 +65,7 @@ const save = async ({
     campaign: clientName,
     source: clientName,
     trackCode: trackCode,
-    statusGroupContractId: ssmDefaultStatusGroup(),
+    statusGroupContractId: await ssmDefaultStatusGroup(),
     clientApiId: clientId
   });
 
