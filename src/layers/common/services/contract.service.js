@@ -51,7 +51,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     source: source
   });
 
-  const statusGroupContractId = async = () => {
+  const statusGroupContractId = async () => {
     return await ssmDefaultStatusGroup()
   };
 
