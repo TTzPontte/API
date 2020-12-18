@@ -29,7 +29,7 @@ const save = async ({
 }) => {
   const lastInstallment = installment[installment.length - 1].installment;
   const firstInstallment = installment[0].installment;
-  const { Value } = _.get(ssmDefaultStatusGroup, "Parameters", {});
+  const { Value } = _.get(ssmDefaultStatusGroup(), "Parameters", {});
 
   const simulation = new Contract({
     simulation: {
