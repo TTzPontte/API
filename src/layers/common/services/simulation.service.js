@@ -1,9 +1,7 @@
-const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const { getNowDefaultDate, getDateIsoString } = require('../helpers/date');
 const Contract = require('../models/contract');
 const createError = require('http-errors');
 const { getClientContract } = require('../elasticsearch/contractsReport.es');
-const { ssmDefaultStatusGroup } = require(`${path}/middy/shared/ssm`);
 
 const save = async ({
   data: {
@@ -65,7 +63,6 @@ const save = async ({
     campaign: clientName,
     source: clientName,
     trackCode: trackCode,
-    statusGroupContractId: await ssmDefaultStatusGroup(),
     clientApiId: clientId
   });
 
