@@ -17,7 +17,8 @@ const ssmCognito = () => {
 };
 
 const ssmDefaultStatusGroup = () => {
-  return ssm2.getParameters({
+  const ssmm2 = new ssm2();
+  return ssmm2.getParameters({
     Names: [`/statusGroup/${ENV}/defaultId`]
   });
 };
