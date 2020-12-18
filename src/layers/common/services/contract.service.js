@@ -64,7 +64,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     source, 
     campaign, 
     secondPayers, 
-    statusGroupContractId: await statusGroupContractId()
+    statusGroupContractId: statusGroupContractId()
   });
   
   const savedContract = await contract.save();
