@@ -35,7 +35,7 @@ const ssmCognito = () => {
 
 // };
 
-const parameterStore = new AWS.SSM()
+const parameterStore = new aws.SSM()
 
 const getParam = param => {
   return new Promise((res, rej) => {
