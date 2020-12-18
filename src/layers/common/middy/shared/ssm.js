@@ -1,5 +1,3 @@
-const AWS = require("aws-sdk")
-const ssm2 = AWS.SSM();
 const { ssm } = require('middy/middlewares');
 const { ENV } = process.env;
 
@@ -17,8 +15,7 @@ const ssmCognito = () => {
 };
 
 const ssmDefaultStatusGroup = () => {
-  const ssmm2 = new ssm2();
-  return ssmm2.getParameters({
+  return ssm.getParameters({
     Names: [`/statusGroup/${ENV}/defaultId`]
   });
 };
