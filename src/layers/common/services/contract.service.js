@@ -6,7 +6,6 @@ const Property = require('./property.service');
 const Entity = require('./entity.service');
 const User = require('./user.service');
 const Process = require('./process.service');
-const _ = require(`${path}/node_modules/lodash`);
 const { ssmDefaultStatusGroup } = require(`${path}/middy/shared/ssm`);
 
 const getContractByOwner = async contractOwner => {
@@ -52,8 +51,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     source: source
   });
 
-  const { Value } = _.get(ssmDefaultStatusGroup(), "Parameters", {});
-  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractManager: contractOwner, contractOwners: [contractOwner], source, campaign, secondPayers, statusGroupContractId: Value });
+  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractManager: contractOwner, contractOwners: [contractOwner], source, campaign, secondPayers, statusGroupContractId: ssmDefaultStatusGroup });
   const savedContract = await contract.save();
 
   await Process.save({
