@@ -9,6 +9,8 @@ const { ssmCognito, ssmDefaultStatusGroup } = require(`${path}/middy/shared/ssm`
 
 const contract = async event => {
   
+  console.log('ssmDefaultStatusGroup -> ', ssmDefaultStatusGroup());
+  
   const { body, clientId } = event;
   const { simulationId } = body;
   
@@ -22,6 +24,5 @@ const contract = async event => {
   
   return success({ ...contract });
 };
-console.log('ssmDefaultStatusGroup -> ', { handler: middy(contract).use(ssmCognito()), contract });
 
 module.exports = { handler: middy(contract).use(ssmCognito()), contract };

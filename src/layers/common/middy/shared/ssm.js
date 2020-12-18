@@ -15,9 +15,22 @@ const ssmCognito = () => {
 };
 
 const ssmDefaultStatusGroup = () => {
-  return ssm.getParameters({
-    Names: [`/statusGroup/${ENV}/defaultId`]
+  const params = {
+    Name: `/statusGroup/${ENV}/defaultId`
+  };
+
+  const request = ssm.getParameter(params);
+
+  request.on('success', function(response) {
+    return response.data;
   });
+
+  request.on('error', function(err) {
+      throw err;
+    });
+
+  request.send();
+
 };
 
 module.exports = { ssmCognito, ssmDefaultStatusGroup };
