@@ -2,7 +2,6 @@ const Entity = require('../models/entity');
 const _ = require('lodash');
 
 const save = async data => {
-    console.log('entity.service -> ', data);
     let personas = ['mother', 'father', 'spouse', 'sibling', 'child'];
 
     personas = await personas.reduce(async (previousPromisse, persona) => {

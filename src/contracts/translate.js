@@ -8,8 +8,8 @@ const BOOL_VALUES = ['children', 'secondPayer', 'liveInProperty', 'hasSiblings']
 
 const translate = ({ entity, property, secondPayers, ...body }) => {
   const translateBoolValue = (obj, value) => ({ ...obj, [value]: entity[value] ? 'Sim' : 'Não' });
-  const level = find(EDUCATION_LEVELS, entity.educationLevel);
-  const marital = find(MARITAL_STATUS, entity.maritalStatus);
+  const level = find(EDUCATION_LEVELS, entity.about.educationLevel);
+  const marital = find(MARITAL_STATUS, entity.about.maritalStatus);
   const type = find(PROPERTY_TYPES, property.type);
   const source = find(INCOME_SOURCES, entity.incomeSource);
   const resident = find(RESIDENTS, property.isResident);
