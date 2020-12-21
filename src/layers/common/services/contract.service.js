@@ -12,6 +12,10 @@ const getContractByOwner = async contractOwner => {
     .exec();
 };
 
+const setEntityType = documentNumber => {
+  return documentNumber.length === 14 ? "PJ" : "PF";
+};
+
 const isRegistered = async ({ email, documentNumber }) => {
   const entity = await getEntity({ email, documentNumber });
 
@@ -36,8 +40,10 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     parameters: { loanValue }
   } = simulation;
 
+  const entityType = setEntityType(documentNumber);
+
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
-  const { id: contractOwner } = await Entity.save(entity);
+  const { id: contractOwner } = await Entity.save({ ...entity, entityType });
   const { id: propertyId } = await Property.save(property, trackCode);
 
   await User.save({
