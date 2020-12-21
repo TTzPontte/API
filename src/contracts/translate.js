@@ -35,15 +35,20 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
     return obj;
   }, {});
 
-  const translatedEntity = {
-    ...entity,
-    ...personas,
-    ...boolValues,
-    educationLevel: EDUCATION_LEVELS[level],
-    maritalStatus: MARITAL_STATUS[marital],
-    incomeSource: INCOME_SOURCES[source]
+  const translateEntity = (entity) => {
+    entity.about.educationLevel = EDUCATION_LEVELS[level];
+    entity.about.maritalStatus = MARITAL_STATUS[marital];
+    
+    return {
+      ...entity,
+      ...personas,
+      ...boolValues,
+      incomeSource: INCOME_SOURCES[source]
+    }
   };
-
+  
+  const translatedEntity = translateEntity(entity)
+  
   const translatedProperty = {
     ...property,
     type: PROPERTY_TYPES[type],
