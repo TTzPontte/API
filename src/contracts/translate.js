@@ -53,6 +53,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
     entity.about.educationLevel = EDUCATION_LEVELS[level];
     entity.about.maritalStatus = MARITAL_STATUS[marital];
     entity.relations = translateRelations;
+    entity.contactEmail = entity.email;
     
     return {
       ...entity,
