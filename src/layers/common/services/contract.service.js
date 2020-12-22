@@ -50,6 +50,20 @@ const setRelations = entity => {
   return relationsList[0];
 };
 
+const saveRelations = async ({ entity, type }) => {
+  const relationsList = [];
+  const relations = setRelations(entity);
+  relations.map((relation) => {
+    const { id } = await Entity.save({ ...entity, type });
+    const rel = {
+      type: [relation.relation],
+      id: id
+    };
+    relationsList.push(rel);
+  });
+  return relationsList[0];
+};
+
 const save = async ({ entity, property, lastContract, secondPayers, ...data }) => {
   const Cognito = require('./cognito.service');
 
@@ -62,21 +76,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
 
   const entityType = setEntityType(documentNumber);
 
-  const saveRelations = async () => {
-    const relationsList = [];
-    const relations = setRelations(entity);
-    relations.map((relation) => {
-      const { id } = await Entity.save({ ...entity, type: entityType });
-      const rel = {
-        type: [relation.relation],
-        id: id
-      };
-      relationsList.push(rel);
-    });
-    return relationsList[0];
-  };
-
-  const relations = saveRelations;
+  const relations = saveRelations({ ...entity, type: entityType });
   entity.relations = relations;
 
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
