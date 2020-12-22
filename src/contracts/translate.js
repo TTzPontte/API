@@ -13,6 +13,20 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
   const type = find(PROPERTY_TYPES, property.type);
   const source = find(INCOME_SOURCES, entity.incomeSource);
   const resident = find(RESIDENTS, property.isResident);
+
+  const translateRelations = data.entity.relations.map((relation) => {
+    const relations = [];
+    Object.keys(relation).map((personas) => {
+      const person = find(PERSONAS, personas);  
+      const persona = relation[person];
+      const incomeSource = find(INCOME_SOURCES, persona.incomeSource);  
+      persona.relation = PERSONAS[person];
+      persona.incomeSource = INCOME_SOURCES[incomeSource];
+      relations.push(persona)
+    });
+  
+    return relations[0];
+  });
   
   const translatedSecondPayers = secondPayers.map((secondPayer) => {
     const persona = find(PERSONAS, secondPayer);
@@ -38,6 +52,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
   const translateEntity = (entity) => {
     entity.about.educationLevel = EDUCATION_LEVELS[level];
     entity.about.maritalStatus = MARITAL_STATUS[marital];
+    entity.relations = translateRelations;
     
     return {
       ...entity,

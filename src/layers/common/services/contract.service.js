@@ -30,8 +30,6 @@ const isRegistered = async ({ email, documentNumber }) => {
   return false;
 };
 
-
-
 const save = async ({ entity, property, lastContract, secondPayers, ...data }) => {
   const Cognito = require('./cognito.service');
   
