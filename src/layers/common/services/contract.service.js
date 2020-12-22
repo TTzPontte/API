@@ -32,13 +32,6 @@ const isRegistered = async ({ email, documentNumber }) => {
 
 const save = async ({ entity, property, lastContract, secondPayers, ...data }) => {
   const Cognito = require('./cognito.service');
-  
-  console.log('entity -> ', entity);
-  const formatRelations = entity.relations.map((relation) => {
-    console.log('relation -> ', relation);
-  });
-
-  formatRelations();
 
   await isRegistered(entity);
   const { name, email, phone, documentNumber } = entity;
