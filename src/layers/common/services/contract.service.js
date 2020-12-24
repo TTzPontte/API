@@ -50,11 +50,11 @@ const setRelations = entity => {
   return relationsList[0];
 };
 
-const saveRelations = async ({ entity, type }) => {
+const saveRelations = ({ entity, type }) => {
   const relationsList = [];
   const relations = setRelations(entity);
   relations.map((relation) => {
-    const { id } = await Entity.save({ ...entity, type });
+    const { id } = Entity.save({ ...entity, type });
     const rel = {
       type: [relation.relation],
       id: id
