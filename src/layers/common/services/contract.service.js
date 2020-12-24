@@ -12,6 +12,10 @@ const getContractByOwner = async contractOwner => {
     .exec();
 };
 
+const setEntityType = documentNumber => {
+  return documentNumber.length === 14 ? "PJ" : "PF";
+};
+
 const isRegistered = async ({ email, documentNumber }) => {
   const entity = await getEntity({ email, documentNumber });
 
@@ -26,7 +30,41 @@ const isRegistered = async ({ email, documentNumber }) => {
   return false;
 };
 
-const save = async ({ entity, property, lastContract, ...data }) => {
+const setRelations = entity => {
+  const relationsList = [];
+  const relations = entity.relations;
+  relations.map((relation) => {
+    relationFormated = {
+      documentNumber: relation.cpf,
+      birth: relation.birth,
+      email: relation.email,
+      contactEmail: relation.email,
+      name: relation.name,
+      relation: relation.relation,
+      income: {
+        incomeSource: relation.incomeSource
+      }
+    };
+    relationsList.push(relationFormated);
+  })
+  return relationsList[0];
+};
+
+const saveRelations = async ({ entity, type }) => {
+  const relationsList = [];
+  const relations = setRelations(entity);
+  relations.map((relation) => {
+    const { id } = await Entity.save({ ...entity, type });
+    const rel = {
+      type: [relation.relation],
+      id: id
+    };
+    relationsList.push(rel);
+  });
+  return relationsList[0];
+};
+
+const save = async ({ entity, property, lastContract, secondPayers, ...data }) => {
   const Cognito = require('./cognito.service');
 
   await isRegistered(entity);
@@ -36,20 +74,38 @@ const save = async ({ entity, property, lastContract, ...data }) => {
     parameters: { loanValue }
   } = simulation;
 
+  const entityType = setEntityType(documentNumber);
+
+  const relations = saveRelations({ ...entity, type: entityType });
+  entity.relations = relations;
+
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
-  const { id: contractOwner } = await Entity.save(entity);
+  const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
   const { id: propertyId } = await Property.save(property, trackCode);
 
   await User.save({
     id: cognitoUser.Username,
     cpf: documentNumber,
     trackingCode: trackCode,
-    peopleId: contractOwner,
+    entityId: contractOwner,
     campaign: campaign,
     source: source
   });
 
-  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwner, contractOwners: [contractOwner], source, campaign });
+  const { STATUS_GROUP_DEFAULT_ID } = process.env;
+
+  const contract = new ContractModel({ 
+    ...lastContract, 
+    ...data, 
+    propertyId, 
+    contractManager: contractOwner, 
+    contractOwners: [contractOwner], 
+    source, 
+    campaign, 
+    secondPayers, 
+    statusGroupContractId: STATUS_GROUP_DEFAULT_ID
+  });
+  
   const savedContract = await contract.save();
 
   await Process.save({

@@ -135,8 +135,6 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Sub "Entity.${Environment}"
         - DynamoDBCrudPolicy:
-            TableName: !Sub "People.${Environment}"
-        - DynamoDBCrudPolicy:
             TableName: !Sub "Contract.${Environment}"
         - LambdaInvokePolicy:
             FunctionName: !Sub 'SimulatorCalculatorFn-${Environment}'
@@ -171,8 +169,6 @@ Resources:
             TableName: !Ref DBClients
         - DynamoDBCrudPolicy:
             TableName: !Sub "Entity.${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "People.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Property.${Environment}"
         - DynamoDBCrudPolicy:
