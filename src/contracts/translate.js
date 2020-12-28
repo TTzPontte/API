@@ -14,7 +14,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
   const source = find(INCOME_SOURCES, entity.incomeSource);
   const resident = find(RESIDENTS, property.isResident);
 
-  const translateRelations = data.entity.relations.map((relation) => {
+  const translateRelations = entity.relations.map((relation) => {
     const relations = [];
     Object.keys(relation).map((personas) => {
       const person = find(PERSONAS, personas);  
