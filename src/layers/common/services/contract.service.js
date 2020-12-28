@@ -32,6 +32,7 @@ const isRegistered = async ({ email, documentNumber }) => {
 
 const setRelations = entity => {
   const relationsList = [];
+  console.log("entity na setRel -> ", entity);
   const relations = entity.relations;
   relations.map((relation) => {
     relationFormated = {
@@ -50,9 +51,9 @@ const setRelations = entity => {
   return relationsList;
 };
 
-const saveRelations = data => {
-  const { entity, type } = data;
-  console.log("data no saveRel -> ", data);
+const saveRelations = entity => {
+  console.log("entity no saveRel -> ", entity);
+  const { type } = entity.type;
   const relationsList = [];
   const relations = setRelations(entity);
   relations.map((relation) => {
