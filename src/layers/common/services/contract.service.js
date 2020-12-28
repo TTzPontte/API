@@ -30,9 +30,10 @@ const isRegistered = async ({ email, documentNumber }) => {
   return false;
 };
 
-const setRelations = data => {
+const setRelations = entity => {
+  console.log("entity no setRel -> ", entity);
   const relationsList = [];
-  const relations = data.entity.relations;
+  const relations = entity.relations;
   relations.map((relation) => {
     relationFormated = {
       documentNumber: relation.cpf,
