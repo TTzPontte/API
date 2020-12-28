@@ -51,11 +51,12 @@ const setRelations = entity => {
 };
 
 const saveRelations = data => {
-  console.log("entity no saveRel -> ", data);
+  const { entity, type } = data;
+  console.log("entity no saveRel -> ", entity);
   const relationsList = [];
-  const relations = setRelations(data.entity);
+  const relations = setRelations(entity);
   relations.map((relation) => {
-    const { id } = Entity.save({ ...data.entity, data.type });
+    const { id } = Entity.save({ ...entity, type });
     const rel = {
       type: [relation.relation],
       id: id
