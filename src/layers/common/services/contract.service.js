@@ -52,6 +52,7 @@ const setRelations = entity => {
 };
 
 const saveRelations = ({ entity, type }) => {
+  console.log("entity no saveRel -> ", entity);
   const relationsList = [];
   const relations = setRelations(entity);
   relations.map((relation) => {
@@ -77,6 +78,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
 
   const entityType = setEntityType(documentNumber);
 
+  console.log("entity no save -> ", entity);
   const relations = saveRelations({ ...entity, type: entityType });
   entity.relations = relations;
 
