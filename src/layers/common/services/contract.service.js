@@ -54,9 +54,10 @@ const saveRelations = entity => {
   const { type } = entity.type;
   const relationsList = [];
   const relations = setRelations(entity);
+  console.log("relations -> ", relations);
   relations.map((relation) => {
-    const { id } = Entity.save({ ...entity, type });
-    console.log("id rel -> ", id);
+    const relat = Entity.save(relation);
+    console.log("relation rel -> ", relat);
     const rel = {
       type: [relation.relation],
       id: id
