@@ -52,7 +52,7 @@ const setRelations = entity => {
 
 const saveRelations = data => {
   const { entity, type } = data;
-  console.log("entity no saveRel -> ", entity);
+  console.log("data no saveRel -> ", data);
   const relationsList = [];
   const relations = setRelations(entity);
   relations.map((relation) => {
