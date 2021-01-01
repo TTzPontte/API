@@ -46,7 +46,8 @@ const setRelations = entity => {
         {
           incomeSource: relation.incomeSource
         }
-      ]
+      ],
+      type: relation.type
     };
     relationsList.push(relationFormated);
   })
@@ -65,14 +66,6 @@ const saveRelations = async (entity) => {
     relationsList.push(rel);
   };
   return relationsList;
-};
-
-const getSecondPayer = ({ relations, secondPayer }) => {
-  for (const relation of relations ) {
-    if (relation.type[0] === secondPayer[0]) {
-      return relation.id
-    };
-  };
 };
 
 const getSecondPayers = ({ relations, secondPayers }) => {
