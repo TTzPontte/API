@@ -78,9 +78,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   await isRegistered(entity);
   const { name, email, phone, documentNumber } = entity;
   const { id, source, campaign, trackCode, simulation } = lastContract;
-  const {
-    parameters: { loanValue }
-  } = simulation;
+  const { parameters: { loanValue } } = simulation;
 
   const entityType = setEntityType(documentNumber);
 
@@ -101,7 +99,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   });
 
   const { STATUS_GROUP_DEFAULT_ID } = process.env;
-  getSecondPayers();
+  getSecondPayers({ contractOwner, secondPayers });
 
   const contract = new ContractModel({ 
     ...lastContract, 
