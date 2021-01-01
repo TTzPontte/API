@@ -35,6 +35,7 @@ const setRelations = entity => {
   const relationsList = [];
   const relations = entity.relations;
   relations.map((relation) => {
+    console.log(relation);
     relationFormated = {
       documentNumber: relation.cpf,
       birth: relation.birth,
@@ -49,6 +50,7 @@ const setRelations = entity => {
       ],
       type: relation.type
     };
+    console.log(relationFormated);
     relationsList.push(relationFormated);
   })
   return relationsList;
