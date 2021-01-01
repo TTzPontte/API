@@ -50,7 +50,7 @@ const setRelations = entity => {
   return relationsList;
 };
 
-const saveRelations = async (entity) => {
+async function saveRelations(entity) {
   const relationsList = [];
   const relations = setRelations(entity);
   relations.map((relation) => {
@@ -58,7 +58,7 @@ const saveRelations = async (entity) => {
     console.log("relation rel -> ", relat);
     const rel = {
       type: [relation.relation],
-      id: id
+      id: relat.id
     };
     relationsList.push(rel);
   });
