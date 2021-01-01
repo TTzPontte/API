@@ -57,11 +57,11 @@ const saveRelations = async (entity) => {
   const relations = setRelations(entity);
   for (const relation of relations) {
     const relat = await Entity.save(relation);
-    console.log("relation rel -> ", relat);
     const rel = {
       type: [relation.relation],
       id: relat.id
     };
+    console.log("relation rel -> ", rel);
     relationsList.push(rel);
   };
   return relationsList;
