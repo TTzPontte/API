@@ -35,7 +35,7 @@ const setRelations = entity => {
   const relationsList = [];
   const relations = entity.relations;
   relations.map((relation) => {
-    console.log(relation);
+    const relationType = setEntityType(relation.cpf);
     relationFormated = {
       documentNumber: relation.cpf,
       birth: relation.birth,
@@ -48,9 +48,8 @@ const setRelations = entity => {
           incomeSource: relation.incomeSource
         }
       ],
-      type: relation.type
+      type: relationType
     };
-    console.log(relationFormated);
     relationsList.push(relationFormated);
   })
   return relationsList;
