@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const ContractModel = require('../models/contract');
+const EntityModel = require('../models/entity');
 const { getEntity } = require('../elasticsearch/entity.es');
 const Property = require('./property.service');
 const Entity = require('./entity.service');
@@ -29,6 +30,11 @@ const isRegistered = async ({ email, documentNumber }) => {
   }
   return false;
 };
+
+const getSecondPayers = async ({ entityId, personas }) => {
+  const entity = EntityModel.query({ id: { eq: entityId } });
+  console.log(entity);
+}
 
 const setRelations = entity => {
   const relationsList = [];
@@ -95,6 +101,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   });
 
   const { STATUS_GROUP_DEFAULT_ID } = process.env;
+  getSecondPayers();
 
   const contract = new ContractModel({ 
     ...lastContract, 
