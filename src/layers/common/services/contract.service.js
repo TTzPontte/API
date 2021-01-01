@@ -41,9 +41,11 @@ const setRelations = entity => {
       contactEmail: relation.email,
       name: relation.name,
       relation: relation.relation,
-      income: {
-        incomeSource: relation.incomeSource
-      }
+      income: [
+        {
+          incomeSource: relation.incomeSource
+        }
+      ]
     };
     relationsList.push(relationFormated);
   })
@@ -54,7 +56,6 @@ const saveRelations = async (entity) => {
   const relationsList = [];
   const relations = setRelations(entity);
   for (const relation of relations) {
-    console.log("relation -> ", relation);
     const relat = await Entity.save(relation);
     console.log("relation rel -> ", relat);
     const rel = {
