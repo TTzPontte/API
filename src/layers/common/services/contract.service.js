@@ -50,10 +50,11 @@ const setRelations = entity => {
   return relationsList;
 };
 
-async function saveRelations(entity) {
+const saveRelations = async (entity) => {
   const relationsList = [];
   const relations = setRelations(entity);
   for (const relation of relations) {
+    console.log("relation -> ", relation);
     const relat = await Entity.save(relation);
     console.log("relation rel -> ", relat);
     const rel = {
@@ -78,7 +79,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   const entityType = setEntityType(documentNumber);
 
   const relations = await saveRelations({ ...entity, type: entityType });
-  entity.relations = relations;
+  entity.relations = [relations];
 
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
   const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
