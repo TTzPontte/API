@@ -67,6 +67,26 @@ const saveRelations = async (entity) => {
   return relationsList;
 };
 
+const getSecondPayer = ({ relations, secondPayer }) => {
+  for (const relation of relations ) {
+    if (relation.type[0] === secondPayer[0]) {
+      return relation.id
+    };
+  };
+};
+
+const getSecondPayers = ({ relations, secondPayers }) => {
+  const secondPayerList = [];
+  for ( const persona of secondPayers ) {
+    for ( const relation of relations ) {
+      if (relation.type[0] === persona) {
+        secondPayerList.push(relation.id)
+      };
+    };
+  };
+  return secondPayerList
+};
+
 const save = async ({ entity, property, lastContract, secondPayers, ...data }) => {
   const Cognito = require('./cognito.service');
 
@@ -79,9 +99,6 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
 
   const relations = await saveRelations({ ...entity, type: entityType });
   entity.relations = relations;
-
-  console.log("secondPayer -> ", secondPayers);
-  console.log("relations -> ", relations);
 
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
   const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
@@ -97,6 +114,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   });
 
   const { STATUS_GROUP_DEFAULT_ID } = process.env;
+  const payers = getSecondPayers({ relations, secondPayers })
 
   const contract = new ContractModel({ 
     ...lastContract, 
@@ -106,7 +124,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     contractOwners: [contractOwner], 
     source, 
     campaign, 
-    secondPayers, 
+    secondPayers: payers, 
     statusGroupContractId: STATUS_GROUP_DEFAULT_ID
   });
   
