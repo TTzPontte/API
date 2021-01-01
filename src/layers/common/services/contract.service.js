@@ -31,11 +31,6 @@ const isRegistered = async ({ email, documentNumber }) => {
   return false;
 };
 
-const getSecondPayers = async ({ entityId, personas }) => {
-  const entity = EntityModel.query({ id: { eq: entityId } });
-  console.log(entity);
-}
-
 const setRelations = entity => {
   const relationsList = [];
   const relations = entity.relations;
@@ -85,6 +80,9 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   const relations = await saveRelations({ ...entity, type: entityType });
   entity.relations = relations;
 
+  console.log("secondPayer -> ", secondPayers);
+  console.log("relations -> ", relations);
+
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
   const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
   const { id: propertyId } = await Property.save(property, trackCode);
@@ -99,7 +97,6 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   });
 
   const { STATUS_GROUP_DEFAULT_ID } = process.env;
-  getSecondPayers({ contractOwner, secondPayers });
 
   const contract = new ContractModel({ 
     ...lastContract, 
