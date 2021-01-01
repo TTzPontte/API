@@ -61,7 +61,6 @@ const saveRelations = async (entity) => {
       type: [relation.relation],
       id: relat.id
     };
-    console.log("relation rel -> ", rel);
     relationsList.push(rel);
   };
   return relationsList;
