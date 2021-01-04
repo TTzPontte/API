@@ -13,7 +13,7 @@ const getContractByOwner = async contractOwner => {
 };
 
 const setEntityType = documentNumber => {
-  return documentNumber.length === 14 ? "PJ" : "PF";
+  return documentNumber.length === 14 ? 'PJ' : 'PF';
 };
 
 const isRegistered = async ({ email, documentNumber }) => {
@@ -35,7 +35,7 @@ const setRelations = entity => {
   const relations = entity.relations;
   relations.map((relation) => {
     const relationType = setEntityType(relation.cpf);
-    relationFormated = {
+    const relationFormated = {
       documentNumber: relation.cpf,
       birth: relation.birth,
       email: relation.email,
@@ -50,7 +50,7 @@ const setRelations = entity => {
       type: relationType
     };
     relationsList.push(relationFormated);
-  })
+  });
   return relationsList;
 };
 
@@ -70,14 +70,14 @@ const saveRelations = async (entity) => {
 
 const getSecondPayers = ({ relations, secondPayers }) => {
   const secondPayerList = [];
-  for ( const persona of secondPayers ) {
-    for ( const relation of relations ) {
+  for (const persona of secondPayers) {
+    for (const relation of relations) {
       if (relation.type[0] === persona) {
-        secondPayerList.push(relation.id)
+        secondPayerList.push(relation.id);
       };
     };
   };
-  return secondPayerList
+  return secondPayerList;
 };
 
 const save = async ({ entity, property, lastContract, secondPayers, ...data }) => {
@@ -107,7 +107,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   });
 
   const { STATUS_GROUP_DEFAULT_ID } = process.env;
-  const payers = getSecondPayers({ relations, secondPayers })
+  const payers = getSecondPayers({ relations, secondPayers });
 
   const contract = new ContractModel({ 
     ...lastContract, 
@@ -120,7 +120,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     secondPayers: payers, 
     statusGroupContractId: STATUS_GROUP_DEFAULT_ID
   });
-  
+
   const savedContract = await contract.save();
 
   await Process.save({

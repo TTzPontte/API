@@ -23,8 +23,8 @@ yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', 
 
 const getRelationsSchema = async relations => {
   const relationsSchema = yup
-  .object()
-  .shape({
+    .object()
+    .shape({
       participation: yup
         .string()
         .strict(),
@@ -35,8 +35,8 @@ const getRelationsSchema = async relations => {
         .array()
         .of(
           yup
-          .string()
-          )
+            .string()
+        )
     });
 
   return { relationsSchema };
@@ -75,16 +75,16 @@ const getAddressSchema = async address => {
         .strict()
         .required()
     })
-    .required()
+    .required();
 
-    return { addressSchema };
+  return { addressSchema };
 };
 
 const getIncomeSchema = income => {
-    const incomeSchema = yup
-      .array()
-      .of(
-        yup
+  const incomeSchema = yup
+    .array()
+    .of(
+      yup
         .object()
         .shape({
           type: yup
@@ -104,9 +104,9 @@ const getIncomeSchema = income => {
             .strict()
             .required(),
           averageIncome:
-            yup.string(),
+            yup.string()
         })
-      );
+    );
   return { incomeSchema };
 };
 
@@ -115,32 +115,32 @@ const getFilesSchema = async files => {
     .array()
     .of(
       yup
-      .object()
-      .shape({
-        category: yup
-          .string()
-          .strict()
-          .required(),
-        type: yup
-          .string()
-          .strict()
-          .required(),
-        filename: yup
-          .string()
-          .strict()
-          .required(),
-        id: yup
-          .string()
-          .strict()
-          .required(),
-        size: yup
-          .string()
-          .strict()
-          .required(),
-        date: yup
-          .date()
-          .required(),
-      })
+        .object()
+        .shape({
+          category: yup
+            .string()
+            .strict()
+            .required(),
+          type: yup
+            .string()
+            .strict()
+            .required(),
+          filename: yup
+            .string()
+            .strict()
+            .required(),
+          id: yup
+            .string()
+            .strict()
+            .required(),
+          size: yup
+            .string()
+            .strict()
+            .required(),
+          date: yup
+            .date()
+            .required()
+        })
     );
 
   return { filesSchema };
@@ -151,22 +151,22 @@ const getIdWallCompaniesSchema = async idWallCompanies => {
     .array()
     .of(
       yup
-      .object()
-      .shape({
-        cnpj: yup
-          .string()
-          .strict()
-          .required()
-          .documentNumber(),
-        name: yup
-          .string()
-          .strict()
-          .required(),
-        relationship: yup
-          .string()
-          .strict()
-          .required(),
-      })
+        .object()
+        .shape({
+          cnpj: yup
+            .string()
+            .strict()
+            .required()
+            .documentNumber(),
+          name: yup
+            .string()
+            .strict()
+            .required(),
+          relationship: yup
+            .string()
+            .strict()
+            .required()
+        })
     );
 
   return { idWallCompaniesSchema };
@@ -176,18 +176,18 @@ const getDocumentsSchema = async documents => {
   const documentsSchema = yup
     .array()
     .of(
-      yup
-      .object()
-      .shape({
-        type: yup
-          .string()
-          .strict()
-          .required(),
-        value: yup
-          .string()
-          .strict()
-          .required(),
-      })
+        yup
+        .object()
+        .shape({
+          type: yup
+            .string()
+            .strict()
+            .required(),
+          value: yup
+            .string()
+            .strict()
+            .required()
+        })
     );
 
   return { documentsSchema };
@@ -217,11 +217,11 @@ const getAboutSchema = async about => {
       maritalRegime: yup
         .string()
         .strict()
-        .required(),
+        .required()
     })
     .required();
 
-    return { aboutSchema };
+  return { aboutSchema };
 };
 
 const validate = async fields => {
@@ -288,10 +288,10 @@ const validate = async fields => {
       ...filesSchema,
       ...idWallCompaniesSchema,
       ...documentsSchema,
-      ...aboutSchema,
+      ...aboutSchema
     });
 
-    const propertySchema = yup
+  const propertySchema = yup
     .object()
     .shape({
       address: yup
@@ -356,14 +356,14 @@ const validate = async fields => {
         .array()
         .of(
           yup
-          .string(PERSONAS)
-          .when('isResident', {
-            is: resident => resident === 'THIRD_PARTIES',
-            then: yup
-              .string()
-              .strict()
-              .required()
-          })
+            .string(PERSONAS)
+            .when('isResident', {
+              is: resident => resident === 'THIRD_PARTIES',
+              then: yup
+                .string()
+                .strict()
+                .required()
+            })
         ),
       garages: yup
         .string()
@@ -389,32 +389,32 @@ const validate = async fields => {
     })
     .required();
 
-    const schema = yup.object().shape({
-      secondPayers: yup
-        .array()
-        .of(
-          yup
-          .string(PERSONAS)
-          .strict()
-          .required(),
-        ),
-      clientId: yup
-        .string()
+  const schema = yup.object().shape({
+    secondPayers: yup
+      .array()
+      .of(
+        yup
+        .string(PERSONAS)
         .strict()
         .required()
-    });
+      ),
+    clientId: yup
+      .string()
+      .strict()
+      .required()
+  });
 
-    try {
-      const { isResident, owners } = _.get(fields, 'property', {});
-      const { clientId } = fields;
-      const secondPayers = _.get(fields, 'secondPayers', []);
-      await entitySchema.validate({ ...fields.entity, isResident, owners });
-      await propertySchema.validate(fields.property);
-      const isValid = await schema.validate({ clientId, secondPayers });
-      return isValid;
-    } catch (err) {
-      throw new createError.BadRequest(err.message);
-    }
+  try {
+    const { isResident, owners } = _.get(fields, 'property', {});
+    const { clientId } = fields;
+    const secondPayers = _.get(fields, 'secondPayers', []);
+    await entitySchema.validate({ ...fields.entity, isResident, owners });
+    await propertySchema.validate(fields.property);
+    const isValid = await schema.validate({ clientId, secondPayers });
+    return isValid;
+  } catch (err) {
+    throw new createError.BadRequest(err.message);
+  }
 };
 
 module.exports = { validate, validateDocumentNumber};
