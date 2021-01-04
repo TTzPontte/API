@@ -13,7 +13,14 @@ const ContractsSchema = new Schema(
       default: () => uuid()
     },
     propertyId: String,
+    contractManager: String,
     contractOwner: String,
+    contractOwners: [
+      {
+        type: String
+      }
+    ],
+
     legalName: String,
     legalCNPJ: String,
     simulation: {
@@ -83,7 +90,11 @@ const ContractsSchema = new Schema(
           }
         ]
       },
-      loanValuesGross: [Number],
+      loanValuesGross: [
+        {
+          type: Number
+        }
+      ],
       date: Date,
       installment: Number,
       loanValueSelected: Number,
@@ -104,9 +115,14 @@ const ContractsSchema = new Schema(
         role: String
       }
     ],
-    whoIsSecondPayer: String,
+    secondPayers: [
+      {
+        type: String
+      }
+    ],
     clientId: String,
-    trackCode: String
+    trackCode: String,
+    statusGroupContractId: String
   })
 );
 

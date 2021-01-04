@@ -46,7 +46,7 @@ const save = async ({
       loanValueSelected: loanValue,
       terms: [terms],
       term: terms,
-      loanValuesGross: [grossLoan],
+      loanValuesGross: [[grossLoan]],
       installment: firstInstallment,
       installments: [[firstInstallment]],
       lastInstallments: [[lastInstallment]],
@@ -69,8 +69,8 @@ const save = async ({
   return simulation.save();
 };
 
-const isRegistered = async ({ cpf, email, clientId }) => {
-  const contracts = await getClientContract({ cpf, email, clientId });
+const isRegistered = async ({ documentNumber, email, clientId }) => {
+  const contracts = await getClientContract({ documentNumber, email, clientId });
 
   if (contracts && contracts.length) {
     throw new createError.Conflict('Customer already exists');

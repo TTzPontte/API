@@ -1,21 +1,24 @@
 const es = require('./aws_es_client');
 
-const getPeople = async ({ cpf, email }) => {
+const INDEX = 'entity';
+const TYPE = '_doc';
+
+const getEntity = async ({ email, documentNumber }) => {
   const query = {
-    index: 'people',
-    type: '_doc',
+    index: INDEX,
+    type: TYPE,
     body: {
       query: {
         bool: {
           should: [
             {
               term: {
-                cpf
+                email
               }
             },
             {
               term: {
-                email
+                documentNumber
               }
             }
           ]
@@ -34,4 +37,4 @@ const getPeople = async ({ cpf, email }) => {
   return data;
 };
 
-module.exports = { getPeople };
+module.exports = { getEntity };

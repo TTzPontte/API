@@ -2,7 +2,7 @@ const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const yup = require(`${path}/node_modules/yup`);
 const _ = require(`${path}/node_modules/lodash`);
 const createError = require(`${path}/node_modules/http-errors`);
-const { validateCpf, validateCnpj } = require(`${path}/helpers/validator`);
+const { validateDocumentNumber } = require(`${path}/helpers/validator`);
 
 let {
   MARITAL_STATUS,
@@ -25,166 +25,279 @@ PERSONAS = Object.keys(PERSONAS);
 INCOME_SOURCES = Object.keys(INCOME_SOURCES);
 RESIDENTS = Object.keys(RESIDENTS);
 
-const isSecondPayer = ({ secondPayer, persona, whoIsSecondPayer }) => secondPayer && whoIsSecondPayer === persona;
-const isSpouse = (persona, maritalStatus) => {
-  const arr = [MARITAL_STATUS[0], MARITAL_STATUS[1], MARITAL_STATUS[2]];
-  return arr.includes(maritalStatus) && persona === 'spouse';
-};
-const isPropertyOwner = ({ whoIsOwner, persona, isResident }) => isResident === 'THIRD_PARTIES' && whoIsOwner === persona;
+yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', documentNumber => validateDocumentNumber(documentNumber)));
 
-yup.addMethod(yup.string, 'validCpf', () => yup.string().test('validate', cpf => validateCpf(cpf)));
-yup.addMethod(yup.string, 'validCnpj', () => yup.string().test('validate', cnpj => validateCnpj(cnpj)));
-
-const getPersonasSchema = ({ whoIsSecondPayer, property: { whoIsOwner }, people: { secondPayer } }) =>
-  PERSONAS.reduce((obj, persona) => {
-    const userSchema = yup
-      .object({
-        cpf: yup
-          .string()
-          .strict()
-          .length(11)
-          .required()
-          .validCpf(),
-        name: yup.string().required(),
-        birth: yup.date().required(),
-        email: yup
-          .string()
-          .email()
-          .required(),
-        averageIncome: yup.string().when('secondPayer', {
-          is: () => isSecondPayer({ secondPayer, persona, whoIsSecondPayer }),
-          then: yup.string().required()
-        }),
-        incomeSource: yup.string().when('secondPayer', {
-          is: () => isSecondPayer({ secondPayer, persona, whoIsSecondPayer }),
-          then: yup.string().required()
-        })
-      })
-      .when(['maritalStatus', 'secondPayer', 'isResident'], {
-        is: (maritalStatus, secondPayer, isResident) =>
-          isSpouse(persona, maritalStatus) ||
-          isSecondPayer({ secondPayer, persona, whoIsSecondPayer }) ||
-          isPropertyOwner({ isResident, whoIsOwner, persona }),
-        then: yup.object().required()
-      })
-      .default(null)
-      .nullable();
-    return { ...obj, [persona]: userSchema };
-  }, {});
-
-const validate = async fields => {
-  const personaSchema = getPersonasSchema(fields);
-
-  const peopleSchema = yup
+const getRelationsSchema = async relations => {
+  const relationsSchema = yup
     .object()
-    .shape(
-      {
-        name: yup.string().required(),
-        nickname: yup.string(),
-        birth: yup.date().required(),
-        averageIncome: yup.number().required(),
-        incomeSource: yup
+    .shape({
+    participation: yup
+          .string()
+          .strict(),
+        id: yup
+          .string()
+          .strict(),
+        type: yup
+          .array()
+          .of(
+            yup
+            .string()
+          )
+      });
+
+  return { relationsSchema };
+};
+
+const getAddressSchema = async address => {
+  const addressSchema = yup
+    .object()
+    .shape({
+      cep: yup
+        .string()
+        .strict()
+        .required(),
+      city: yup
+        .string()
+        .strict()
+        .required(),
+      complement: yup
+        .string()
+        .strict()
+        .notRequired(),
+      neighborhood: yup
+        .string()
+        .strict()
+        .required(),
+      number: yup
+        .string()
+        .strict()
+        .required(),
+      state: yup
+        .string()
+        .strict()
+        .required(),
+      streetAddress: yup
+        .string()
+        .strict()
+        .required()
+    })
+    .required()
+
+    return { addressSchema };
+};
+
+const getIncomeSchema = income => {
+    const incomeSchema = yup
+      .array()
+      .of(
+        yup
+        .object()
+        .shape({
+          type: yup
+            .string()
+            .strict()
+            .required(),
+          activity: yup
+            .string()
+            .strict()
+            .required(),
+          value: yup
+            .string()
+            .strict()
+            .required(),
+          incomeOrigin: yup
+            .string()
+            .strict()
+            .required(),
+          averageIncome:
+            yup.string(),
+        })
+      );
+  return { incomeSchema };
+};
+
+const getFilesSchema = async files => {
+  const filesSchema = yup
+    .array()
+    .of(
+      yup
+      .object()
+      .shape({
+        category: yup
           .string()
           .strict()
-          .oneOf(INCOME_SOURCES)
           .required(),
+        type: yup
+          .string()
+          .strict()
+          .required(),
+        filename: yup
+          .string()
+          .strict()
+          .required(),
+        id: yup
+          .string()
+          .strict()
+          .required(),
+        size: yup
+          .string()
+          .strict()
+          .required(),
+        date: yup
+          .date()
+          .required(),
+      })
+    );
+
+  return { filesSchema };
+};
+
+const getIdWallCompaniesSchema = async idWallCompanies => {
+  const idWallCompaniesSchema = yup
+    .array()
+    .of(
+      yup
+      .object()
+      .shape({
         cnpj: yup
           .string()
           .strict()
-          .length(14)
-          .when('cpf', {
-            is: cpf => !cpf,
-            then: yup
-              .string()
-              .strict()
-              .required()
-              .validCnpj()
-          }),
-        email: yup
+          .required()
+          .documentNumber(),
+        name: yup
           .string()
           .strict()
-          .email()
           .required(),
-        cpf: yup
+        relationship: yup
           .string()
           .strict()
-          .length(11)
-          .when('cnpj', {
-            is: cnpj => !cnpj,
-            then: yup
-              .string()
-              .strict()
-              .required()
-              .validCpf()
-          }),
-        incomeSourceActivity: yup
-          .string()
-          .strict()
-          .when('cnpj', {
-            is: cnpj => cnpj,
-            then: yup
-              .string()
-              .strict()
-              .required()
-          }),
-        children: yup.boolean().required(),
-        maritalStatus: yup
-          .string()
-          .strict()
-          .oneOf(MARITAL_STATUS)
           .required(),
-        educationLevel: yup
+      })
+    );
+
+  return { idWallCompaniesSchema };
+};
+
+const getDocumentsSchema = async documents => {
+  const documentsSchema = yup
+    .array()
+    .of(
+      yup
+      .object()
+      .shape({
+        type: yup
           .string()
           .strict()
-          .oneOf(EDUCATION_LEVELS)
           .required(),
-        secondPayer: yup.boolean().required(),
-        liveInProperty: yup.boolean().required(),
-        address: yup
-          .object()
-          .shape({
-            cep: yup
-              .string()
-              .strict()
-              .required(),
-            city: yup
-              .string()
-              .strict()
-              .required(),
-            complement: yup
-              .string()
-              .strict()
-              .notRequired(),
-            neighborhood: yup
-              .string()
-              .strict()
-              .required(),
-            number: yup
-              .string()
-              .strict()
-              .required(),
-            state: yup
-              .string()
-              .strict()
-              .required(),
-            streetAddress: yup
-              .string()
-              .strict()
-              .required()
-          })
-          .required(),
-        phone: yup
+        value: yup
           .string()
           .strict()
-          .matches(PHONE_REG_EXP, 'Phone number is invalid')
           .required(),
-        ...personaSchema
-      },
-      ['cpf', 'cnpj']
-    )
+      })
+    );
+
+  return { documentsSchema };
+};
+
+const getAboutSchema = async about => {
+  const aboutSchema = yup
+    .object()
+    .shape({
+      hasSiblings: yup
+        .boolean()
+        .required(),
+      hasChild: yup
+        .boolean()
+        .required(),
+      birthdate: yup
+        .date()
+        .required(),
+      educationLevel: yup
+        .string()
+        .strict()
+        .required(),
+      maritalStatus: yup
+        .string()
+        .strict()
+        .required(),
+      maritalRegime: yup
+        .string()
+        .strict()
+        .required(),
+    })
     .required();
 
-  const propertySchema = yup
+    return { aboutSchema };
+};
+
+const validate = async fields => {
+  const {
+    relations,
+    address,
+    income,
+    files,
+    idWallCompanies,
+    documents,
+    about
+  } = fields.entity;
+
+  const { secondPayers } = fields.secondPayers;
+
+  const relationsSchema = getRelationsSchema(relations);
+  const addressSchema = getAddressSchema(address);
+  const incomeSchema = getIncomeSchema({ income, secondPayers });
+  const filesSchema = getFilesSchema(files);
+  const idWallCompaniesSchema = getIdWallCompaniesSchema(idWallCompanies);
+  const documentsSchema = getDocumentsSchema(documents);
+  const aboutSchema = getAboutSchema(about);
+
+  const entitySchema = yup
+    .object({
+      documentNumber: yup
+        .string()
+        .strict()
+        .required()
+        .documentNumber(),
+      email: yup
+        .string()
+        .email()
+        .required(),
+      contactEmail: yup
+        .string()
+        .strict(),
+      type: yup
+        .string()
+        .strict(),
+      accounts: yup
+        .array(),
+      phone: yup
+        .string()
+        .strict()
+        .matches(PHONE_REG_EXP, 'Phone number is invalid')
+        .required(),
+      liveInProperty: yup
+        .boolean()
+        .required(),
+      name: yup
+        .string()
+        .strict()
+        .required(),
+      nickname: yup
+        .string()
+        .strict()
+        .required(),
+      registry: yup
+        .array(),
+      ...relationsSchema,
+      ...addressSchema,
+      ...incomeSchema,
+      ...filesSchema,
+      ...idWallCompaniesSchema,
+      ...documentsSchema,
+      ...aboutSchema,
+    });
+
+    const propertySchema = yup
     .object()
     .shape({
       address: yup
@@ -245,16 +358,19 @@ const validate = async fields => {
         .string()
         .oneOf(RESIDENTS)
         .required(),
-      whoIsOwner: yup
-        .string()
-        .oneOf(PERSONAS)
-        .when('isResident', {
-          is: resident => resident === 'THIRD_PARTIES',
-          then: yup
-            .string()
-            .strict()
-            .required()
-        }),
+      owners: yup
+        .array()
+        .of(
+          yup
+          .string(PERSONAS)
+          .when('isResident', {
+            is: resident => resident === 'THIRD_PARTIES',
+            then: yup
+              .string()
+              .strict()
+              .required()
+          })
+        ),
       garages: yup
         .string()
         .oneOf(GARAGES)
@@ -279,34 +395,32 @@ const validate = async fields => {
     })
     .required();
 
-  const schema = yup.object().shape({
-    whoIsSecondPayer: yup
-      .string()
-      .strict()
-      .oneOf(PERSONAS)
-      .when('secondPayer', {
-        is: secondPayer => secondPayer,
-        then: yup
-          .string()
+    const schema = yup.object().shape({
+      secondPayers: yup
+        .array()
+        .of(
+          yup
+          .string(PERSONAS)
           .strict()
-          .required()
-      }),
-    clientId: yup
-      .string()
-      .strict()
-      .required()
-  });
+          .required(),
+        ),
+      clientId: yup
+        .string()
+        .strict()
+        .required()
+    });
 
-  try {
-    const { isResident, whoIsOwner } = _.get(fields, 'property', {});
-    const { secondPayer } = _.get(fields, 'people', {});
-    await peopleSchema.validate({ ...fields.people, isResident, whoIsOwner });
-    await propertySchema.validate(fields.property);
-    const isValid = await schema.validate({ ...fields, secondPayer });
-    return isValid;
-  } catch (err) {
-    throw new createError.BadRequest(err.message);
-  }
+    try {
+      const { isResident, owners } = _.get(fields, 'property', {});
+      const { clientId } = fields;
+      const secondPayers = _.get(fields, 'secondPayers', []);
+      await entitySchema.validate({ ...fields.entity, isResident, owners });
+      await propertySchema.validate(fields.property);
+      const isValid = await schema.validate({ clientId, secondPayers });
+      return isValid;
+    } catch (err) {
+      throw new createError.BadRequest(err.message);
+    }
 };
 
-module.exports = { validate };
+module.exports = { validate, validateDocumentNumber};
