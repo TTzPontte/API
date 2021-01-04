@@ -5,7 +5,6 @@ const createError = require(`${path}/node_modules/http-errors`);
 const { validateDocumentNumber } = require(`${path}/helpers/validator`);
 
 let {
-  EDUCATION_LEVELS,
   PROPERTY_TYPES,
   PROPERTY_AGE,
   BEDROOMS,
@@ -16,7 +15,6 @@ let {
   PHONE_REG_EXP
 } = require('./constants');
 
-EDUCATION_LEVELS = Object.keys(EDUCATION_LEVELS);
 PROPERTY_TYPES = Object.keys(PROPERTY_TYPES);
 PERSONAS = Object.keys(PERSONAS);
 RESIDENTS = Object.keys(RESIDENTS);
@@ -28,18 +26,18 @@ const getRelationsSchema = async relations => {
     .object()
     .shape({
     participation: yup
-          .string()
-          .strict(),
-        id: yup
-          .string()
-          .strict(),
-        type: yup
-          .array()
-          .of(
-            yup
-            .string()
-          )
-      });
+    .string()
+    .strict(),
+    id: yup
+    .string()
+    .strict(),
+    type: yup
+    .array()
+    .of(
+      yup
+      .string()
+      )
+    });
 
   return { relationsSchema };
 };

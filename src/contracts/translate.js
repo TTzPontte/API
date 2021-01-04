@@ -59,10 +59,10 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
       ...personas,
       ...boolValues,
       incomeSource: INCOME_SOURCES[source]
-    }
+    };
   };
 
-  const translatedEntity = translateEntity(entity)
+  const translatedEntity = translateEntity(entity);
 
   const translatedProperty = {
     ...property,
