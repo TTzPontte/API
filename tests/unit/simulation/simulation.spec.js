@@ -52,7 +52,7 @@ describe('simulation handler', () => {
       simulation: { ...calculatedResult }
     };
     const response = await simulation(event);
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(201);
     expect(JSON.parse(response.body)).toStrictEqual(expectedResult);
   });
 

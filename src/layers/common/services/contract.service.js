@@ -1,6 +1,5 @@
 const createError = require('http-errors');
 const ContractModel = require('../models/contract');
-const EntityModel = require('../models/entity');
 const { getEntity } = require('../elasticsearch/entity.es');
 const Property = require('./property.service');
 const Entity = require('./entity.service');

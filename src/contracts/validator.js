@@ -25,8 +25,6 @@ PERSONAS = Object.keys(PERSONAS);
 INCOME_SOURCES = Object.keys(INCOME_SOURCES);
 RESIDENTS = Object.keys(RESIDENTS);
 
-const isSecondPayers = ({ secondPayers, persona }) => secondPayers === persona;
-
 yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', documentNumber => validateDocumentNumber(documentNumber)));
 
 const getRelationsSchema = async relations => {

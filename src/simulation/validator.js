@@ -1,6 +1,8 @@
 const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const yup = require(`${path}/node_modules/yup`);
 const createError = require(`${path}/node_modules/http-errors`);
+const { validateDocumentNumber } = require(`${path}/helpers/validator`);
+
 let {
   MIN_PROPERTY_VALUE,
   MIN_AGE,
@@ -12,8 +14,8 @@ let {
   MAX_LOAN_VALUE,
   PHONE_REG_EXP
 } = require('./constants');
+
 LOAN_MOTIVATION = Object.keys(LOAN_MOTIVATION);
-const { validateDocumentNumber } = require(`${path}/helpers/validator`);
 
 yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', documentNumber => validateDocumentNumber(documentNumber)));
 
