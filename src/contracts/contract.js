@@ -20,7 +20,7 @@ const contract = async event => {
   
   const contract = await Contract.save({ ...translatedBody, clientId, lastContract });
   
-  return success({ ...contract });
+  return created({ ...contract });
 };
 
 module.exports = { handler: middy(contract).use(ssmCognito()), contract };
