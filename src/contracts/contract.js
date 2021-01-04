@@ -8,7 +8,6 @@ const translateBody = require('./translate');
 const { ssmCognito } = require(`${path}/middy/shared/ssm`);
 
 const contract = async event => {
-  
   const { body, clientId } = event;
   const { simulationId } = body;
   

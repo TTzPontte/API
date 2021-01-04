@@ -22,7 +22,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
       const incomeSource = find(INCOME_SOURCES, persona.incomeSource);  
       persona.relation = PERSONAS[person];
       persona.incomeSource = INCOME_SOURCES[incomeSource];
-      relations.push(persona)
+      relations.push(persona);
     });
   
     return relations[0];
