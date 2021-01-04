@@ -23,20 +23,20 @@ yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', 
 
 const getRelationsSchema = async relations => {
   const relationsSchema = yup
-    .object()
-    .shape({
-    participation: yup
-    .string()
-    .strict(),
-    id: yup
-    .string()
-    .strict(),
-    type: yup
-    .array()
-    .of(
-      yup
-      .string()
-      )
+  .object()
+  .shape({
+      participation: yup
+        .string()
+        .strict(),
+      id: yup
+        .string()
+        .strict(),
+      type: yup
+        .array()
+        .of(
+          yup
+          .string()
+          )
     });
 
   return { relationsSchema };
