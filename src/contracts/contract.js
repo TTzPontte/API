@@ -8,18 +8,19 @@ const translateBody = require('./translate');
 const { ssmCognito } = require(`${path}/middy/shared/ssm`);
 
 const contract = async event => {
+  
   const { body, clientId } = event;
   const { simulationId } = body;
-
+  
   await validate({ ...body, clientId });
-
+  
   const translatedBody = translateBody(body);
-
+  
   const lastContract = await Simulation.getLastContract(simulationId);
-
+  
   const contract = await Contract.save({ ...translatedBody, clientId, lastContract });
-
-  return created({ ...contract });
+  
+  return success({ ...contract });
 };
 
 module.exports = { handler: middy(contract).use(ssmCognito()), contract };

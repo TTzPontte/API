@@ -1,8 +1,8 @@
 const createError = require('http-errors');
 const ContractModel = require('../models/contract');
-const { getPeople } = require('../elasticsearch/people.es');
+const { getEntity } = require('../elasticsearch/entity.es');
 const Property = require('./property.service');
-const People = require('./people.service');
+const Entity = require('./entity.service');
 const User = require('./user.service');
 const Process = require('./process.service');
 
@@ -12,11 +12,15 @@ const getContractByOwner = async contractOwner => {
     .exec();
 };
 
-const isRegistered = async ({ cpf, email }) => {
-  const people = await getPeople({ cpf, email });
+const setEntityType = documentNumber => {
+  return documentNumber.length === 14 ? "PJ" : "PF";
+};
 
-  if (people && people.length) {
-    for (const person of people) {
+const isRegistered = async ({ email, documentNumber }) => {
+  const entity = await getEntity({ email, documentNumber });
+
+  if (entity && entity.length) {
+    for (const person of entity) {
       const contract = await getContractByOwner(person.id);
       if (contract && contract.length) {
         throw new createError.Conflict('Customer already exists');
@@ -26,30 +30,97 @@ const isRegistered = async ({ cpf, email }) => {
   return false;
 };
 
-const save = async ({ people, property, lastContract, ...data }) => {
+const setRelations = entity => {
+  const relationsList = [];
+  const relations = entity.relations;
+  relations.map((relation) => {
+    const relationType = setEntityType(relation.cpf);
+    relationFormated = {
+      documentNumber: relation.cpf,
+      birth: relation.birth,
+      email: relation.email,
+      contactEmail: relation.email,
+      name: relation.name,
+      relation: relation.relation,
+      income: [
+        {
+          incomeSource: relation.incomeSource
+        }
+      ],
+      type: relationType
+    };
+    relationsList.push(relationFormated);
+  })
+  return relationsList;
+};
+
+const saveRelations = async (entity) => {
+  const relationsList = [];
+  const relations = setRelations(entity);
+  for (const relation of relations) {
+    const relat = await Entity.save(relation);
+    const rel = {
+      type: [relation.relation],
+      id: relat.id
+    };
+    relationsList.push(rel);
+  };
+  return relationsList;
+};
+
+const getSecondPayers = ({ relations, secondPayers }) => {
+  const secondPayerList = [];
+  for ( const persona of secondPayers ) {
+    for ( const relation of relations ) {
+      if (relation.type[0] === persona) {
+        secondPayerList.push(relation.id)
+      };
+    };
+  };
+  return secondPayerList
+};
+
+const save = async ({ entity, property, lastContract, secondPayers, ...data }) => {
   const Cognito = require('./cognito.service');
 
-  await isRegistered(people);
-  const { name, email, phone, cpf } = people;
+  await isRegistered(entity);
+  const { name, email, phone, documentNumber } = entity;
   const { id, source, campaign, trackCode, simulation } = lastContract;
-  const {
-    parameters: { loanValue }
-  } = simulation;
+  const { parameters: { loanValue } } = simulation;
 
-  const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, cpf, id });
+  const entityType = setEntityType(documentNumber);
 
-  const { id: contractOwner } = await People.save(people);
+  const relations = await saveRelations({ ...entity, type: entityType });
+  entity.relations = relations;
+
+  const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
+  const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
   const { id: propertyId } = await Property.save(property, trackCode);
 
   await User.save({
     id: cognitoUser.Username,
+    cpf: documentNumber,
     trackingCode: trackCode,
-    peopleId: contractOwner,
+    entityId: contractOwner,
     campaign: campaign,
     source: source
   });
 
-  const contract = new ContractModel({ ...lastContract, ...data, propertyId, contractOwner, source, campaign });
+  const { STATUS_GROUP_DEFAULT_ID } = process.env;
+  const payers = getSecondPayers({ relations, secondPayers })
+
+  const contract = new ContractModel({ 
+    ...lastContract, 
+    ...data, 
+    propertyId, 
+    contractManager: contractOwner, 
+    contractOwners: [contractOwner], 
+    source, 
+    campaign, 
+    secondPayers: payers, 
+    statusGroupContractId: STATUS_GROUP_DEFAULT_ID
+  });
+  
   const savedContract = await contract.save();
 
   await Process.save({

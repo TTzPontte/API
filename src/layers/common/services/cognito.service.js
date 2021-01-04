@@ -29,11 +29,11 @@ const requestNewTemporaryPassword = async Username => {
   return CognitoService.adminCreateUser(params);
 };
 
-const buildAttributes = ({ name, email, cpf, phone }) => [
+const buildAttributes = ({ name, email, documentNumber, phone }) => [
   { Name: 'name', Value: name },
   { Name: 'email', Value: email },
   { Name: 'phone_number', Value: phone },
-  { Name: 'custom:cpf', Value: cpf }
+  { Name: 'custom:cpf', Value: documentNumber }
 ];
 
 const buildValidationData = ({ trackCode, id, loanValue, term, installment, loanValueSelected, phone }) => [

@@ -1,6 +1,6 @@
 const es = require('./aws_es_client');
 
-const getClientContract = async ({ cpf, email, clientId }) => {
+const getClientContract = async ({ documentNumber, email, clientId }) => {
   const query = {
     index: 'contract',
     type: 'report',
@@ -10,7 +10,7 @@ const getClientContract = async ({ cpf, email, clientId }) => {
           should: [
             {
               term: {
-                'simulation.parameters.cpf': cpf
+                'simulation.parameters.cpf': documentNumber
               }
             },
             {

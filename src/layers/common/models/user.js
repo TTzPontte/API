@@ -10,12 +10,13 @@ const UsersSchema = new Schema({
     type: String,
     hashKey: true
   },
+  cpf: String,
   trackingCodes: [
     {
       type: String
     }
   ],
-  peopleId: String,
+  entityId: String,
   campaign: String,
   source: String
 });

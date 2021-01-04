@@ -35,9 +35,6 @@ Mappings:
     prod:
       domain: 'api.pontte.com.br'
       esEndpoint: 'https://search-simulations-prod-ckbzwabelmgkkrbvpyuio2lq6y.us-east-1.es.amazonaws.com'
-    refactoring:
-      domain: 'apirefactoring.pontte.com.br'
-      esEndpoint: 'https://search-simulations-refactoring-766fr26isiln3mashjapbmoq6i.us-east-1.es.amazonaws.com'
 
 Globals:
   Function:
@@ -136,7 +133,7 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
         - DynamoDBCrudPolicy:
-            TableName: !Sub "People.${Environment}"
+            TableName: !Sub "Entity.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Contract.${Environment}"
         - LambdaInvokePolicy:
@@ -162,6 +159,8 @@ Resources:
       Policies:
         - SSMParameterReadPolicy:
             ParameterName: !Sub 'cognito/${Environment}/*'
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'statusGroup/${Environment}/*'
         - SQSSendMessagePolicy:
             QueueName: !Sub "ApiAuditLog_${Environment}"
         - DynamoDBCrudPolicy:
@@ -169,7 +168,7 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
         - DynamoDBCrudPolicy:
-            TableName: !Sub "People.${Environment}"
+            TableName: !Sub "Entity.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Property.${Environment}"
         - DynamoDBCrudPolicy:
