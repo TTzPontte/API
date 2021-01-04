@@ -5,7 +5,6 @@ const createError = require(`${path}/node_modules/http-errors`);
 const { validateDocumentNumber } = require(`${path}/helpers/validator`);
 
 let {
-  MARITAL_STATUS,
   EDUCATION_LEVELS,
   PROPERTY_TYPES,
   PROPERTY_AGE,
@@ -13,16 +12,13 @@ let {
   suitesOptions,
   PERSONAS,
   GARAGES,
-  INCOME_SOURCES,
   RESIDENTS,
   PHONE_REG_EXP
 } = require('./constants');
 
-MARITAL_STATUS = Object.keys(MARITAL_STATUS);
 EDUCATION_LEVELS = Object.keys(EDUCATION_LEVELS);
 PROPERTY_TYPES = Object.keys(PROPERTY_TYPES);
 PERSONAS = Object.keys(PERSONAS);
-INCOME_SOURCES = Object.keys(INCOME_SOURCES);
 RESIDENTS = Object.keys(RESIDENTS);
 
 yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', documentNumber => validateDocumentNumber(documentNumber)));

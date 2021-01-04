@@ -17,20 +17,19 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
   const translateRelations = entity.relations.map((relation) => {
     const relations = [];
     Object.keys(relation).map((personas) => {
-      const person = find(PERSONAS, personas);  
+      const person = find(PERSONAS, personas);
       const persona = relation[person];
-      const incomeSource = find(INCOME_SOURCES, persona.incomeSource);  
+      const incomeSource = find(INCOME_SOURCES, persona.incomeSource);
       persona.relation = PERSONAS[person];
       persona.incomeSource = INCOME_SOURCES[incomeSource];
       relations.push(persona);
     });
-  
     return relations[0];
   });
-  
+
   const translatedSecondPayers = secondPayers.map((secondPayer) => {
     const persona = find(PERSONAS, secondPayer);
-    return PERSONAS[persona]
+    return PERSONAS[persona];
   });
 
   const boolValues = BOOL_VALUES.reduce(translateBoolValue, {});
@@ -54,7 +53,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
     entity.about.maritalStatus = MARITAL_STATUS[marital];
     entity.relations = translateRelations;
     entity.contactEmail = entity.email;
-    
+
     return {
       ...entity,
       ...personas,
@@ -62,9 +61,9 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
       incomeSource: INCOME_SOURCES[source]
     }
   };
-  
+
   const translatedEntity = translateEntity(entity)
-  
+
   const translatedProperty = {
     ...property,
     type: PROPERTY_TYPES[type],
