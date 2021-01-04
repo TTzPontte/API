@@ -14,45 +14,45 @@ describe('contract validator', () => {
   });
 
   describe('throws an error when', () => {
-    describe('people', () => {
+    describe('entity', () => {
       describe('address', () => {
         it('is undefined', async () => {
-          delete data.people.address;
+          delete data.entity.address;
           await expect(validate(data)).rejects.toThrow();
         });
         describe('cep', () => {
           it('is undefined', async () => {
-            delete data.people.address.cep;
+            delete data.entity.address.cep;
             await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('city', () => {
           it('is undefined', async () => {
-            delete data.people.address.city;
+            delete data.entity.address.city;
             await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('neighborhood', () => {
           it('is undefined', async () => {
-            delete data.people.address.neighborhood;
+            delete data.entity.address.neighborhood;
             await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('number', () => {
           it('is undefined', async () => {
-            delete data.people.address.number;
+            delete data.entity.address.number;
             await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('state', () => {
           it('is undefined', async () => {
-            delete data.people.address.state;
+            delete data.entity.address.state;
             await expect(validate(data)).rejects.toThrow();
           });
         });
         describe('streetAddress', () => {
           it('is undefined', async () => {
-            delete data.people.address.streetAddress;
+            delete data.entity.address.streetAddress;
             await expect(validate(data)).rejects.toThrow();
           });
         });
@@ -60,187 +60,187 @@ describe('contract validator', () => {
 
       describe('averageIncome', () => {
         it('is undefined', async () => {
-          delete data.people.averageIncome;
+          delete data.entity.averageIncome;
           await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a number', async () => {
-          data.people.averageIncome = 'al';
+          data.entity.averageIncome = 'al';
           await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('birth', () => {
         it('is undefined', async () => {
-          delete data.people.birth;
+          delete data.entity.birth;
           await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a number', async () => {
-          data.people.birth = '123123123';
+          data.entity.birth = '123123123';
           await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('children', () => {
         it('is undefined', async () => {
-          delete data.people.children;
+          delete data.entity.children;
           await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
-          data.people.children = 2313213;
+          data.entity.children = 2313213;
           await expect(validate(data)).rejects.toThrow();
         });
 
         it('is not boolean', async () => {
-          data.people.children = 'A';
+          data.entity.children = 'A';
           await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('cnpj', () => {
         it('not a string', async () => {
-          data.people.cnpj = 2313213;
+          data.entity.cnpj = 2313213;
           await expect(validate(data)).rejects.toThrow();
         });
 
         it('has a length different from 14', async () => {
-          data.people.cnpj = '2313213';
+          data.entity.cnpj = '2313213';
           await expect(validate(data)).rejects.toThrow();
         });
       });
 
-      describe('cpf', () => {
+      describe('documentNumber', () => {
         it('is undefined when cnpj is undefined', async () => {
-          delete data.people.cpf;
-          delete data.people.cnpj;
+          delete data.entity.documentNumber;
+          delete data.entity.cnpj;
           await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
-          data.people.cpf = 2313213;
+          data.entity.documentNumber = 2313213;
           await expect(validate(data)).rejects.toThrow();
         });
 
         it('has a length different from 11', async () => {
-          data.people.cpf = '2313213';
+          data.entity.documentNumber = '2313213';
           await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('email', () => {
         it('is undefined', async () => {
-          delete data.people.email;
+          delete data.entity.email;
           await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
-          data.people.email = 2313213;
+          data.entity.email = 2313213;
           await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a email', async () => {
-          data.people.email = '2313213';
+          data.entity.email = '2313213';
           await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('incomeSource', () => {
         it('is undefined', async () => {
-          delete data.people.incomeSource;
+          delete data.entity.incomeSource;
           await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
-          data.people.incomeSource = 2313213;
+          data.entity.incomeSource = 2313213;
           await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('incomeSourceActivity', () => {
         it('is undefined and cnpj exists', async () => {
-          data.people.cnpj = '12345678912345';
-          delete data.people.incomeSourceActivity;
+          data.entity.cnpj = '12345678912345';
+          delete data.entity.incomeSourceActivity;
           await expect(validate(data)).rejects.toThrow();
         });
 
         it('not a string', async () => {
-          data.people.incomeSourceActivity = 2313213;
+          data.entity.incomeSourceActivity = 2313213;
           await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('maritalStatus', () => {
         it('is undefined', async () => {
-          delete data.people.maritalStatus;
+          delete data.entity.maritalStatus;
           await expect(validate(data)).rejects.toThrow();
         });
         it('is not a valid marital status', async () => {
-          data.people.maritalStatus = 'al';
+          data.entity.maritalStatus = 'al';
           await expect(validate(data)).rejects.toThrow();
         });
         it('not a string', async () => {
-          data.people.maritalStatus = 2313213;
+          data.entity.maritalStatus = 2313213;
           await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('educationLevel', () => {
         it('is undefined', async () => {
-          delete data.people.educationLevel;
+          delete data.entity.educationLevel;
           await expect(validate(data)).rejects.toThrow();
         });
         it('is not a valid education level', async () => {
-          data.people.educationLevel = 'al';
+          data.entity.educationLevel = 'al';
           await expect(validate(data)).rejects.toThrow();
         });
         it('not a string', async () => {
-          data.people.educationLevel = 2313213;
+          data.entity.educationLevel = 2313213;
           await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('secondPayer', () => {
         it('is undefined', async () => {
-          delete data.people.secondPayer;
+          delete data.entity.secondPayer;
           await expect(validate(data)).rejects.toThrow();
         });
         it('is not boolean', async () => {
-          data.people.secondPayer = 'al';
+          data.entity.secondPayer = 'al';
           await expect(validate(data)).rejects.toThrow();
         });
         it('not a string', async () => {
-          data.people.secondPayer = 2313213;
+          data.entity.secondPayer = 2313213;
           await expect(validate(data)).rejects.toThrow();
         });
       });
       describe('liveInProperty', () => {
         it('is undefined', async () => {
-          delete data.people.liveInProperty;
+          delete data.entity.liveInProperty;
           await expect(validate(data)).rejects.toThrow();
         });
         it('is not boolean', async () => {
-          data.people.liveInProperty = 'al';
+          data.entity.liveInProperty = 'al';
           await expect(validate(data)).rejects.toThrow();
         });
         it('not a string', async () => {
-          data.people.liveInProperty = 2313213;
+          data.entity.liveInProperty = 2313213;
           await expect(validate(data)).rejects.toThrow();
         });
       });
 
       describe('phone', () => {
         it('is undefined', async () => {
-          delete data.people.phone;
+          delete data.entity.phone;
           await expect(validate(data)).rejects.toThrow();
         });
         it('is invalid', async () => {
-          data.people.phone = '9859-9070';
+          data.entity.phone = '9859-9070';
           await expect(validate(data)).rejects.toThrow();
         });
         it('not a string', async () => {
-          data.people.phone = 2313213;
+          data.entity.phone = 2313213;
           await expect(validate(data)).rejects.toThrow();
         });
       });
@@ -248,18 +248,18 @@ describe('contract validator', () => {
       describe('Personas', () => {
         describe('secondPayer', () => {
           it('incomeSource is undefined', async () => {
-            delete data.people.mother.incomeSource;
+            delete data.entity.mother.incomeSource;
             await expect(validate(data)).rejects.toThrow();
           });
           it('averageIncome is undefined', async () => {
-            delete data.people.mother.averageIncome;
+            delete data.entity.mother.averageIncome;
             await expect(validate(data)).rejects.toThrow();
           });
         });
 
         describe('spouse', () => {
           it('is undefined', async () => {
-            delete data.people.spouse;
+            delete data.entity.spouse;
             await expect(validate(data)).rejects.toThrow();
           });
         });
@@ -456,7 +456,7 @@ describe('contract validator', () => {
     describe('whoIsSecondPayer', () => {
       it('is undefined when secondPayer is true', async () => {
         delete data.whoIsSecondPayer;
-        delete data.people.secondPayer;
+        delete data.entity.secondPayer;
 
         await expect(validate(data)).rejects.toThrow();
       });

@@ -1,10 +1,10 @@
 const layerPath = '../../../../../src/layers/common/';
-let { save } = require(`${layerPath}services/people.service`);
+let { save } = require(`${layerPath}services/entity.service`);
 
-describe('save people', () => {
-  let people;
+describe('save entity', () => {
+  let entity;
   beforeEach(() => {
-    people = {
+    entity = {
       address: {
         cep: '02141000',
         city: 'São Paulo',
@@ -17,7 +17,7 @@ describe('save people', () => {
       birth: '1997-01-18',
       child: {},
       children: 'Não',
-      cpf: '31854887092',
+      documentNumber: '31854887092',
       createdAt: '2020-04-06T19:30:45Z',
       documents: {},
       educationLevel: 'ENSINO SUPERIOR COMPLETO',
@@ -27,7 +27,7 @@ describe('save people', () => {
         accounts: [],
         address: {},
         child: {},
-        cpf: '41476624046',
+        documentNumber: '41476624046',
         documents: {},
         email: 'paidasilva@gmail.com',
         father: {},
@@ -49,7 +49,7 @@ describe('save people', () => {
         averageIncome: 15000,
         birth: '1965-02-15',
         child: {},
-        cpf: '16356520060',
+        documentNumber: '16356520060',
         documents: {},
         email: 'mãe+email@gmail.com',
         father: {},
@@ -71,7 +71,7 @@ describe('save people', () => {
         address: {},
         birth: '1997-09-14',
         child: {},
-        cpf: '75798405028',
+        documentNumber: '75798405028',
         documents: {},
         email: 'teste+t332@gmail.com',
         father: {},
@@ -87,15 +87,15 @@ describe('save people', () => {
     };
   });
 
-  it('saves people correctly', async () => {
-    await save(people);
+  it('saves entity correctly', async () => {
+    await save(entity);
     expect(global.mockModelSave).toHaveBeenCalledTimes(4);
   });
 
-  it('saves two people', async () => {
-    delete people.father;
-    delete people.mother;
-    await save(people);
+  it('saves two entity', async () => {
+    delete entity.father;
+    delete entity.mother;
+    await save(entity);
     expect(global.mockModelSave).toHaveBeenCalledTimes(2);
   });
 });

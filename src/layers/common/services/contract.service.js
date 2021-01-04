@@ -65,6 +65,7 @@ const saveRelations = async (entity) => {
     };
     relationsList.push(rel);
   };
+
   return relationsList;
 };
 
@@ -87,7 +88,6 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   const { name, email, phone, documentNumber } = entity;
   const { id, source, campaign, trackCode, simulation } = lastContract;
   const { parameters: { loanValue } } = simulation;
-
   const entityType = setEntityType(documentNumber);
 
   const relations = await saveRelations({ ...entity, type: entityType });
@@ -109,15 +109,15 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   const { STATUS_GROUP_DEFAULT_ID } = process.env;
   const payers = getSecondPayers({ relations, secondPayers });
 
-  const contract = new ContractModel({ 
-    ...lastContract, 
-    ...data, 
-    propertyId, 
-    contractManager: contractOwner, 
-    contractOwners: [contractOwner], 
-    source, 
-    campaign, 
-    secondPayers: payers, 
+  const contract = new ContractModel({
+    ...lastContract,
+    ...data,
+    propertyId,
+    contractManager: contractOwner,
+    contractOwners: [contractOwner],
+    source,
+    campaign,
+    secondPayers: payers,
     statusGroupContractId: STATUS_GROUP_DEFAULT_ID
   });
 

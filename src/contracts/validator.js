@@ -176,7 +176,7 @@ const getDocumentsSchema = async documents => {
   const documentsSchema = yup
     .array()
     .of(
-        yup
+      yup
         .object()
         .shape({
           type: yup
@@ -394,9 +394,9 @@ const validate = async fields => {
       .array()
       .of(
         yup
-        .string(PERSONAS)
-        .strict()
-        .required()
+          .string(PERSONAS)
+          .strict()
+          .required()
       ),
     clientId: yup
       .string()
