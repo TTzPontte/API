@@ -2,7 +2,7 @@ const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
 const { validate } = require('./validator');
 const Contract = require(`${path}/services/contract.service`);
 const Simulation = require(`${path}/services/simulation.service`);
-const { created } = require(`${path}/lambda/response`);
+const { success } = require(`${path}/lambda/response`);
 const middy = require(`${path}/middy/middy`);
 const translateBody = require('./translate');
 const { ssmCognito } = require(`${path}/middy/shared/ssm`);
@@ -20,7 +20,7 @@ const contract = async event => {
   
   const contract = await Contract.save({ ...translatedBody, clientId, lastContract });
   
-  return created({ ...contract });
+  return success({ ...contract });
 };
 
 module.exports = { handler: middy(contract).use(ssmCognito()), contract };
