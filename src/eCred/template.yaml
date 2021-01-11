@@ -76,7 +76,7 @@ Resources:
   SimulationSaveApiEcred2Fn:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub "SimulationSaveApiEcredFn-${Environment}"
+      FunctionName: !Sub "SimulationSaveApiEcred2Fn-${Environment}"
       Description: Save the simulations done from partners
       CodeUri: simulation
       Handler: simulation.handler

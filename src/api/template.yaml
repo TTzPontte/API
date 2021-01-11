@@ -91,7 +91,7 @@ Resources:
   SimulationSaveApi2Fn:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub "SimulationSaveApiFn-${Environment}"
+      FunctionName: !Sub "SimulationSaveApi2Fn-${Environment}"
       Description: Save the simulations done from partners
       CodeUri: simulation
       Handler: simulation.handler
@@ -122,7 +122,7 @@ Resources:
   ContractSaveApi2Fn:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub "ContractSaveApiFn-${Environment}"
+      FunctionName: !Sub "ContractSaveApi2Fn-${Environment}"
       Description: Save the contract done from partners
       CodeUri: contracts
       Handler: contract.handler
