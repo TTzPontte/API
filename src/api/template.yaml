@@ -16,6 +16,10 @@ Parameters:
       - staging
       - prod
 
+  DBClients:
+    Description: Ref of DBClients
+    Type: String
+
   CommonAPILayer:
     Description: Ref of CommonAPILayer
     Type: String
@@ -93,7 +97,7 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Sub "Simulations.${Environment}"
         - DynamoDBCrudPolicy:
-            TableName: !Ref DBClients
+            TableName: DBClients
         - DynamoDBCrudPolicy:
             TableName: !Sub "People.${Environment}"
         - DynamoDBCrudPolicy:
@@ -126,7 +130,7 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Sub "Contract.${Environment}"
         - DynamoDBCrudPolicy:
-            TableName: !Ref DBClients
+            TableName: DBClients
         - DynamoDBCrudPolicy:
             TableName: !Sub "People.${Environment}"
         - DynamoDBCrudPolicy:
