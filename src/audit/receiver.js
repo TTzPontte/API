@@ -1,4 +1,4 @@
-const path = process.env.NODE_ENV === 'test' ? '../layers/common/' : '/opt/';
+const path = process.env.NODE_ENV === 'test' ? '../../layers/common/' : '/opt/';
 const Lambda = require(`${path}lambda`);
 const AuditLogService = require(`${path}services/auditlog.js`);
 

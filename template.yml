@@ -22,20 +22,6 @@ Parameters:
 Conditions:
   Prod: !Equals [!Ref Project, prod]
 
-Mappings:
-  Config:
-    test:
-      esEndpoint: 'test'
-    dev:
-      domain: 'apidev.pontte.com.br'
-      esEndpoint: 'https://search-simulations-dev-utjmngpwpsdremjdqo2cupssmy.us-east-1.es.amazonaws.com'
-    staging:
-      domain: 'sandbox.pontte.com.br'
-      esEndpoint: 'https://search-simulations-staging-44arqulu2bq6mmk7lfmramwv3u.us-east-1.es.amazonaws.com'
-    prod:
-      domain: 'api.pontte.com.br'
-      esEndpoint: 'https://search-simulations-prod-ckbzwabelmgkkrbvpyuio2lq6y.us-east-1.es.amazonaws.com'
-
 Globals:
   Function:
     Runtime: nodejs10.x
@@ -52,35 +38,8 @@ Globals:
         ENV: !Ref Environment
         ES_ENDPOINT: !FindInMap [Config, !Ref Environment, esEndpoint]
 
-  Api:
-    Cors:
-      AllowMethods: "'*'"
-      AllowHeaders: "'Authorization,Content-Type,If-Match'"
-      AllowOrigin: "'*'"
-
-Conditions:
-  Prod: !Equals [!Ref Environment, prod]
-
 Resources:
-  APIDomainName:
-    Type: "AWS::ApiGateway::DomainName"
-    Properties:
-      DomainName:
-        !FindInMap [Config, !Ref Environment, domain]
-      CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
 
-  API:
-    Type: AWS::Serverless::Api
-    Properties:
-      Name: !Sub 'API-${Environment}'
-      StageName: !Ref Environment
-
-  APIMapping:
-    Type: AWS::ApiGateway::BasePathMapping
-    Properties:
-      DomainName: !Ref APIDomainName
-      RestApiId: !Ref API
-      Stage: !Ref API.Stage
 
   CommonAPILayer:
     Type: AWS::Serverless::LayerVersion
@@ -97,6 +56,23 @@ Resources:
       Parameters:
         Project: !Ref Project
         Environment: !Ref Environment
+
+  ApiApp:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: src/api/template.yaml
+      Parameters:
+        Environment: !Ref Environment
+        CommonAPILayer: !Ref CommonAPILayer
+
+  ApiECredApp:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: src/eCred/template.yaml
+      Parameters:
+        Environment: !Ref Environment
+        CommonAPILayer: !Ref CommonAPILayer
+
 
   DBClients:
     Type: AWS::DynamoDB::Table
@@ -116,80 +92,3 @@ Resources:
       Tags:
         - { Key: Project, Value: !Ref Project }
         - { Key: Environment, Value: !Ref Environment }
-
-  SimulationSaveApiFn:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub "SimulationSaveApiFn-${Environment}"
-      Description: Save the simulations done from partners
-      CodeUri: src/simulation
-      Handler: simulation.handler
-      Tracing: Active
-      Policies:
-        - SQSSendMessagePolicy:
-            QueueName: !Sub "ApiAuditLog_${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "Simulations.${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Ref DBClients
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "Entity.${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "Contract.${Environment}"
-        - LambdaInvokePolicy:
-            FunctionName: !Sub 'SimulatorCalculatorFn-${Environment}'
-        - LambdaInvokePolicy:
-            FunctionName: !Sub 'CepGetFn-${Environment}'
-      Events:
-        api1:
-          Type: Api
-          Properties:
-            RestApiId: !Ref API
-            Path: "/v1/simulation"
-            Method: POST
-
-  ContractSaveApiFn:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub "ContractSaveApiFn-${Environment}"
-      Description: Save the contract done from partners
-      CodeUri: src/contracts
-      Handler: contract.handler
-      Tracing: Active
-      Policies:
-        - SSMParameterReadPolicy:
-            ParameterName: !Sub 'cognito/${Environment}/*'
-        - SSMParameterReadPolicy:
-            ParameterName: !Sub 'statusGroup/${Environment}/*'
-        - SQSSendMessagePolicy:
-            QueueName: !Sub "ApiAuditLog_${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "Contract.${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Ref DBClients
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "Entity.${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "Property.${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "Simulations.${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "User.${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "Process.${Environment}"
-        - LambdaInvokePolicy:
-            FunctionName: !Sub 'CepGetFn-${Environment}'
-        - Version: '2012-10-17'
-          Statement:
-            -
-              Effect: Allow
-              Action:
-                - 'cognito-idp:AdminCreateUser'
-              Resource: '*'
-      Events:
-        api1:
-          Type: Api
-          Properties:
-            RestApiId: !Ref API
-            Path: "/v1/contract"
-            Method: POST

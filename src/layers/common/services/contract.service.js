@@ -13,7 +13,7 @@ const getContractByOwner = async contractOwner => {
 };
 
 const setEntityType = documentNumber => {
-  return documentNumber.length === 14 ? "PJ" : "PF";
+  return documentNumber.length === 14 ? 'PJ' : 'PF';
 };
 
 const isRegistered = async ({ email, documentNumber }) => {
@@ -33,9 +33,9 @@ const isRegistered = async ({ email, documentNumber }) => {
 const setRelations = entity => {
   const relationsList = [];
   const relations = entity.relations;
-  relations.map((relation) => {
+  relations.map(relation => {
     const relationType = setEntityType(relation.cpf);
-    relationFormated = {
+    const relationFormated = {
       documentNumber: relation.cpf,
       birth: relation.birth,
       email: relation.email,
@@ -50,11 +50,11 @@ const setRelations = entity => {
       type: relationType
     };
     relationsList.push(relationFormated);
-  })
+  });
   return relationsList;
 };
 
-const saveRelations = async (entity) => {
+const saveRelations = async entity => {
   const relationsList = [];
   const relations = setRelations(entity);
   for (const relation of relations) {
@@ -64,20 +64,20 @@ const saveRelations = async (entity) => {
       id: relat.id
     };
     relationsList.push(rel);
-  };
+  }
   return relationsList;
 };
 
 const getSecondPayers = ({ relations, secondPayers }) => {
   const secondPayerList = [];
-  for ( const persona of secondPayers ) {
-    for ( const relation of relations ) {
+  for (const persona of secondPayers) {
+    for (const relation of relations) {
       if (relation.type[0] === persona) {
-        secondPayerList.push(relation.id)
-      };
-    };
-  };
-  return secondPayerList
+        secondPayerList.push(relation.id);
+      }
+    }
+  }
+  return secondPayerList;
 };
 
 const save = async ({ entity, property, lastContract, secondPayers, ...data }) => {
@@ -86,7 +86,9 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   await isRegistered(entity);
   const { name, email, phone, documentNumber } = entity;
   const { id, source, campaign, trackCode, simulation } = lastContract;
-  const { parameters: { loanValue } } = simulation;
+  const {
+    parameters: { loanValue }
+  } = simulation;
 
   const entityType = setEntityType(documentNumber);
 
@@ -107,20 +109,20 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   });
 
   const { STATUS_GROUP_DEFAULT_ID } = process.env;
-  const payers = getSecondPayers({ relations, secondPayers })
+  const payers = getSecondPayers({ relations, secondPayers });
 
-  const contract = new ContractModel({ 
-    ...lastContract, 
-    ...data, 
-    propertyId, 
-    contractManager: contractOwner, 
-    contractOwners: [contractOwner], 
-    source, 
-    campaign, 
-    secondPayers: payers, 
+  const contract = new ContractModel({
+    ...lastContract,
+    ...data,
+    propertyId,
+    contractManager: contractOwner,
+    contractOwners: [contractOwner],
+    source,
+    campaign,
+    secondPayers: payers,
     statusGroupContractId: STATUS_GROUP_DEFAULT_ID
   });
-  
+
   const savedContract = await contract.save();
 
   await Process.save({
