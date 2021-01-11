@@ -16,6 +16,10 @@ Parameters:
       - staging
       - prod
 
+  ESEndpoint:
+    Description: Elastcsearch Endpoint
+    Type: String
+
   DBClients:
     Description: Ref of DBClients
     Type: String
@@ -25,7 +29,8 @@ Parameters:
     Type: String
 
 Conditions:
-  Prod: !Equals [!Ref Project, prod]
+  Prod: !Equals [!Ref Environment, prod]
+  Staging: !Equals [!Ref Environment, staging]
 
 Mappings:
   Config:
@@ -47,7 +52,7 @@ Globals:
     MemorySize: 1024
     Timeout: 120
     Layers:
-      - CommonAPILayer
+      - !Ref CommonAPILayer
     Tags:
       Project: !Ref Project
       Environment: !Ref Environment
@@ -55,7 +60,7 @@ Globals:
       Variables:
         PROJECT: !Ref Project
         ENV: !Ref Environment
-        ES_ENDPOINT: !FindInMap [Config, !Ref Environment, esEndpoint]
+        ES_ENDPOINT: !Ref ESEndpoint
   Api:
     Cors:
       AllowMethods: "'*'"
@@ -67,7 +72,7 @@ Resources:
     Type: "AWS::ApiGateway::DomainName"
     Properties:
       DomainName:
-        !FindInMap [Config, !Ref Environment, domain]
+        !If [Prod, "api.pontte.com.br", !If [Staging, "sandbox.pontte.com.br", !Sub "api${Environment}.pontte.com.br"]]
       CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
 
   API:
@@ -97,7 +102,7 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Sub "Simulations.${Environment}"
         - DynamoDBCrudPolicy:
-            TableName: DBClients
+            TableName: !Ref DBClients
         - DynamoDBCrudPolicy:
             TableName: !Sub "People.${Environment}"
         - DynamoDBCrudPolicy:
@@ -130,7 +135,7 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Sub "Contract.${Environment}"
         - DynamoDBCrudPolicy:
-            TableName: DBClients
+            TableName: !Ref DBClients
         - DynamoDBCrudPolicy:
             TableName: !Sub "People.${Environment}"
         - DynamoDBCrudPolicy:
