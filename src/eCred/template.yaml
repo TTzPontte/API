@@ -57,7 +57,7 @@ Resources:
     Type: "AWS::ApiGateway::DomainName"
     Properties:
       DomainName:
-        !If [Prod, "apiecred.pontte.com.br", !Sub "apiecred-${Environment}.pontte.com.br"]
+        !If [Prod, "apiecred2.pontte.com.br", !Sub "apiecred2-${Environment}.pontte.com.br"]
       CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
 
   APIEcred:
