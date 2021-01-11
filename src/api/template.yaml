@@ -72,7 +72,7 @@ Resources:
     Type: "AWS::ApiGateway::DomainName"
     Properties:
       DomainName:
-        !If [Prod, "api.pontte.com.br", !If [Staging, "sandbox.pontte.com.br", !Sub "api2${Environment}.pontte.com.br"]]
+        !If [Prod, "api.pontte.com.br", !If [Staging, "sandbox.pontte.com.br", !Sub "api${Environment}.pontte.com.br"]]
       CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
 
   API:
@@ -88,10 +88,10 @@ Resources:
       RestApiId: !Ref API
       Stage: !Ref API.Stage
 
-  SimulationSaveApi2Fn:
+  SimulationSaveApiFn:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub "SimulationSaveApi2Fn-${Environment}"
+      FunctionName: !Sub "SimulationSaveApiFn-${Environment}"
       Description: Save the simulations done from partners
       CodeUri: simulation
       Handler: simulation.handler
@@ -119,10 +119,10 @@ Resources:
             Path: "/v1/simulation"
             Method: POST
 
-  ContractSaveApi2Fn:
+  ContractSaveApiFn:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub "ContractSaveApi2Fn-${Environment}"
+      FunctionName: !Sub "ContractSaveApiFn-${Environment}"
       Description: Save the contract done from partners
       CodeUri: contracts
       Handler: contract.handler
