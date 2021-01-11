@@ -72,3 +72,22 @@ Resources:
       DomainName: !Ref APIDomainNameEcred
       RestApiId: !Ref APIEcred
       Stage: !Ref APIEcred.Stage
+
+  SimulationSaveApiEcredFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "SimulationSaveApiEcredFn-${Environment}"
+      Description: Save the simulations done from partners
+      CodeUri: src/ecred/simulation
+      Handler: simulation.handler
+      Tracing: Active
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "ClientsApi.${Environment}"
+      Events:
+        api1:
+          Type: Api
+          Properties:
+            RestApiId: !Ref APIEcred
+            Path: "/v1/simulation"
+            Method: POST
