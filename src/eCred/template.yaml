@@ -16,6 +16,10 @@ Parameters:
       - staging
       - prod
 
+  DBClients:
+    Description: Ref of DBClients
+    Type: String
+
   CommonAPILayer:
     Description: Ref of CommonAPILayer
     Type: String
@@ -59,22 +63,22 @@ Globals:
       AllowOrigin: "'*'"
 
 Resources:
-  APIDomainName:
+  APIDomainNameEcred:
     Type: "AWS::ApiGateway::DomainName"
     Properties:
       DomainName:
         !FindInMap [Config, !Ref Environment, domain]
       CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
 
-  API:
+  APIEcred:
     Type: AWS::Serverless::Api
     Properties:
       Name: !Sub 'API-eCred-${Environment}'
       StageName: !Ref Environment
 
-  APIMapping:
+  APIMappingEcred:
     Type: AWS::ApiGateway::BasePathMapping
     Properties:
-      DomainName: !Ref APIDomainName
-      RestApiId: !Ref API
-      Stage: !Ref API.Stage
+      DomainName: !Ref APIDomainNameEcred
+      RestApiId: !Ref APIEcred
+      Stage: !Ref APIEcred.Stage

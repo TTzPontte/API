@@ -63,6 +63,7 @@ Resources:
       Location: src/api/template.yaml
       Parameters:
         Environment: !Ref Environment
+        DBClients: !Ref DBClients
         CommonAPILayer: !Ref CommonAPILayer
 
   ApiECredApp:
@@ -71,6 +72,7 @@ Resources:
       Location: src/eCred/template.yaml
       Parameters:
         Environment: !Ref Environment
+        DBClients: !Ref DBClients
         CommonAPILayer: !Ref CommonAPILayer
 
 
