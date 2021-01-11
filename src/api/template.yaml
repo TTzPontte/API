@@ -17,7 +17,7 @@ Parameters:
       - prod
 
   CommonAPILayer:
-    Descripiton: Ref of CommonAPILayer
+    Description: Ref of CommonAPILayer
     Type: String
 
 Conditions:
