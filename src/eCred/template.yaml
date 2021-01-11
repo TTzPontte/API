@@ -73,7 +73,7 @@ Resources:
       RestApiId: !Ref APIEcred
       Stage: !Ref APIEcred.Stage
 
-  SimulationSaveApiEcredFn:
+  SimulationSaveApiEcred2Fn:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "SimulationSaveApiEcredFn-${Environment}"
