@@ -78,7 +78,7 @@ Resources:
     Properties:
       FunctionName: !Sub "SimulationSaveApiEcredFn-${Environment}"
       Description: Save the simulations done from partners
-      CodeUri: src/eCred/simulation
+      CodeUri: simulation
       Handler: simulation.handler
       Tracing: Active
       Policies:
