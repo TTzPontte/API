@@ -1,4 +1,4 @@
-const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
+const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { validate } = require('./validator');
 const { parser } = require('./parser');
 const { created, badRequest } = require(`${path}/lambda/response`);

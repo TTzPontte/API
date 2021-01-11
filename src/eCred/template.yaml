@@ -1,0 +1,80 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  API eCred
+
+Parameters:
+  Project:
+    Type: String
+    Default: "Api - eCred"
+
+  Environment:
+    Description: Execution environment
+    Type: String
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+
+  CommonAPILayer:
+    Descripiton: Ref of CommonAPILayer
+    Type: String
+
+Conditions:
+  Prod: !Equals [!Ref Project, prod]
+
+Mappings:
+  Config:
+    test:
+      esEndpoint: 'test'
+    dev:
+      domain: 'apiecred-dev.pontte.com.br'
+      esEndpoint: 'https://search-simulations-dev-utjmngpwpsdremjdqo2cupssmy.us-east-1.es.amazonaws.com'
+    staging:
+      domain: 'apiecred-sandbox.pontte.com.br'
+      esEndpoint: 'https://search-simulations-staging-44arqulu2bq6mmk7lfmramwv3u.us-east-1.es.amazonaws.com'
+    prod:
+      domain: 'apiecred.pontte.com.br'
+      esEndpoint: 'https://search-simulations-prod-ckbzwabelmgkkrbvpyuio2lq6y.us-east-1.es.amazonaws.com'
+
+Globals:
+  Function:
+    Runtime: nodejs10.x
+    MemorySize: 1024
+    Timeout: 120
+    Layers:
+      - CommonAPILayer
+    Tags:
+      Project: !Ref Project
+      Environment: !Ref Environment
+    Environment:
+      Variables:
+        PROJECT: !Ref Project
+        ENV: !Ref Environment
+        ES_ENDPOINT: !FindInMap [Config, !Ref Environment, esEndpoint]
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'Authorization,Content-Type,If-Match'"
+      AllowOrigin: "'*'"
+
+Resources:
+  APIDomainName:
+    Type: "AWS::ApiGateway::DomainName"
+    Properties:
+      DomainName:
+        !FindInMap [Config, !Ref Environment, domain]
+      CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
+
+  API:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub 'API-eCred-${Environment}'
+      StageName: !Ref Environment
+
+  APIMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref APIDomainName
+      RestApiId: !Ref API
+      Stage: !Ref API.Stage

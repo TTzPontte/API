@@ -1,4 +1,4 @@
-const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
+const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { validate } = require('./validator');
 const Contract = require(`${path}/services/contract.service`);
 const Simulation = require(`${path}/services/simulation.service`);
