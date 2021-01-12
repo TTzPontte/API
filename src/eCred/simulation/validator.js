@@ -151,7 +151,10 @@ const validate = async fields => {
       .strict()
       .required(),
     documentIssueDate: yup.date().required(),
-    documentIssuingBody: yup.date().required(),
+    documentIssuingBody: yup
+      .string()
+      .strict()
+      .required(),
     terms: yup
       .number()
       .oneOf(TERMS)
@@ -271,8 +274,8 @@ const validate = async fields => {
   });
 
   try {
-    const { clientId } = fields;
-    await consumerSchema.validate({ ...fields.consumer });
+    const { clientId, loanValue, terms } = fields;
+    await consumerSchema.validate({ ...fields.consumer, loanValue, terms });
     await propertySchema.validate(fields.property);
     const isValid = await schema.validate({ clientId });
     return isValid;
