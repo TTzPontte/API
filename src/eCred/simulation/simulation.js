@@ -1,5 +1,6 @@
 const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { parser } = require('./parser');
+const { validate } = require('./validator');
 const { created, badRequest } = require(`${path}/lambda/response`);
 const { getSiteUrl } = require(`${path}/helpers/url`);
 const Simulation = require(`${path}/services/simulation.service`);
@@ -12,6 +13,7 @@ const translateBody = require('./translate');
 
 const simulation = async event => {
   const data = await parser(event);
+  await validate(data);
 
   const address = await getAddress(data);
 
