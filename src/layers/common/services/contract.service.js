@@ -33,7 +33,7 @@ const isRegistered = async ({ email, documentNumber }) => {
 const setRelations = entity => {
   const relationsList = [];
   const relations = entity.relations;
-  relations.map((relation) => {
+  relations.map(relation => {
     const relationType = setEntityType(relation.cpf);
     const relationFormated = {
       documentNumber: relation.cpf,
@@ -54,7 +54,7 @@ const setRelations = entity => {
   return relationsList;
 };
 
-const saveRelations = async (entity) => {
+const saveRelations = async entity => {
   const relationsList = [];
   const relations = setRelations(entity);
   for (const relation of relations) {
@@ -64,8 +64,7 @@ const saveRelations = async (entity) => {
       id: relat.id
     };
     relationsList.push(rel);
-  };
-
+  }
   return relationsList;
 };
 
@@ -75,9 +74,9 @@ const getSecondPayers = ({ relations, secondPayers }) => {
     for (const relation of relations) {
       if (relation.type[0] === persona) {
         secondPayerList.push(relation.id);
-      };
-    };
-  };
+      }
+    }
+  }
   return secondPayerList;
 };
 
@@ -87,7 +86,9 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   await isRegistered(entity);
   const { name, email, phone, documentNumber } = entity;
   const { id, source, campaign, trackCode, simulation } = lastContract;
-  const { parameters: { loanValue } } = simulation;
+  const {
+    parameters: { loanValue }
+  } = simulation;
   const entityType = setEntityType(documentNumber);
 
   const relations = await saveRelations({ ...entity, type: entityType });

@@ -10,7 +10,7 @@ const save = async data => {
       const entityService = new Entity({ ...data[persona] });
       const entity = await entityService.save();
       return { ...obj, [persona]: { ...entity } };
-    };
+    }
   }, Promise.resolve({}));
 
   const entity = new Entity({ ...data, ...personas });

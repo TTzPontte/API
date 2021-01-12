@@ -10,7 +10,7 @@ const calc = (string, size) => {
   return lastSumChecker < 2 ? 0 : 11 - lastSumChecker;
 };
 
-const validateDocumentNumber = (documentNumber) => {
+const validateDocumentNumber = documentNumber => {
   if (documentNumber.length === 11) {
     return validateCpf(documentNumber);
   } else if (documentNumber.length === 14) {
