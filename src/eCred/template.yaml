@@ -82,8 +82,16 @@ Resources:
       Handler: simulation.handler
       Tracing: Active
       Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !Sub "ApiAuditLog_${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Simulations.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Contract.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Entity.${Environment}"
       Events:
         api1:
           Type: Api
