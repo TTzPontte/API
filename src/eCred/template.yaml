@@ -83,7 +83,7 @@ Resources:
       Tracing: Active
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Sub "ClientsApi.${Environment}"
+            TableName: !Ref DBClients
       Events:
         api1:
           Type: Api

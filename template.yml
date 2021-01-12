@@ -51,6 +51,24 @@ Globals:
 
 Resources:
 
+  DBClients:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'ClientsApi.${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [Prod, true, false]
+      SSESpecification:
+        SSEEnabled: true
+      AttributeDefinitions:
+        - AttributeName: clientId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: clientId
+          KeyType: HASH
+      Tags:
+        - { Key: Project, Value: !Ref Project }
+        - { Key: Environment, Value: !Ref Environment }
 
   CommonAPILayer:
     Type: AWS::Serverless::LayerVersion
@@ -87,23 +105,3 @@ Resources:
         ESEndpoint: !FindInMap [Config, !Ref Environment, esEndpoint]
         DBClients: !Ref DBClients
         CommonAPILayer: !Ref CommonAPILayer
-
-
-  DBClients:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: !Sub 'ClientsApi.${Environment}'
-      BillingMode: PAY_PER_REQUEST
-      PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: !If [Prod, true, false]
-      SSESpecification:
-        SSEEnabled: true
-      AttributeDefinitions:
-        - AttributeName: clientId
-          AttributeType: S
-      KeySchema:
-        - AttributeName: clientId
-          KeyType: HASH
-      Tags:
-        - { Key: Project, Value: !Ref Project }
-        - { Key: Environment, Value: !Ref Environment }
