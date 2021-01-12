@@ -89,7 +89,6 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   const {
     parameters: { loanValue }
   } = simulation;
-
   const entityType = setEntityType(documentNumber);
 
   const relations = await saveRelations({ ...entity, type: entityType });

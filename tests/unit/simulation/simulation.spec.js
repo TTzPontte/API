@@ -29,7 +29,7 @@ describe('simulation handler', () => {
         monthlyIncome: 6000,
         loanMotivation: ['RENOVATE_HOUSE', 'ANOTHER_REASON'],
         age: 27,
-        cpf: '25124330058',
+        documentNumber: '25124330058',
         phone: '+5586998599070',
         cep: '93347300',
         terms: 210,

@@ -102,14 +102,14 @@ const ContractsSchema = new Schema(
     },
     makeUpIncome: [
       {
-        peopleId: String,
+        entityId: String,
         type: String
       }
     ],
     campaign: String,
     source: String,
     pendencies: {},
-    contractPeople: [
+    contractEntity: [
       {
         id: String,
         role: String
