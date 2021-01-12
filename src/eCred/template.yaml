@@ -89,5 +89,5 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref APIEcred
-            Path: "/v1/simulation"
+            Path: "/v1/offers"
             Method: POST
