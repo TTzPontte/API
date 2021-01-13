@@ -13,14 +13,18 @@ const translateBody = require('./translate');
 
 const simulation = async event => {
   const data = await parser(event);
+  const { cpf, email } = data.consumer;
+  const { clientId } = data;
   await validate(data);
 
-  const address = await getAddress(data);
+  const address = await getAddress({ ...data.consumer.address, ...data });
 
   if (isValidCep(address)) {
-    await Simulation.isRegistered(data);
-    await Contract.isRegistered(data);
-
+    console.log('antes do simulation');
+    await Simulation.isRegistered({ documentNumber: cpf, email, clientId });
+    console.log('antes do contract');
+    await Contract.isRegistered({ documentNumber: cpf, email });
+    console.log('antes do calculated');
     const calculated = await Calculator.calculate(data);
 
     if (calculated.netLoan) {
