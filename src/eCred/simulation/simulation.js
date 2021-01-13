@@ -44,7 +44,7 @@ const simulation = async event => {
           }
         ];
 
-        return created({ ...response });
+        return created(response);
       } else {
         await Subscribe.save({ data, calculated });
         return badRequest('Region not supported');
