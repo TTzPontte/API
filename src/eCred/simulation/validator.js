@@ -111,6 +111,11 @@ const validate = async fields => {
       .strict()
       .required()
       .documentNumber(),
+    email: yup
+      .string()
+      .strict()
+      .email()
+      .required(),
     birthdate: yup.date().required(),
     age: yup
       .number()

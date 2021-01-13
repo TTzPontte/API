@@ -20,11 +20,8 @@ const simulation = async event => {
   const address = await getAddress({ ...data.consumer.address, ...data });
 
   if (isValidCep(address)) {
-    console.log('antes do simulation');
     await Simulation.isRegistered({ documentNumber: cpf, email, clientId });
-    console.log('antes do contract');
     await Contract.isRegistered({ documentNumber: cpf, email });
-    console.log('antes do calculated');
     const calculated = await Calculator.calculate(data);
 
     if (calculated.netLoan) {
