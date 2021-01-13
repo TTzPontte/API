@@ -35,9 +35,9 @@ describe('ContractsES', () => {
   it('should get simulation source', async () => {
     const email = faker.internet.email();
     const clientId = faker.random.uuid();
-    const cpf = '00011122233';
+    const documentNumber = '00011122233';
 
-    const result = await ContractsES.getClientContract({ cpf, email, clientId });
+    const result = await ContractsES.getClientContract({ documentNumber, email, clientId });
 
     const query = {
       index: 'contract',
@@ -48,7 +48,7 @@ describe('ContractsES', () => {
             should: [
               {
                 term: {
-                  'simulation.parameters.cpf': cpf
+                  'simulation.parameters.cpf': documentNumber
                 }
               },
               {

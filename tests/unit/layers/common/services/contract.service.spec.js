@@ -1,17 +1,18 @@
 const layerPath = '../../../../../src/layers/common/';
 let { isRegistered, getContractByOwner, save } = require(`${layerPath}services/contract.service`);
-const People = require(`${layerPath}services/people.service`);
+const Entity = require(`${layerPath}services/entity.service`);
 const Property = require(`${layerPath}services/property.service`);
 const Cognito = require(`${layerPath}services/cognito.service`);
 const Process = require(`${layerPath}services/process.service`);
 const User = require(`${layerPath}services/user.service`);
 const ContractModel = require(`${layerPath}models/contract`);
-const { getPeople } = require(`${layerPath}elasticsearch/people.es`);
+const translateBody = require('../../../../../src/contracts/translate');
+const { getEntity } = require(`${layerPath}elasticsearch/entity.es`);
 const body = require('../../../../utils/contractBody');
 
 const faker = require('faker');
 
-jest.mock('../../../../../src/layers/common/elasticsearch/people.es');
+jest.mock('../../../../../src/layers/common/elasticsearch/entity.es');
 
 describe('Contract service', () => {
   let contract;
@@ -36,20 +37,20 @@ describe('Contract service', () => {
   });
 
   describe('verifies if is registered', () => {
-    let email, cpf;
+    let email, documentNumber;
     beforeEach(() => {
       email = faker.internet.email();
-      cpf = '12345678910';
+      documentNumber = '12345678910';
     });
     it('returns false if not registered', async () => {
-      getPeople.mockReturnValueOnce([]);
+      getEntity.mockReturnValueOnce([]);
 
-      expect(await isRegistered({ email, cpf })).toBe(false);
+      expect(await isRegistered({ email, documentNumber })).toBe(false);
     });
     it('returns error if is registered', async () => {
-      getPeople.mockReturnValueOnce([{ name: 'name' }]);
+      getEntity.mockReturnValueOnce([{ name: 'name' }]);
       try {
-        await isRegistered({ email, cpf });
+        await isRegistered({ email, documentNumber });
       } catch (error) {
         expect(error.message).toBe('Customer already exists');
       }
@@ -66,29 +67,32 @@ describe('Contract service', () => {
       const id = '1';
       const lastContract = { id, trackCode: '12345', campaign: 'api', source: 'api', simulation };
 
-      const { people, property } = contract;
-      const { name, email, phone, cpf } = people;
+      const { entity, property } = contract;
+      const { name, email, phone, documentNumber } = entity;
 
-      People.save = jest.fn(() => ({ id: '1' }));
+      Entity.save = jest.fn(() => ({ id: '1' }));
       Property.save = jest.fn(() => ({ id: '1' }));
       Cognito.createUser = jest.fn(() => cognitoUser);
       User.save = jest.fn(() => ({ id: '1' }));
       global.mockModelSave = jest.fn(() => ({ id: 'contract-id-1' }));
       Process.save = jest.fn(() => ({ id: '1' }));
 
+      const contract = translateBody(contract);
+
       await save({ ...contract, lastContract });
-      expect(Cognito.createUser).toHaveBeenCalledWith({ ...lastContract, ...simulation, loanValue, name, email, phone, cpf, id });
+      expect(Cognito.createUser).toHaveBeenCalledWith({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
       expect(User.save).toHaveBeenCalledWith({
         id: cognitoUser.User.Username,
         trackingCode: lastContract.trackCode,
-        peopleId: '1',
+        cpf: documentNumber,
+        entityId: '1',
         campaign: lastContract.campaign,
         source: lastContract.source
       });
-      expect(People.save).toHaveBeenCalledWith(people);
+      expect(Entity.save).toHaveBeenCalledWith(entity);
       expect(Property.save).toHaveBeenCalledWith(property, '12345');
 
-      delete contract.people;
+      delete contract.entity;
       delete contract.property;
       expect(Process.save).toHaveBeenCalledWith({ contractId: 'contract-id-1', suites: property.suites, ...contract });
       expect(global.mockModelSave).toHaveBeenCalledTimes(1);

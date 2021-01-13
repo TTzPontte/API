@@ -29,17 +29,17 @@ jest.mock(
   { virtual: true }
 );
 
-const PeopleES = require('../../../../../src/layers/common/elasticsearch/people.es');
+const EntityES = require('../../../../../src/layers/common/elasticsearch/entity.es');
 
-describe('PeopleES', () => {
-  it('should get people source', async () => {
+describe('EntityES', () => {
+  it('should get entity source', async () => {
     const email = faker.internet.email();
-    const cpf = '00011122233';
+    const documentNumber = '00011122233';
 
-    const result = await PeopleES.getPeople({ cpf, email });
+    const result = await EntityES.getEntity({ documentNumber, email });
 
     const query = {
-      index: 'people',
+      index: 'entity',
       type: '_doc',
       body: {
         query: {
@@ -47,12 +47,12 @@ describe('PeopleES', () => {
             should: [
               {
                 term: {
-                  cpf: cpf
+                  email: email
                 }
               },
               {
                 term: {
-                  email: email
+                  documentNumber: documentNumber
                 }
               }
             ]

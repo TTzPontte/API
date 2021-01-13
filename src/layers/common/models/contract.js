@@ -13,7 +13,14 @@ const ContractsSchema = new Schema(
       default: () => uuid()
     },
     propertyId: String,
+    contractManager: String,
     contractOwner: String,
+    contractOwners: [
+      {
+        type: String
+      }
+    ],
+
     legalName: String,
     legalCNPJ: String,
     simulation: {
@@ -83,7 +90,11 @@ const ContractsSchema = new Schema(
           }
         ]
       },
-      loanValuesGross: [Number],
+      loanValuesGross: [
+        {
+          type: Number
+        }
+      ],
       date: Date,
       installment: Number,
       loanValueSelected: Number,
@@ -91,22 +102,27 @@ const ContractsSchema = new Schema(
     },
     makeUpIncome: [
       {
-        peopleId: String,
+        entityId: String,
         type: String
       }
     ],
     campaign: String,
     source: String,
     pendencies: {},
-    contractPeople: [
+    contractEntity: [
       {
         id: String,
         role: String
       }
     ],
-    whoIsSecondPayer: String,
+    secondPayers: [
+      {
+        type: String
+      }
+    ],
     clientId: String,
-    trackCode: String
+    trackCode: String,
+    statusGroupContractId: String
   })
 );
 

@@ -1,49 +1,98 @@
 const body = () => ({
-  people: {
+  clientId: '8CMYK7T-HM0MA5J-M62W27M-SWF10ZY',
+  entity: {
+    about: {
+      birthdate: '1997-01-18',
+      educationLevel: 'COLLEGE',
+      hasChild: true,
+      hasSiblings: true,
+      maritalStatus: 'MARRIED'
+    },
+    accounts: [],
     address: {
       cep: '02141000',
       city: 'São Paulo',
+      complement: 'in the left avenue',
       neighborhood: 'Vila Sabrina',
       number: '1131',
       state: 'SP',
       streetAddress: 'Avenida João Simão de Castro'
     },
     averageIncome: 30000,
-    birth: '1997-01-18',
-    cpf: '48548194057',
-    children: true,
-    createdAt: '2020-04-06T19:30:45Z',
-    educationLevel: 'COLLEGE',
-    email: 'jose.neto+65@codeminer42.com',
-    father: {
-      cpf: '67774457062',
-      birth: '1965-02-15',
-      email: 'paidasilva@gmail.com',
-      name: 'Pai da silva pagador'
-    },
-    hasSiblings: true,
-    incomeSource: 'SALARIED',
+    documentNumber: '78441617015',
+    documents: [],
+    email: 'yuri+40@pontte.com.br',
+    idWallCompanies: [],
+    income: [
+      {
+        activity: 'Engineer',
+        averageIncome: '20000',
+        incomeOrigin: 'something',
+        source: 'SALARIED',
+        value: 15000
+      }
+    ],
     liveInProperty: true,
-    maritalStatus: 'MARRIED',
-    mother: {
-      averageIncome: 15000,
-      birth: '1965-02-15',
-      cpf: '16356520060',
-      email: 'mãe+email@gmail.com',
-      incomeSource: 'SALARIED',
-      name: 'Mãe da silva'
-    },
-    name: 'Jose Chaves',
-    nickname: 'Jose',
-    phone: '+5586998599070',
-    secondPayer: true,
-    spouse: {
-      birth: '1997-09-14',
-      cpf: '75798405028',
-      email: 'teste+t332@gmail.com',
-      name: 'Isabelly'
-    }
+    name: 'Test John Doe',
+    nickname: 'Test',
+    phone: '+5599999999999',
+    registry: [],
+    relations: [
+      {
+        mother: {
+          averageIncome: 15000,
+          birth: '1965-02-15',
+          cpf: '16356520060',
+          email: 'mãe+email@gmail.com',
+          incomeSource: 'SALARIED',
+          name: 'Mãe da silva'
+        }
+      },
+      {
+        father: {
+          averageIncome: 15000,
+          birth: '1965-02-15',
+          cpf: '16356520060',
+          email: 'pai+email@gmail.com',
+          incomeSource: 'SALARIED',
+          name: 'Pae da silva'
+        }
+      },
+      {
+        child: {
+          averageIncome: 15000,
+          birth: '1965-02-15',
+          cpf: '16356520060',
+          email: 'filho+email@gmail.com',
+          incomeSource: 'SALARIED',
+          name: 'Filho da silva'
+        }
+      },
+      {
+        spouse: {
+          averageIncome: 15000,
+          birth: '1965-02-15',
+          cpf: '16356520060',
+          email: 'esposa+email@gmail.com',
+          incomeSource: 'SALARIED',
+          name: 'Esposa da silva'
+        }
+      },
+      {
+        sibling: {
+          averageIncome: 15000,
+          birth: '1965-02-15',
+          cpf: '16356520060',
+          email: 'irmao+email@gmail.com',
+          incomeSource: 'SALARIED',
+          name: 'Irmao da silva'
+        }
+      }
+    ],
+    secondPayer: true
   },
+  makeUpIncome: [],
+  pendencies: [],
   property: {
     address: {
       cep: '02141000',
@@ -57,15 +106,14 @@ const body = () => ({
     bedrooms: '3',
     financed: false,
     floorArea: '400 m²',
+    garages: '1',
     isResident: 'OWN',
     owners: [],
     suites: '1',
-    type: 'APARTMENT',
-    garages: '1'
+    type: 'APARTMENT'
   },
-  simulationId: 'lR0B7sQVTDqSrhQ_RyaJKw',
-  whoIsSecondPayer: 'mother',
-  clientId: '8CMYK7T-HM0MA5J-M62W27M-SWF10ZY'
+  secondPayers: ['spouse'],
+  simulationId: 'lR0B7sQVTDqSrhQ_RyaJKw'
 });
 
 module.exports = body;

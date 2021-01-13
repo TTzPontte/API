@@ -7,21 +7,21 @@ describe('Translate Contract', () => {
     data = body();
   });
   describe('translates', () => {
-    describe('people', () => {
+    describe('entity', () => {
       it('incomeSource', () => {
         const result = translate(data);
-        expect(result.people.incomeSource).toBe('ASSALARIADO');
-        expect(result.people.mother.incomeSource).toBe('ASSALARIADO');
+        expect(result.entity.incomeSource).toBe('ASSALARIADO');
+        expect(result.entity.mother.incomeSource).toBe('ASSALARIADO');
       });
 
       it('educationLevel', () => {
         const result = translate(data);
-        expect(result.people.educationLevel).toBe('ENSINO SUPERIOR COMPLETO');
+        expect(result.entity.educationLevel).toBe('ENSINO SUPERIOR COMPLETO');
       });
 
       it('maritalStatus', () => {
         const result = translate(data);
-        expect(result.people.maritalStatus).toBe('CASADO');
+        expect(result.entity.maritalStatus).toBe('CASADO');
       });
     });
 

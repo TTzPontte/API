@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  API eCred
+
+Parameters:
+  Project:
+    Type: String
+    Default: "Api - eCred"
+
+  Environment:
+    Description: Execution environment
+    Type: String
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+
+  ESEndpoint:
+    Description: Elastcsearch Endpoint
+    Type: String
+
+  DBClients:
+    Description: Ref of DBClients
+    Type: String
+
+  CommonAPILayer:
+    Description: Ref of CommonAPILayer
+    Type: String
+
+Conditions:
+  Prod: !Equals [!Ref Environment, prod]
+
+Globals:
+  Function:
+    Runtime: nodejs10.x
+    MemorySize: 1024
+    Timeout: 120
+    Layers:
+      - !Ref CommonAPILayer
+    Tags:
+      Project: !Ref Project
+      Environment: !Ref Environment
+    Environment:
+      Variables:
+        PROJECT: !Ref Project
+        ENV: !Ref Environment
+        ES_ENDPOINT: !Ref ESEndpoint
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'Authorization,Content-Type,If-Match'"
+      AllowOrigin: "'*'"
+
+Resources:
+  APIDomainNameEcred:
+    Type: "AWS::ApiGateway::DomainName"
+    Properties:
+      DomainName:
+        !If [Prod, "apiecred.pontte.com.br", !Sub "apiecred-${Environment}.pontte.com.br"]
+      CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
+
+  APIEcred:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub 'API-eCred-${Environment}'
+      StageName: !Ref Environment
+
+  APIMappingEcred:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref APIDomainNameEcred
+      RestApiId: !Ref APIEcred
+      Stage: !Ref APIEcred.Stage
+
+  SimulationSaveApiEcredFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "SimulationSaveApiEcredFn-${Environment}"
+      Description: Save the simulations done from partners
+      CodeUri: simulation
+      Handler: simulation.handler
+      Tracing: Active
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DBClients
+      Events:
+        api1:
+          Type: Api
+          Properties:
+            RestApiId: !Ref APIEcred
+            Path: "/v1/simulation"
+            Method: POST

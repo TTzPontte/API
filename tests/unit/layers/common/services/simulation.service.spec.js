@@ -33,21 +33,21 @@ describe('Simulation service', () => {
     });
   });
   describe('isRegistered', () => {
-    let email, clientId, cpf;
+    let email, clientId, documentNumber;
     beforeEach(() => {
       email = faker.internet.email();
       clientId = faker.random.uuid();
-      cpf = '00011122233';
+      documentNumber = '00011122233';
     });
     it('returns false if not registered', async () => {
       getClientContract.mockReturnValueOnce([]);
 
-      expect(await isRegistered({ email, clientId, cpf })).toBe(false);
+      expect(await isRegistered({ email, clientId, documentNumber })).toBe(false);
     });
     it('returns error if is registered', async () => {
       getClientContract.mockReturnValueOnce([{ name: 'name' }]);
       try {
-        await isRegistered({ email, clientId, cpf });
+        await isRegistered({ email, clientId, documentNumber });
       } catch (error) {
         expect(error.message).toBe('Customer already exists');
       }

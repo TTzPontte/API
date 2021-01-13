@@ -10,7 +10,7 @@ describe('simulation', () => {
         monthlyIncome: 6000,
         loanMotivation: ['RENOVATE_HOUSE', 'ANOTHER_REASON'],
         age: 27,
-        cpf: '00011122233',
+        documentNumber: '00011122233',
         phone: '+5551999999999',
         cep: '93347300',
         terms: 210,
@@ -63,9 +63,9 @@ describe('simulation', () => {
         });
       });
 
-      describe('cpf', () => {
+      describe('documentNumber', () => {
         it('has invalid length', async () => {
-          data.cpf = '55';
+          data.documentNumber = '55';
 
           await expect(validate(data)).rejects.toThrow();
         });
