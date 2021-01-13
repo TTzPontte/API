@@ -70,11 +70,6 @@ const save = async ({
 };
 
 const isRegistered = async ({ documentNumber, email, clientId }) => {
-  console.log({
-    documentNumber: documentNumber,
-    email: email,
-    clientId: clientId
-  });
   const contracts = await getClientContract({ documentNumber, email, clientId });
 
   if (contracts && contracts.length) {
