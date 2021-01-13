@@ -2,7 +2,6 @@ const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { parser } = require('./parser');
 const { validate } = require('./validator');
 const { created, badRequest } = require(`${path}/lambda/response`);
-const { getSiteUrl } = require(`${path}/helpers/url`);
 const Simulation = require(`${path}/services/simulation.service`);
 const Subscribe = require(`${path}/services/subscribeCep.service`);
 const Calculator = require(`${path}/services/calculator.service`);
@@ -28,12 +27,22 @@ const simulation = async event => {
       if (isCovered(address)) {
         const translatedData = translateBody(data);
         const simulation = await Simulation.save({ data: translatedData, calculated });
-
-        const response = {
-          id: simulation.id,
-          registrationUrl: `${getSiteUrl()}/cadastro/${simulation.id}`,
-          simulation: calculated
-        };
+        console.log(calculated);
+        const response = [
+          {
+            offerId: simulation.id,
+            totalEffectiveCostPercentMonthly: calculated.cet * 100,
+            totalEffectiveCostPercentAnnually: calculated.cet * 1200,
+            taxRatePercentMonthly: 1.23,
+            taxRatePercentAnnually: 14.76,
+            taxCreditOperationPercent: calculated.iof,
+            installments: calculated.terms,
+            value: calculated.netLoan,
+            installmentsValue: calculated.installment[0].installment,
+            totalPayable: calculated.grossLoan,
+            feeCreditOpening: calculated.registry_value
+          }
+        ];
 
         return created({ ...response });
       } else {
