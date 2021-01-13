@@ -1,24 +1,29 @@
 const es = require('./aws_es_client');
 
-const getPeople = async ({ cpf, email }) => {
+const getClientContract = async ({ documentNumber, email, clientId }) => {
   const query = {
-    index: 'people',
-    type: '_doc',
+    index: 'contract',
+    type: 'report',
     body: {
       query: {
         bool: {
           should: [
             {
               term: {
-                cpf
+                'simulation.parameters.cpf': documentNumber
               }
             },
             {
               term: {
-                email
+                'simulation.parameters.email': email
               }
             }
-          ]
+          ],
+          must_not: {
+            match: {
+              clientApiId: clientId
+            }
+          }
         }
       }
     }
@@ -34,4 +39,4 @@ const getPeople = async ({ cpf, email }) => {
   return data;
 };
 
-module.exports = { getPeople };
+module.exports = { getClientContract };

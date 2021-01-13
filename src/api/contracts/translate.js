@@ -1,4 +1,4 @@
-const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
+const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const _ = require(`${path}/node_modules/lodash`);
 const { EDUCATION_LEVELS, MARITAL_STATUS, PERSONAS, PROPERTY_TYPES, INCOME_SOURCES, RESIDENTS } = require('./constants');
 
@@ -14,9 +14,9 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
   const source = find(INCOME_SOURCES, entity.incomeSource);
   const resident = find(RESIDENTS, property.isResident);
 
-  const translateRelations = entity.relations.map((relation) => {
+  const translateRelations = entity.relations.map(relation => {
     const relations = [];
-    Object.keys(relation).map((personas) => {
+    Object.keys(relation).map(personas => {
       const person = find(PERSONAS, personas);
       const persona = relation[person];
       const incomeSource = find(INCOME_SOURCES, persona.incomeSource);
@@ -24,10 +24,11 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
       persona.incomeSource = INCOME_SOURCES[incomeSource];
       relations.push(persona);
     });
+
     return relations[0];
   });
 
-  const translatedSecondPayers = secondPayers.map((secondPayer) => {
+  const translatedSecondPayers = secondPayers.map(secondPayer => {
     const persona = find(PERSONAS, secondPayer);
     return PERSONAS[persona];
   });
@@ -48,7 +49,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
     return obj;
   }, {});
 
-  const translateEntity = (entity) => {
+  const translateEntity = entity => {
     entity.about.educationLevel = EDUCATION_LEVELS[level];
     entity.about.maritalStatus = MARITAL_STATUS[marital];
     entity.relations = translateRelations;

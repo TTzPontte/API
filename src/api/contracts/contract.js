@@ -1,4 +1,4 @@
-const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
+const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { validate } = require('./validator');
 const Contract = require(`${path}/services/contract.service`);
 const Simulation = require(`${path}/services/simulation.service`);
@@ -15,9 +15,9 @@ const contract = async event => {
 
   const translatedBody = translateBody(body);
 
-  const lastSimulation = await Simulation.getLastSimulation(simulationId);
+  const lastContract = await Simulation.getLastContract(simulationId);
 
-  const contract = await Contract.save({ ...translatedBody, clientId, lastSimulation });
+  const contract = await Contract.save({ ...translatedBody, clientId, lastContract });
 
   return success({ ...contract });
 };

@@ -1,7 +1,7 @@
-const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
+const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { validate } = require('./validator');
 const { parser } = require('./parser');
-const { success, badRequest } = require(`${path}/lambda/response`);
+const { created, badRequest } = require(`${path}/lambda/response`);
 const { getSiteUrl } = require(`${path}/helpers/url`);
 const Simulation = require(`${path}/services/simulation.service`);
 const Subscribe = require(`${path}/services/subscribeCep.service`);
@@ -26,7 +26,7 @@ const simulation = async event => {
     if (calculated.netLoan) {
       if (isCovered(address)) {
         const translatedData = translateBody(data);
-        const simulation = await Simulation.save({ translatedData, calculated });
+        const simulation = await Simulation.save({ data: translatedData, calculated });
 
         const response = {
           id: simulation.id,
@@ -34,7 +34,7 @@ const simulation = async event => {
           simulation: calculated
         };
 
-        return success({ ...response });
+        return created({ ...response });
       } else {
         await Subscribe.save({ data, calculated });
         return badRequest('Region not supported');

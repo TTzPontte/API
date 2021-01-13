@@ -1,29 +1,27 @@
 const es = require('./aws_es_client');
 
-const getClientSimulation = async ({ cpf, email, clientId }) => {
+const INDEX = 'entity';
+const TYPE = '_doc';
+
+const getEntity = async ({ email, documentNumber }) => {
   const query = {
-    index: 'pontte',
-    type: 'simulations',
+    index: INDEX,
+    type: TYPE,
     body: {
       query: {
         bool: {
           should: [
             {
               term: {
-                'parametros.cpf': cpf
+                email
               }
             },
             {
               term: {
-                'parametros.email': email
+                documentNumber
               }
             }
-          ],
-          must_not: {
-            match: {
-              clientApiId: clientId
-            }
-          }
+          ]
         }
       }
     }
@@ -39,4 +37,4 @@ const getClientSimulation = async ({ cpf, email, clientId }) => {
   return data;
 };
 
-module.exports = { getClientSimulation };
+module.exports = { getEntity };

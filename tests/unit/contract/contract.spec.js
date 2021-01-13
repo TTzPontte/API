@@ -22,13 +22,13 @@ describe('contract handler', () => {
       }
     };
     Contract.save = jest.fn(() => saveResult);
-    Simulation.getLastSimulation = jest.fn(() => {});
+    Simulation.getLastContract = jest.fn(() => {});
     Cognito.createUser = jest.fn(() => {});
   });
 
   it('return success', async () => {
     const response = await contract(event);
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(201);
     expect(JSON.parse(response.body)).toStrictEqual(saveResult);
   });
 });
