@@ -9,7 +9,7 @@ const Calculator = require(`${path}/services/calculator.service`);
 const Contract = require(`${path}/services/contract.service`);
 const { getAddress, isValidCep, isCovered } = require(`${path}/services/cep.service`);
 const middy = require(`${path}/middy/middy`);
-const translateBody = require('./translate');
+const { translateBody, translateSimulation } = require('./translate');
 const { ssmCognito } = require(`${path}/middy/shared/ssm`);
 
 const offer = async event => {
@@ -27,10 +27,11 @@ const offer = async event => {
 
     if (calculated.netLoan) {
       if (isCovered(address)) {
-        const translatedData = translateBody(data);
-        console.log('translatedData -> ', translatedData);
-        const simulation = await Simulation.save({ data: translatedData, calculated });
+        const translatedSimulation = translateSimulation(data);
+        console.log('translatedSimulation -> ', translatedSimulation);
+        const simulation = await Simulation.save({ data: translatedSimulation, calculated });
         const lastContract = await Simulation.getLastContract(simulation.id);
+        const translatedData = translateBody(data);
         await Offer.save({ ...translatedData, clientId, lastContract });
 
         const response = [

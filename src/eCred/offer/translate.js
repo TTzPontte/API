@@ -1,10 +1,31 @@
 const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const _ = require(`${path}/node_modules/lodash`);
-const { EDUCATION_LEVELS, MARITAL_STATUS, PERSONAS, PROPERTY_TYPES, INCOME_SOURCES, RESIDENTS } = require('./constants');
+const { EDUCATION_LEVELS, MARITAL_STATUS, PERSONAS, PROPERTY_TYPES, INCOME_SOURCES, RESIDENTS, LOAN_MOTIVATION } = require('./constants');
 
 const find = (obj, compare) => Object.keys(obj).find(item => compare === item);
 
 const BOOL_VALUES = ['children', 'secondPayer', 'liveInProperty', 'hasSiblings'];
+
+const translateSimulation = data => {
+  const motivation = data.loanMotivation.map(motivationItem => {
+    return LOAN_MOTIVATION[motivationItem];
+  });
+
+  const translated = {
+    loanValue: data.loanValue,
+    propertyValue: data.property.propertyValue,
+    monthlyIncome: data.entity.income[0].value,
+    loanMotivation: data.loanMotivation,
+    age: data.entity.age,
+    documentNumber: data.entity.documentNumber,
+    phone: data.entity.phone,
+    cep: data.entity.address.cep,
+    terms: data.terms,
+    email: data.entity.email
+  };
+
+  return { ...translated, loanMotivation: motivation };
+};
 
 const translate = ({ entity, property, secondPayers, ...body }) => {
   const translateBoolValue = (obj, value) => ({ ...obj, [value]: entity[value] ? 'Sim' : 'Não' });
@@ -80,4 +101,4 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
   };
 };
 
-module.exports = translate;
+module.exports = { translate, translateSimulation };
