@@ -20,10 +20,7 @@ const offer = async event => {
 
   const address = await getAddress({ ...data.entity.address, ...data });
 
-  console.log('address -> ', address);
-
   if (isValidCep(address)) {
-    console.log('dentro do if isValidCep');
     await Simulation.isRegistered({ documentNumber, email, clientId });
     await Contract.isRegistered({ documentNumber, email });
     const calculated = await Calculator.calculate(data);
@@ -31,6 +28,7 @@ const offer = async event => {
     if (calculated.netLoan) {
       if (isCovered(address)) {
         const translatedData = translateBody(data);
+        console.log('translatedData -> ', translatedData);
         const simulation = await Simulation.save({ data: translatedData, calculated });
         const lastContract = await Simulation.getLastContract(simulation.id);
         await Offer.save({ ...translatedData, clientId, lastContract });
