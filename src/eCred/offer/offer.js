@@ -3,6 +3,7 @@ const { parser } = require('./parser');
 const { validate } = require('./validator');
 const { created, badRequest } = require(`${path}/lambda/response`);
 const Simulation = require(`${path}/services/simulation.service`);
+const Offer = require(`${path}/services/offer.service`);
 const Subscribe = require(`${path}/services/subscribeCep.service`);
 const Calculator = require(`${path}/services/calculator.service`);
 const Contract = require(`${path}/services/contract.service`);
@@ -10,24 +11,26 @@ const { getAddress, isValidCep, isCovered } = require(`${path}/services/cep.serv
 const middy = require(`${path}/middy/middy`);
 const translateBody = require('./translate');
 
-const simulation = async event => {
+const offer = async event => {
   const data = await parser(event);
-  const { cpf, email } = data.consumer;
+  const { documentNumber, email } = data.consumer;
   const { clientId } = data;
   await validate(data);
 
   const address = await getAddress({ ...data.consumer.address, ...data });
 
   if (isValidCep(address)) {
-    await Simulation.isRegistered({ documentNumber: cpf, email, clientId });
-    await Contract.isRegistered({ documentNumber: cpf, email });
+    await Simulation.isRegistered({ documentNumber, email, clientId });
+    await Contract.isRegistered({ documentNumber, email });
     const calculated = await Calculator.calculate(data);
 
     if (calculated.netLoan) {
       if (isCovered(address)) {
         const translatedData = translateBody(data);
         const simulation = await Simulation.save({ data: translatedData, calculated });
-        console.log(calculated);
+        const lastContract = await Simulation.getLastContract(simulation.id);
+        const offer = await Offer.save({ ...translatedData, clientId, lastContract });
+
         const response = [
           {
             offerId: simulation.id,
@@ -55,4 +58,4 @@ const simulation = async event => {
   return badRequest('Algo deu errado.');
 };
 
-module.exports = { handler: middy(simulation), simulation };
+module.exports = { handler: middy(offer), offer };

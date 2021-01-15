@@ -108,8 +108,6 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
         - DynamoDBCrudPolicy:
-            TableName: !Sub "People.${Environment}"
-        - DynamoDBCrudPolicy:
             TableName: !Sub "Contract.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Entity.${Environment}"
@@ -144,8 +142,6 @@ Resources:
             TableName: !Sub "Contract.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "People.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Property.${Environment}"
         - DynamoDBCrudPolicy:
