@@ -80,4 +80,4 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
   };
 };
 
-module.exports = { translate };
+module.exports = translate;
