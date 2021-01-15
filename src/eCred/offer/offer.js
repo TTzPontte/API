@@ -9,7 +9,7 @@ const Calculator = require(`${path}/services/calculator.service`);
 const Contract = require(`${path}/services/contract.service`);
 const { getAddress, isValidCep, isCovered } = require(`${path}/services/cep.service`);
 const middy = require(`${path}/middy/middy`);
-const { translateBody } = require('./translate');
+const translateBody = require('./translate');
 const { ssmCognito } = require(`${path}/middy/shared/ssm`);
 
 const offer = async event => {
