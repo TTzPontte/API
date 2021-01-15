@@ -107,7 +107,6 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     source: source
   });
 
-  const { STATUS_GROUP_DEFAULT_ID } = process.env;
   const payers = getSecondPayers({ relations, secondPayers });
 
   const contract = new ContractModel({
@@ -118,8 +117,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     contractOwners: [contractOwner],
     source,
     campaign,
-    secondPayers: payers,
-    statusGroupContractId: STATUS_GROUP_DEFAULT_ID
+    secondPayers: payers
   });
 
   const savedContract = await contract.save();
