@@ -4,6 +4,8 @@ const { trackCode } = require(`${path}/helpers/trackCode`);
 const parser = async event => {
   const { body, clientId, clientName, requestContext } = event;
   const { gracePeriod = 0, skipMonth = 0, loanMotivation = [] } = body;
+  const { value } = body.entity.income[0];
+  const { propertyValue } = body.property;
   const sourceIp = requestContext.identity.sourceIp;
   const trackingCode = (await trackCode()) + `:${clientName}`;
 
@@ -15,7 +17,9 @@ const parser = async event => {
     sourceIp,
     trackCode: trackingCode,
     clientName,
-    clientId
+    clientId,
+    propertyValue: propertyValue,
+    monthlyIncome: value
   };
 };
 
