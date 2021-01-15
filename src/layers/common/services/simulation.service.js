@@ -68,48 +68,6 @@ const save = async ({
     statusGroupContractId: STATUS_GROUP_DEFAULT_ID
   });
 
-  const offer = {
-    simulation: {
-      parameters: {
-        propertyValue: propertyValue,
-        cep: cep,
-        loanValue: loanValue,
-        age: age,
-        monthlyIncome: monthlyIncome,
-        email: email,
-        phone: phone,
-        loanDate: getNowDefaultDate(),
-        cpf: cpf,
-        skipMonth: skipMonth,
-        gracePeriod: gracePeriod,
-        loanMotivation: loanMotivation
-      },
-      loanValueSelected: loanValue,
-      terms: [terms],
-      term: terms,
-      loanValuesGross: [[grossLoan]],
-      installment: firstInstallment,
-      installments: [[firstInstallment]],
-      lastInstallments: [[lastInstallment]],
-      accepted: {
-        ip: sourceIp,
-        time: getDateIsoString(),
-        check: true
-      },
-      ltv: [[ltv]],
-      ltvMax: [[ltvMax]],
-      cet: [[cet]],
-      date: getDateIsoString()
-    },
-    campaign: clientName,
-    source: clientName,
-    trackCode: trackCode,
-    clientApiId: clientId,
-    statusGroupContractId: STATUS_GROUP_DEFAULT_ID
-  };
-
-  console.log('Offer -> ', offer);
-
   return simulation.save();
 };
 
