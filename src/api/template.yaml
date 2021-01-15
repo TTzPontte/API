@@ -100,7 +100,7 @@ Resources:
         - SSMParameterReadPolicy:
             ParameterName: !Sub 'cognito/${Environment}/*'
         - SSMParameterReadPolicy:
-            ParameterName: !Sub 'statusGroup/${ENV}/*'
+            ParameterName: !Sub 'statusGroup/${Environment}/*'
         - SQSSendMessagePolicy:
             QueueName: !Sub "ApiAuditLog_${Environment}"
         - DynamoDBCrudPolicy:
