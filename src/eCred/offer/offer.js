@@ -13,11 +13,11 @@ const translateBody = require('./translate');
 
 const offer = async event => {
   const data = await parser(event);
-  const { documentNumber, email } = data.consumer;
+  const { documentNumber, email } = data.entity;
   const { clientId } = data;
   await validate(data);
 
-  const address = await getAddress({ ...data.consumer.address, ...data });
+  const address = await getAddress({ ...data.entity.address, ...data });
 
   if (isValidCep(address)) {
     await Simulation.isRegistered({ documentNumber, email, clientId });
