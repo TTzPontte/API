@@ -19,7 +19,10 @@ const offer = async event => {
 
   const address = await getAddress({ ...data.entity.address, ...data });
 
+  console.log('address -> ', address);
+
   if (isValidCep(address)) {
+    console.log('dentro do if isValidCep');
     await Simulation.isRegistered({ documentNumber, email, clientId });
     await Contract.isRegistered({ documentNumber, email });
     const calculated = await Calculator.calculate(data);
@@ -29,7 +32,7 @@ const offer = async event => {
         const translatedData = translateBody(data);
         const simulation = await Simulation.save({ data: translatedData, calculated });
         const lastContract = await Simulation.getLastContract(simulation.id);
-        const offer = await Offer.save({ ...translatedData, clientId, lastContract });
+        await Offer.save({ ...translatedData, clientId, lastContract });
 
         const response = [
           {
