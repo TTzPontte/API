@@ -34,4 +34,22 @@ const parser = async event => {
   };
 };
 
-module.exports = { parser };
+const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
+  return [
+    {
+      offerId: simulationId,
+      totalEffectiveCostPercentMonthly: calculated.cet * 100,
+      totalEffectiveCostPercentAnnually: calculated.cet * 1200,
+      taxRatePercentMonthly: 1.23,
+      taxRatePercentAnnually: 14.76,
+      taxCreditOperationPercent: calculated.iof,
+      installments: calculated.terms,
+      value: calculated.netLoan,
+      installmentsValue: calculated.installment[0].installment,
+      totalPayable: calculated.grossLoan,
+      feeCreditOpening: calculated.registry_value
+    }
+  ];
+};
+
+module.exports = { parser, parserResponseOfferSimulation };

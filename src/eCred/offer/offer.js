@@ -1,5 +1,5 @@
 const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
-const { parser } = require('./parser');
+const { parser, parserResponseOfferSimulation } = require('./parser');
 const { validate } = require('./validator');
 const { created, badRequest } = require(`${path}/lambda/response`);
 const Simulation = require(`${path}/services/simulation.service`);
@@ -32,21 +32,7 @@ const offer = async event => {
         const translatedBody = translateBody(body);
         await Offer.save({ ...translatedBody, clientId, lastContract });
 
-        const response = [
-          {
-            offerId: simulation.id,
-            totalEffectiveCostPercentMonthly: calculated.cet * 100,
-            totalEffectiveCostPercentAnnually: calculated.cet * 1200,
-            taxRatePercentMonthly: 1.23,
-            taxRatePercentAnnually: 14.76,
-            taxCreditOperationPercent: calculated.iof,
-            installments: calculated.terms,
-            value: calculated.netLoan,
-            installmentsValue: calculated.installment[0].installment,
-            totalPayable: calculated.grossLoan,
-            feeCreditOpening: calculated.registry_value
-          }
-        ];
+        const response = parserResponseOfferSimulation({ simulationId: simulation.id, calculated });
 
         return created(response);
       } else {
