@@ -62,15 +62,6 @@ Resources:
             Queue: !GetAtt AuditLogQueue.Arn
             BatchSize: 10
 
-  AuditLogQueue:
-    Type: AWS::SQS::Queue
-    Properties:
-      QueueName: !Sub 'AuditLog_${Environment}'
-      VisibilityTimeout: 18000
-      Tags:
-        - { Key: Project, Value: !Ref Project }
-        - { Key: Environment, Value: !Ref Environment }
-
   DbAuditLog:
     Type: AWS::DynamoDB::Table
     Properties:
