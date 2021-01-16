@@ -5,7 +5,7 @@ const { ENV } = process.env;
 
 const log = async ({ requestId, event, context, operation, data }) => {
   const nameSQS = `ApiAuditLog_${ENV}`;
-  const accountId = context.invokedFunctionArn.split(':')[4];
+  const accountId = context.functionName;
 
   const body = {
     id: uuid(),
