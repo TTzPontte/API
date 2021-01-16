@@ -95,9 +95,9 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Sub "Contract.${Environment}"
         - DynamoDBCrudPolicy:
-            TableName: !Sub '${Project}-AuditLog.${Environment}'
-        - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DbAuditLog
         - DynamoDBCrudPolicy:
             TableName: !Sub "Property.${Environment}"
         - DynamoDBCrudPolicy:
