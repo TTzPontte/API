@@ -4,7 +4,6 @@ const { getAddress, isCovered, isValidCep } = require('./cep.service');
 
 const save = async (data, trackCode) => {
   const address = await getAddress({ cep: data.address.cep, trackCode });
-  console.log('property address -> ', address);
   isValidCep(address);
 
   if (isCovered(address)) {
