@@ -87,7 +87,7 @@ Resources:
         - SSMParameterReadPolicy:
             ParameterName: !Sub 'statusGroup/${Environment}/*'
         - SQSSendMessagePolicy:
-            QueueName: !Sub "ApiAuditLog_${Environment}"
+            QueueName: !Sub "ApiAuditLog-Api-${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub '${Project}-AuditLog.${Environment}'
         - DynamoDBCrudPolicy:
