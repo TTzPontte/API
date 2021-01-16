@@ -44,6 +44,32 @@ Resources:
       ContentUri: ../layers/common
       CompatibleRuntimes:
         - nodejs10.x
+  
+  ApiReceiverAuditLogFn:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: !Sub 'ApiReceiverAuditLog-${Environment}'
+      Description: Função que coleta todas os dados no SQS e salva no banco de dados
+      Handler: receiver.handler
+      Tracing: Active
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Sub '${Project}-AuditLog.${Environment}'
+      Events:
+        AuditLogSQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt ApiAuditLogQueue.Arn
+            BatchSize: 10
+
+  ApiAuditLogQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub 'AuditLog-Api-${Environment}'
+      VisibilityTimeout: 18000
+      Tags:
+        - { Key: Project, Value: !Ref Project }
+        - { Key: Environment, Value: !Ref Environment }
 
   DbAuditLog:
     Type: AWS::DynamoDB::Table
