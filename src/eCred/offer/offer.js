@@ -1,5 +1,5 @@
 const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
-const { parser, parserSimulation } = require('./parser');
+const { parser } = require('./parser');
 const { validate } = require('./validator');
 const { created, badRequest } = require(`${path}/lambda/response`);
 const Simulation = require(`${path}/services/simulation.service`);
@@ -13,26 +13,24 @@ const translateBody = require('./translate');
 const { ssmCognito } = require(`${path}/middy/shared/ssm`);
 
 const offer = async event => {
-  const data = await parser(event);
-  const { documentNumber, email } = data.entity;
-  const { clientId } = data;
-  await validate(data);
+  const { body, clientId } = event;
+  const offerParsed = await parser(event);
+  const { documentNumber, email } = body.entity;
+  await validate(body);
 
-  const address = await getAddress({ ...data.entity.address, ...data });
+  const address = await getAddress({ ...body.entity.address, ...body });
 
   if (isValidCep(address)) {
     await Simulation.isRegistered({ documentNumber, email, clientId });
     await Contract.isRegistered({ documentNumber, email });
-    const calculated = await Calculator.calculate(data);
+    const calculated = await Calculator.calculate(body);
 
     if (calculated.netLoan) {
       if (isCovered(address)) {
-        const parsedSimulation = parserSimulation(data);
-        console.log('parsedSimulation -> ', parsedSimulation);
-        const simulation = await Simulation.save({ data: parsedSimulation, calculated });
+        const simulation = await Simulation.save({ data: offerParsed, calculated });
         const lastContract = await Simulation.getLastContract(simulation.id);
-        const translatedData = translateBody(data);
-        await Offer.save({ ...translatedData, clientId, lastContract });
+        const translatedBody = translateBody(body);
+        await Offer.save({ ...translatedBody, clientId, lastContract });
 
         const response = [
           {
@@ -52,7 +50,7 @@ const offer = async event => {
 
         return created(response);
       } else {
-        await Subscribe.save({ data, calculated });
+        await Subscribe.save({ offerParsed, calculated });
         return badRequest('Region not supported');
       }
     }
