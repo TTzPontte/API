@@ -28,7 +28,6 @@ const save = async ({
   const firstInstallment = installment[0].installment;
   const { STATUS_GROUP_DEFAULT_ID } = process.env;
 
-  console.log('phone -> ', phone);
   const simulation = new Contract({
     simulation: {
       parameters: {
