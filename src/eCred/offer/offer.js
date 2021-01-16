@@ -18,12 +18,12 @@ const offer = async event => {
   const { documentNumber, email } = body.entity;
   await validate(body);
 
-  const address = await getAddress({ ...body.entity.address, ...body });
+  const address = await getAddress({ ...offerParsed });
 
   if (isValidCep(address)) {
     await Simulation.isRegistered({ documentNumber, email, clientId });
     await Contract.isRegistered({ documentNumber, email });
-    const calculated = await Calculator.calculate(body);
+    const calculated = await Calculator.calculate(offerParsed);
 
     if (calculated.netLoan) {
       if (isCovered(address)) {
