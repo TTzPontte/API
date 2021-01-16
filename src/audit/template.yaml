@@ -48,7 +48,61 @@ Resources:
   ApiReceiverAuditLogFn:
     Type: 'AWS::Serverless::Function'
     Properties:
-      FunctionName: !Sub 'ApiReceiverAuditLogFn-${Environment}'
-      Description: Collect data with SQS and save in database
+      FunctionName: !Sub 'ReceiverAuditLog-${Environment}'
+      Description: Função que coleta todas os dados no SQS e salva no banco de dados
       Handler: receiver.handler
       Tracing: Active
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Sub '${Project}-AuditLog.${Environment}'
+      Events:
+        AuditLogSQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt AuditLogQueue.Arn
+            BatchSize: 10
+
+  AuditLogQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub 'AuditLog_${Environment}'
+      VisibilityTimeout: 18000
+      Tags:
+        - { Key: Project, Value: !Ref Project }
+        - { Key: Environment, Value: !Ref Environment }
+
+  DbAuditLog:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub '${Project}-AuditLog.${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [Prod, true, false]
+      SSESpecification:
+        SSEEnabled: true
+      AttributeDefinitions:
+        - AttributeName: uid
+          AttributeType: S
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: cid
+          AttributeType: S
+        - AttributeName: operation
+          AttributeType: S
+      KeySchema:
+        - AttributeName: uid
+          KeyType: HASH
+        - AttributeName: id
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: OperationByCid
+          KeySchema:
+            - AttributeName: cid
+              KeyType: HASH
+            - AttributeName: operation
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      Tags:
+        - { Key: Project, Value: !Ref Project }
+        - { Key: Environment, Value: !Ref Environment }
