@@ -1,5 +1,5 @@
 const uuid = require('uuid/v1');
-const { SQS } = require('../aws');
+const { sendMessage } = require('../aws/sqs');
 
 const { ENV } = process.env;
 
@@ -32,7 +32,7 @@ const log = async ({ requestContext = {} }, context, document, operation, data =
     body.data = data;
   }
 
-  const result = await SQS.sendMessage(JSON.stringify(body), accountId, nameSQS);
+  const result = await sendMessage(JSON.stringify(body), accountId, nameSQS);
   return result;
 };
 
