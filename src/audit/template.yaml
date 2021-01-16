@@ -55,12 +55,6 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Sub '${Project}-AuditLog.${Environment}'
-      Events:
-        AuditLogSQSEvent:
-          Type: SQS
-          Properties:
-            Queue: !GetAtt AuditLogQueue.Arn
-            BatchSize: 10
 
   DbAuditLog:
     Type: AWS::DynamoDB::Table
