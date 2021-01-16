@@ -11,8 +11,9 @@ const { getAddress, isValidCep, isCovered } = require(`${path}/services/cep.serv
 const middy = require(`${path}/middy/middy`);
 const translateBody = require('./translate');
 const { ssmCognito } = require(`${path}/middy/shared/ssm`);
+const AuditLog = require(`${path}/lambda/auditLog`);
 
-const offer = async event => {
+const offer = async (event, context) => {
   const { body, clientId } = event;
   const offerParsed = await parser(event);
   const { documentNumber, email } = body.entity;
@@ -34,13 +35,18 @@ const offer = async event => {
 
         const response = parserResponseOfferSimulation({ simulationId: simulation.id, calculated });
 
+        await AuditLog.log(event, context, 'ecred', 'offer', JSON.parse(body));
+
         return created(response);
       } else {
         await Subscribe.save({ offerParsed, calculated });
+        await AuditLog.log(event, context, 'ecred', 'offer', JSON.parse(offerParsed));
         return badRequest('Region not supported');
       }
     }
   }
+
+  await AuditLog.log(event, context, 'ecred', 'offer', JSON.parse(body));
 
   return badRequest('Algo deu errado.');
 };

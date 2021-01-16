@@ -24,6 +24,10 @@ Parameters:
     Description: Ref of DBClients
     Type: String
 
+  DbAuditLog:
+    Description: Ref of DbAuditLog
+    Type: String
+
   CommonAPILayer:
     Description: Ref of CommonAPILayer
     Type: String
@@ -90,6 +94,8 @@ Resources:
             QueueName: !Sub "ApiAuditLog_${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Contract.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub '${Project}-AuditLog.${Environment}'
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
         - DynamoDBCrudPolicy:

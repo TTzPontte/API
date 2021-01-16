@@ -70,6 +70,42 @@ Resources:
         - { Key: Project, Value: !Ref Project }
         - { Key: Environment, Value: !Ref Environment }
 
+  DbAuditLog:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub '${Project}-AuditLog.${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [Prod, true, false]
+      SSESpecification:
+        SSEEnabled: true
+      AttributeDefinitions:
+        - AttributeName: uid
+          AttributeType: S
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: cid
+          AttributeType: S
+        - AttributeName: operation
+          AttributeType: S
+      KeySchema:
+        - AttributeName: uid
+          KeyType: HASH
+        - AttributeName: id
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: OperationByCid
+          KeySchema:
+            - AttributeName: cid
+              KeyType: HASH
+            - AttributeName: operation
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      Tags:
+        - { Key: Project, Value: !Ref Project }
+        - { Key: Environment, Value: !Ref Environment }
+
   CommonAPILayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -104,4 +140,5 @@ Resources:
         Environment: !Ref Environment
         ESEndpoint: !FindInMap [Config, !Ref Environment, esEndpoint]
         DBClients: !Ref DBClients
+        DbAuditLog: !Ref DbAuditLog
         CommonAPILayer: !Ref CommonAPILayer
