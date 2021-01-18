@@ -20,13 +20,6 @@ module.exports = opts => {
 
   return {
     onError: (handler, next) => {
-      console.log(typeof handler.error);
-      console.log(handler.error);
-      console.log(handler.error.toString());
-      console.log(handler.error.name);
-      console.log(handler.error.statusCode);
-      console.log(handler.error.message);
-      console.log(handler.error.details);
       options.logger(handler.error);
       let statusCode = options.statusCode;
       let message = options.message;
@@ -35,23 +28,6 @@ module.exports = opts => {
         statusCode = handler.error.statusCode;
         message = handler.error.message;
       }
-
-      console.log(statusCode);
-      console.log(message);
-
-      console.log({
-        headers,
-        statusCode: statusCode,
-        body: JSON.stringify({
-          errors: [
-            {
-              status: statusCode,
-              message: message,
-              detail: handler.error.details || options.details
-            }
-          ]
-        })
-      });
 
       handler.response = {
         headers,
