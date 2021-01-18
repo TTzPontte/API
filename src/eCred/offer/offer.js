@@ -35,18 +35,18 @@ const offer = async (event, context) => {
 
         const response = parserResponseOfferSimulation({ simulationId: simulation.id, calculated });
 
-        // await AuditLog.log(event, context, 'ecred', 'offer', body);
+        await AuditLog.log(event, context, 'ecred', 'offer', body);
 
         return created(response);
       } else {
         await Subscribe.save({ offerParsed, calculated });
-        // await AuditLog.log(event, context, 'ecred', 'offer', offerParsed);
+        await AuditLog.log(event, context, 'ecred', 'offer', offerParsed);
         return badRequest('Region not supported');
       }
     }
   }
 
-  // await AuditLog.log(event, context, 'ecred', 'offer', body);
+  await AuditLog.log(event, context, 'ecred', 'offer', body);
 
   return badRequest('Algo deu errado.');
 };
