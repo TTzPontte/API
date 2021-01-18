@@ -156,5 +156,5 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref APIEcred
-            Path: "/v1/offers"
+            Path: "/v1/contract"
             Method: POST
