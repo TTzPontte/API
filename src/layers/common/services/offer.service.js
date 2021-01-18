@@ -108,6 +108,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
     ...lastContract,
     ...data,
     propertyId,
+    contractOwner,
     contractOwners: [contractOwner],
     source,
     campaign,
