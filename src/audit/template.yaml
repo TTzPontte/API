@@ -44,7 +44,7 @@ Resources:
       ContentUri: ../layers/common
       CompatibleRuntimes:
         - nodejs10.x
-  
+
   ApiReceiverAuditLogFn:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -81,8 +81,6 @@ Resources:
       SSESpecification:
         SSEEnabled: true
       AttributeDefinitions:
-        - AttributeName: uid
-          AttributeType: S
         - AttributeName: id
           AttributeType: S
         - AttributeName: cid
@@ -90,7 +88,7 @@ Resources:
         - AttributeName: operation
           AttributeType: S
       KeySchema:
-        - AttributeName: uid
+        - AttributeName: cid
           KeyType: HASH
         - AttributeName: id
           KeyType: RANGE
