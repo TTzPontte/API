@@ -22,6 +22,8 @@ module.exports = opts => {
     onError: (handler, next) => {
       console.log(typeof handler.error);
       console.log(handler.error);
+      console.log(handler.error.toString());
+      console.log(handler.error.name);
       console.log(handler.error.statusCode);
       console.log(handler.error.message);
       console.log(handler.error.details);
