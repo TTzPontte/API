@@ -21,4 +21,4 @@ const AuditLogSchema = new Schema(
     data: Object
   })
 );
-module.exports = dynamoose.model(`${PROJECT}-AuditLog.${ENV}`, AuditLogSchema, { create: false, update: false });
+module.exports = dynamoose.model(`${PROJECT}AuditLog.${ENV}`, AuditLogSchema, { create: false, update: false });
