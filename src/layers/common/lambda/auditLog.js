@@ -3,24 +3,18 @@ const { sendMessage } = require('../aws/sqs');
 
 const { ENV } = process.env;
 
-const log = async ({ requestContext = {} }, context, document, operation, data = {}) => {
+const log = async ({ requestContext = {}, clientId, clientName }, context, document, operation, data = {}) => {
   const nameSQS = `AuditLog-Api-${ENV}`;
   const accountId = context.invokedFunctionArn.split(':')[4];
-  const user = (requestContext && requestContext.authorizer && requestContext.authorizer.claims) || {};
   const sourceIp = (requestContext && requestContext.identity && requestContext.identity.sourceIp) || {};
 
   const body = {
-    uid: user['custom:uid'] || 'system',
+    cid: clientId,
+    cname: clientName,
     id: uuid(),
     document,
     operation,
-    ts: new Date().toISOString(),
-    ip: sourceIp || '0.0.0.0',
-    email: user.email || '',
-    user: {
-      name: user.name || '',
-      picture: user.picture || ''
-    }
+    ip: sourceIp || '0.0.0.0'
   };
 
   if (data.cid) {
