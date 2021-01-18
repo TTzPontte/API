@@ -85,6 +85,7 @@ Resources:
       Parameters:
         Project: !Ref Project
         Environment: !Ref Environment
+        CommonAPILayer: !Ref CommonAPILayer
 
   ApiApp:
     Type: AWS::Serverless::Application
