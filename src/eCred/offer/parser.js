@@ -1,5 +1,6 @@
 const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { trackCode } = require(`${path}/helpers/trackCode`);
+const { monthToYear } = require(`${path}/helpers/rate`);
 const { LOAN_MOTIVATION } = require('./constants');
 
 const parser = async event => {
@@ -37,17 +38,17 @@ const parser = async event => {
 const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
   return [
     {
-      offerId: simulationId,
-      totalEffectiveCostPercentMonthly: calculated.cet * 100,
-      totalEffectiveCostPercentAnnually: calculated.cet * 1200,
-      taxRatePercentMonthly: 1.23,
-      taxRatePercentAnnually: 14.76,
-      taxCreditOperationPercent: calculated.iof,
+      proposal_id: simulationId,
+      total_effective_cost_percent_monthly: calculated.cet * 100,
+      total_effective_cost_percent_annually: monthToYear(calculated.cet) * 100,
+      tax_rate_percent_monthly: calculated.interest_rate * 100,
+      tax_rate_percent_annually: monthToYear(calculated.interest_rate) * 100,
+      tax_credit_operation_percent: calculated.iof,
       installments: calculated.terms,
       value: calculated.netLoan,
-      installmentsValue: calculated.installment[0].installment,
-      totalPayable: calculated.grossLoan,
-      feeCreditOpening: calculated.registry_value
+      installments_value: calculated.installment[0].installment,
+      total_payable: calculated.grossLoan,
+      fee_credit_opening: calculated.registry_value
     }
   ];
 };
