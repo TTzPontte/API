@@ -20,6 +20,8 @@ module.exports = opts => {
 
   return {
     onError: (handler, next) => {
+      console.log(typeof handler.error);
+      console.log(handler.error);
       options.logger(handler.error);
       let statusCode = options.statusCode;
       let message = options.message;
