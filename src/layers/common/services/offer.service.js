@@ -89,6 +89,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
 
   const relations = await saveRelations({ ...entity, type: entityType });
   entity.relations = relations;
+  entity.income = [entity.income];
 
   const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
   const { id: propertyId } = await Property.save(property, trackCode);

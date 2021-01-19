@@ -7,7 +7,7 @@ const parser = async event => {
   const { body, clientId, clientName, requestContext } = event;
   const { gracePeriod = 0, skipMonth = 0, loanMotivation = [], loanValue, terms } = body;
   const { age, documentNumber, phone, email, income, address } = body.entity;
-  const { value } = income[0];
+  const { value } = income;
   const { propertyValue } = body.property;
   const sourceIp = requestContext.identity.sourceIp;
   const trackingCode = (await trackCode()) + `:${clientName}`;

@@ -12,118 +12,7 @@ RESIDENTS = Object.keys(RESIDENTS);
 
 yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', documentNumber => validateDocumentNumber(documentNumber)));
 
-const getRelationsSchema = async relations => {
-  const relationsSchema = yup.object().shape({
-    participation: yup.string().strict(),
-    id: yup.string().strict(),
-    type: yup.array().of(yup.string())
-  });
-
-  return { relationsSchema };
-};
-
-const getAddressSchema = async address => {
-  const addressSchema = yup
-    .object()
-    .shape({
-      cep: yup
-        .string()
-        .strict()
-        .required(),
-      city: yup
-        .string()
-        .strict()
-        .required(),
-      complement: yup
-        .string()
-        .strict()
-        .notRequired(),
-      neighborhood: yup
-        .string()
-        .strict()
-        .required(),
-      number: yup
-        .string()
-        .strict()
-        .required(),
-      state: yup
-        .string()
-        .strict()
-        .required(),
-      streetAddress: yup
-        .string()
-        .strict()
-        .required()
-    })
-    .required();
-
-  return { addressSchema };
-};
-
-const getIncomeSchema = income => {
-  const incomeSchema = yup
-    .array()
-    .of(
-      yup
-        .object()
-        .shape({
-          type: yup
-            .string()
-            .strict()
-            .required(),
-          activity: yup
-            .string()
-            .strict()
-            .required(),
-          value: yup
-            .string()
-            .strict()
-            .required(),
-          incomeOrigin: yup
-            .string()
-            .strict()
-            .required(),
-          averageIncome: yup.string()
-        })
-        .required()
-    )
-    .required();
-  return { incomeSchema };
-};
-
-const getAboutSchema = async about => {
-  const aboutSchema = yup
-    .object()
-    .shape({
-      hasSiblings: yup.boolean().required(),
-      hasChild: yup.boolean().required(),
-      birthdate: yup.date().required(),
-      educationLevel: yup
-        .string()
-        .strict()
-        .required(),
-      maritalStatus: yup
-        .string()
-        .strict()
-        .required(),
-      maritalRegime: yup
-        .string()
-        .strict()
-        .required()
-    })
-    .required();
-
-  return { aboutSchema };
-};
-
 const validate = async fields => {
-  const { relations, address, income, about } = fields.entity;
-  const { secondPayers } = fields.secondPayers;
-  const relationsSchema = getRelationsSchema(relations);
-  const addressSchema = getAddressSchema(address);
-  const incomeSchema = getIncomeSchema({ income, secondPayers });
-  const aboutSchema = getAboutSchema(about);
-
   const entitySchema = yup.object({
     documentNumber: yup
       .string()
@@ -136,7 +25,6 @@ const validate = async fields => {
       .required(),
     contactEmail: yup.string().email(),
     type: yup.string().strict(),
-    accounts: yup.array(),
     phone: yup
       .string()
       .strict()
@@ -150,12 +38,85 @@ const validate = async fields => {
     nickname: yup
       .string()
       .strict()
+      .required()
+  });
+
+  const aboutSchema = yup.object().shape({
+    hasSiblings: yup.boolean().required(),
+    hasChild: yup.boolean().required(),
+    birthdate: yup.date().required(),
+    educationLevel: yup
+      .string()
+      .strict()
       .required(),
-    registry: yup.array(),
-    ...relationsSchema,
-    ...addressSchema,
-    ...incomeSchema,
-    ...aboutSchema
+    maritalStatus: yup
+      .string()
+      .strict()
+      .required(),
+    maritalRegime: yup
+      .string()
+      .strict()
+      .required()
+  });
+
+  const incomeSchema = yup.object().shape({
+    type: yup
+      .string()
+      .strict()
+      .required(),
+    activity: yup
+      .string()
+      .strict()
+      .required(),
+    value: yup
+      .string()
+      .strict()
+      .required(),
+    incomeOrigin: yup
+      .string()
+      .strict()
+      .required(),
+    averageIncome: yup
+      .string()
+      .strict()
+      .required()
+  });
+
+  const addressSchema = yup.object().shape({
+    cep: yup
+      .string()
+      .strict()
+      .required(),
+    city: yup
+      .string()
+      .strict()
+      .required(),
+    complement: yup
+      .string()
+      .strict()
+      .notRequired(),
+    neighborhood: yup
+      .string()
+      .strict()
+      .required(),
+    number: yup
+      .string()
+      .strict()
+      .required(),
+    state: yup
+      .string()
+      .strict()
+      .required(),
+    streetAddress: yup
+      .string()
+      .strict()
+      .required()
+  });
+
+  const relationsSchema = yup.object().shape({
+    participation: yup.string().strict(),
+    id: yup.string().strict(),
+    type: yup.array().of(yup.string())
   });
 
   const propertySchema = yup
@@ -278,9 +239,13 @@ const validate = async fields => {
 
   try {
     const { isResident, owners } = _.get(fields, 'property', {});
-    const { clientId, loanMotivation, terms, loanValue } = fields;
+    const { clientId, loanMotivation, terms, loanValue, entity } = fields;
     const secondPayers = _.get(fields, 'secondPayers', []);
-    await entitySchema.validate({ ...fields.entity, isResident, owners });
+    await entitySchema.validate({ ...entity, isResident, owners });
+    await incomeSchema.validate({ ...entity.income });
+    await aboutSchema.validate({ ...entity.about });
+    await addressSchema.validate({ ...entity.address });
+    await relationsSchema.validate({ ...entity.relations });
     await propertySchema.validate(fields.property);
     const isValid = await schema.validate({ clientId, secondPayers, loanMotivation, terms, loanValue });
     return isValid;
