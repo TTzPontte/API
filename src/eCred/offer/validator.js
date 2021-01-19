@@ -61,30 +61,33 @@ const getAddressSchema = async address => {
 };
 
 const getIncomeSchema = income => {
-  const incomeSchema = yup.array().of(
-    yup
-      .object()
-      .shape({
-        type: yup
-          .string()
-          .strict()
-          .required(),
-        activity: yup
-          .string()
-          .strict()
-          .required(),
-        value: yup
-          .string()
-          .strict()
-          .required(),
-        incomeOrigin: yup
-          .string()
-          .strict()
-          .required(),
-        averageIncome: yup.string().required()
-      })
-      .required()
-  );
+  const incomeSchema = yup
+    .array()
+    .of(
+      yup
+        .object()
+        .shape({
+          type: yup
+            .string()
+            .strict()
+            .required(),
+          activity: yup
+            .string()
+            .strict()
+            .required(),
+          value: yup
+            .string()
+            .strict()
+            .required(),
+          incomeOrigin: yup
+            .string()
+            .strict()
+            .required(),
+          averageIncome: yup.string()
+        })
+        .required()
+    )
+    .required();
   return { incomeSchema };
 };
 
@@ -115,9 +118,7 @@ const getAboutSchema = async about => {
 
 const validate = async fields => {
   const { relations, address, income, about } = fields.entity;
-
   const { secondPayers } = fields.secondPayers;
-
   const relationsSchema = getRelationsSchema(relations);
   const addressSchema = getAddressSchema(address);
   const incomeSchema = getIncomeSchema({ income, secondPayers });
@@ -133,7 +134,7 @@ const validate = async fields => {
       .string()
       .email()
       .required(),
-    contactEmail: yup.string().strict(),
+    contactEmail: yup.string().email(),
     type: yup.string().strict(),
     accounts: yup.array(),
     phone: yup
@@ -258,12 +259,15 @@ const validate = async fields => {
         .strict()
         .required()
     ),
-    loanMotivation: yup.array().of(
-      yup
-        .string(LOAN_MOTIVATION)
-        .strict()
-        .required()
-    ),
+    loanMotivation: yup
+      .array()
+      .of(
+        yup
+          .string(LOAN_MOTIVATION)
+          .strict()
+          .required()
+      )
+      .required(),
     loanValue: yup.number().required(),
     terms: yup.number().required(),
     clientId: yup
@@ -274,11 +278,11 @@ const validate = async fields => {
 
   try {
     const { isResident, owners } = _.get(fields, 'property', {});
-    const { clientId } = fields;
+    const { clientId, loanMotivation, terms, loanValue } = fields;
     const secondPayers = _.get(fields, 'secondPayers', []);
     await entitySchema.validate({ ...fields.entity, isResident, owners });
     await propertySchema.validate(fields.property);
-    const isValid = await schema.validate({ clientId, secondPayers });
+    const isValid = await schema.validate({ clientId, secondPayers, loanMotivation, terms, loanValue });
     return isValid;
   } catch (err) {
     throw new createError.BadRequest(err.message);
