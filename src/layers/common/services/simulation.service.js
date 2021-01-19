@@ -26,6 +26,7 @@ const save = async ({
 }) => {
   const lastInstallment = installment[installment.length - 1].installment;
   const firstInstallment = installment[0].installment;
+  const { STATUS_GROUP_DEFAULT_ID } = process.env;
 
   const simulation = new Contract({
     simulation: {
@@ -63,7 +64,8 @@ const save = async ({
     campaign: clientName,
     source: clientName,
     trackCode: trackCode,
-    clientApiId: clientId
+    clientApiId: clientId,
+    statusGroupContractId: STATUS_GROUP_DEFAULT_ID
   });
 
   return simulation.save();
