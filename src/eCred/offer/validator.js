@@ -62,96 +62,30 @@ const getAddressSchema = async address => {
 
 const getIncomeSchema = income => {
   const incomeSchema = yup.array().of(
-    yup.object().shape({
-      type: yup
-        .string()
-        .strict()
-        .required(),
-      activity: yup
-        .string()
-        .strict()
-        .required(),
-      value: yup
-        .string()
-        .strict()
-        .required(),
-      incomeOrigin: yup
-        .string()
-        .strict()
-        .required(),
-      averageIncome: yup.string()
-    })
+    yup
+      .object()
+      .shape({
+        type: yup
+          .string()
+          .strict()
+          .required(),
+        activity: yup
+          .string()
+          .strict()
+          .required(),
+        value: yup
+          .string()
+          .strict()
+          .required(),
+        incomeOrigin: yup
+          .string()
+          .strict()
+          .required(),
+        averageIncome: yup.string()
+      })
+      .required()
   );
   return { incomeSchema };
-};
-
-const getFilesSchema = async files => {
-  const filesSchema = yup.array().of(
-    yup.object().shape({
-      category: yup
-        .string()
-        .strict()
-        .required(),
-      type: yup
-        .string()
-        .strict()
-        .required(),
-      filename: yup
-        .string()
-        .strict()
-        .required(),
-      id: yup
-        .string()
-        .strict()
-        .required(),
-      size: yup
-        .string()
-        .strict()
-        .required(),
-      date: yup.date().required()
-    })
-  );
-
-  return { filesSchema };
-};
-
-const getIdWallCompaniesSchema = async idWallCompanies => {
-  const idWallCompaniesSchema = yup.array().of(
-    yup.object().shape({
-      cnpj: yup
-        .string()
-        .strict()
-        .required()
-        .documentNumber(),
-      name: yup
-        .string()
-        .strict()
-        .required(),
-      relationship: yup
-        .string()
-        .strict()
-        .required()
-    })
-  );
-
-  return { idWallCompaniesSchema };
-};
-
-const getDocumentsSchema = async documents => {
-  const documentsSchema = yup.array().of(
-    yup.object().shape({
-      type: yup
-        .string()
-        .strict()
-        .required(),
-      value: yup
-        .string()
-        .strict()
-        .required()
-    })
-  );
-
-  return { documentsSchema };
 };
 
 const getAboutSchema = async about => {
@@ -187,9 +121,6 @@ const validate = async fields => {
   const relationsSchema = getRelationsSchema(relations);
   const addressSchema = getAddressSchema(address);
   const incomeSchema = getIncomeSchema({ income, secondPayers });
-  const filesSchema = getFilesSchema(files);
-  const idWallCompaniesSchema = getIdWallCompaniesSchema(idWallCompanies);
-  const documentsSchema = getDocumentsSchema(documents);
   const aboutSchema = getAboutSchema(about);
 
   const entitySchema = yup.object({
@@ -223,9 +154,6 @@ const validate = async fields => {
     ...relationsSchema,
     ...addressSchema,
     ...incomeSchema,
-    ...filesSchema,
-    ...idWallCompaniesSchema,
-    ...documentsSchema,
     ...aboutSchema
   });
 
