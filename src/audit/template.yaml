@@ -50,7 +50,7 @@ Resources:
       Tracing: Active
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Sub '${Project}-AuditLog.${Environment}'
+            TableName: !Sub '${Project}AuditLog.${Environment}'
       Events:
         AuditLogSQSEvent:
           Type: SQS
