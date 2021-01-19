@@ -81,7 +81,7 @@ const getIncomeSchema = income => {
           .string()
           .strict()
           .required(),
-        averageIncome: yup.string()
+        averageIncome: yup.string().required()
       })
       .required()
   );
@@ -264,8 +264,8 @@ const validate = async fields => {
         .strict()
         .required()
     ),
-    loanValue: yup.required(),
-    terms: yup.required(),
+    loanValue: yup.number().required(),
+    terms: yup.number().required(),
     clientId: yup
       .string()
       .strict()
