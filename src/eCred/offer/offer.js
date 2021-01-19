@@ -2,6 +2,7 @@ const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { parser, parserResponseOfferSimulation } = require('./parser');
 const { validate } = require('./validator');
 const { created, badRequest } = require(`${path}/lambda/response`);
+const { exceptionsCalculator } = require(`${path}/helpers/exceptions`);
 const Simulation = require(`${path}/services/simulation.service`);
 const Offer = require(`${path}/services/offer.service`);
 const Subscribe = require(`${path}/services/subscribeCep.service`);
@@ -25,6 +26,7 @@ const offer = async (event, context) => {
     await Simulation.isRegistered({ documentNumber, email, clientId });
     await Contract.isRegistered({ documentNumber, email });
     const calculated = await Calculator.calculate(offerParsed);
+    await exceptionsCalculator(calculated);
 
     if (calculated.netLoan) {
       if (isCovered(address)) {
