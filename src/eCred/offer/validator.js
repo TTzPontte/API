@@ -4,7 +4,18 @@ const _ = require(`${path}/node_modules/lodash`);
 const createError = require(`${path}/node_modules/http-errors`);
 const { validateDocumentNumber } = require(`${path}/helpers/validator`);
 
-let { PROPERTY_TYPES, PROPERTY_AGE, BEDROOMS, suitesOptions, PERSONAS, GARAGES, RESIDENTS, PHONE_REG_EXP, LOAN_MOTIVATION } = require('./constants');
+let {
+  PROPERTY_TYPES,
+  PROPERTY_AGE,
+  BEDROOMS,
+  suitesOptions,
+  PERSONAS,
+  GARAGES,
+  RESIDENTS,
+  PHONE_REG_EXP,
+  LOAN_MOTIVATION,
+  INCOME_SOURCES
+} = require('./constants');
 
 PROPERTY_TYPES = Object.keys(PROPERTY_TYPES);
 PERSONAS = Object.keys(PERSONAS);
@@ -53,25 +64,19 @@ const validate = async fields => {
       .string()
       .strict()
       .required(),
-    maritalRegime: yup
-      .string()
-      .strict()
-      .required()
+    maritalRegime: yup.string().strict()
   });
 
   const incomeSchema = yup.object().shape({
-    type: yup
-      .string()
+    source: yup
+      .string(INCOME_SOURCES)
       .strict()
       .required(),
     activity: yup
       .string()
       .strict()
       .required(),
-    value: yup
-      .string()
-      .strict()
-      .required(),
+    value: yup.number().required(),
     incomeOrigin: yup
       .string()
       .strict()
