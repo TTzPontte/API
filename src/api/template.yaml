@@ -97,14 +97,16 @@ Resources:
       Handler: simulation.handler
       Tracing: Active
       Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'cognito/${Environment}/*'
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'statusGroup/${Environment}/*'
         - SQSSendMessagePolicy:
-            QueueName: !Sub "ApiAuditLog_${Environment}"
+            QueueName: !Sub "AuditLog-Api-${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Simulations.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "People.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Contract.${Environment}"
         - DynamoDBCrudPolicy:
@@ -135,13 +137,11 @@ Resources:
         - SSMParameterReadPolicy:
             ParameterName: !Sub 'statusGroup/${Environment}/*'
         - SQSSendMessagePolicy:
-            QueueName: !Sub "ApiAuditLog_${Environment}"
+            QueueName: !Sub "AuditLog-Api-${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Contract.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
-        - DynamoDBCrudPolicy:
-            TableName: !Sub "People.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Sub "Property.${Environment}"
         - DynamoDBCrudPolicy:

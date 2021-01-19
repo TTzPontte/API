@@ -1,4 +1,4 @@
-const path = process.env.NODE_ENV === 'test' ? '../layers/common' : '/opt';
+const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const _ = require(`${path}/node_modules/lodash`);
 const { EDUCATION_LEVELS, MARITAL_STATUS, PERSONAS, PROPERTY_TYPES, INCOME_SOURCES, RESIDENTS } = require('./constants');
 
@@ -24,6 +24,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
       persona.incomeSource = INCOME_SOURCES[incomeSource];
       relations.push(persona);
     });
+
     return relations[0];
   });
 

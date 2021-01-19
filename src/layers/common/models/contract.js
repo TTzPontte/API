@@ -28,6 +28,7 @@ const ContractsSchema = new Schema(
         cep: String,
         email: String,
         age: Number,
+        phone: String,
         monthlyIncome: Number,
         propertyValue: Number,
         loanValue: Number,

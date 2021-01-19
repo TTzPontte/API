@@ -18,6 +18,10 @@ Parameters:
       - prod
       - refactoring
 
+  CommonAPILayer:
+    Description: Ref of CommonAPILayer
+    Type: String
+
 Conditions:
   Prod: !Equals [!Ref Environment, prod]
 
@@ -27,7 +31,7 @@ Globals:
     MemorySize: 1024
     Timeout: 120
     Layers:
-      - !Ref ApiCommonLayer
+      - !Ref CommonAPILayer
     Tags:
       Project: !Ref Project
       Environment: !Ref Environment
@@ -37,18 +41,62 @@ Globals:
         ENV: !Ref Environment
 
 Resources:
-  ApiCommonLayer:
-    Type: AWS::Serverless::LayerVersion
-    Properties:
-      Description: common libraries
-      ContentUri: ../layers/common
-      CompatibleRuntimes:
-        - nodejs10.x
-
   ApiReceiverAuditLogFn:
     Type: 'AWS::Serverless::Function'
     Properties:
-      FunctionName: !Sub 'ApiReceiverAuditLogFn-${Environment}'
-      Description: Collect data with SQS and save in database
+      FunctionName: !Sub 'ApiReceiverAuditLog-${Environment}'
+      Description: Função que coleta todas os dados no SQS e salva no banco de dados
       Handler: receiver.handler
       Tracing: Active
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Sub '${Project}AuditLog.${Environment}'
+      Events:
+        AuditLogSQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt ApiAuditLogQueue.Arn
+            BatchSize: 10
+
+  ApiAuditLogQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub 'AuditLog-Api-${Environment}'
+      VisibilityTimeout: 18000
+      Tags:
+        - { Key: Project, Value: !Ref Project }
+        - { Key: Environment, Value: !Ref Environment }
+
+  DbAuditLog:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub '${Project}AuditLog.${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [Prod, true, false]
+      SSESpecification:
+        SSEEnabled: true
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: cid
+          AttributeType: S
+        - AttributeName: operation
+          AttributeType: S
+      KeySchema:
+        - AttributeName: cid
+          KeyType: HASH
+        - AttributeName: id
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: OperationByCid
+          KeySchema:
+            - AttributeName: cid
+              KeyType: HASH
+            - AttributeName: operation
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      Tags:
+        - { Key: Project, Value: !Ref Project }
+        - { Key: Environment, Value: !Ref Environment }
