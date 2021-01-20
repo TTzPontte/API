@@ -34,7 +34,7 @@ const parserOfferSimulation = async event => {
   };
 };
 
-const parserBody = async data => {
+const parserBody = data => {
   const { cep, documentNumber, monthlyIncome, consumer, questions } = data;
   const nickName = consumer.name
     .split(' ')
@@ -65,7 +65,7 @@ const parserBody = async data => {
     ]
   };
 
-  return entity;
+  return { entity };
 };
 
 const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
