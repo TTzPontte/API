@@ -21,7 +21,7 @@ const translate = ({ questions, consumer, ...body }) => {
       const persona = relation[person];
       const incomeSource = find(INCOME_SOURCES, persona.ocupation.label);
       persona.relation = PERSONAS[person];
-      persona.persona.ocupation.label = INCOME_SOURCES[incomeSource];
+      persona.ocupation.label = INCOME_SOURCES[incomeSource];
       relations.push(persona);
     });
 
@@ -49,10 +49,10 @@ const translate = ({ questions, consumer, ...body }) => {
     return obj;
   }, {});
 
-  const translateConsumer = consumer => {
+  const translateConsumer = ({ consumer, questions }) => {
     consumer.education_level = EDUCATION_LEVELS[level];
     consumer.marital_status = MARITAL_STATUS[marital];
-    consumer.questions.relations = translateRelations;
+    questions.relations = translateRelations;
     consumer.contactEmail = consumer.email;
 
     return {
@@ -63,7 +63,7 @@ const translate = ({ questions, consumer, ...body }) => {
     };
   };
 
-  const translatedConsumer = translateConsumer(consumer);
+  const translatedConsumer = translateConsumer({ consumer, questions });
 
   const translatedProperty = {
     ...questions.property,
