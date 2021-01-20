@@ -10,6 +10,7 @@ const Contract = require(`${path}/services/contract.service`);
 const { getAddress, isValidCep, isCovered } = require(`${path}/services/cep.service`);
 const middy = require(`${path}/middy/middy`);
 const translateBody = require('./translate');
+const { ssmCognito } = require(`${path}/middy/shared/ssm`);
 
 const simulation = async event => {
   const data = await parser(event);
@@ -45,4 +46,4 @@ const simulation = async event => {
   return badRequest('Algo deu errado.');
 };
 
-module.exports = { handler: middy(simulation), simulation };
+module.exports = { handler: middy(simulation).use(ssmCognito()), simulation };
