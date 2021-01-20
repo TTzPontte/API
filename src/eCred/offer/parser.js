@@ -3,12 +3,12 @@ const { trackCode } = require(`${path}/helpers/trackCode`);
 const { monthToYear } = require(`${path}/helpers/rate`);
 const { LOAN_MOTIVATION } = require('./constants');
 
-const parser = async event => {
+const parserOfferSimulation = async event => {
   const { body, clientId, clientName, requestContext } = event;
-  const { gracePeriod = 0, skipMonth = 0, loanMotivation = [], loanValue, terms } = body;
-  const { age, documentNumber, phone, email, income, address } = body.entity;
-  const { value } = income;
-  const { propertyValue } = body.property;
+  const { gracePeriod = 0, skipMonth = 0, loanMotivation = [], customer, questions } = body;
+  const { age, cpf: documentNumber } = customer;
+  const { value: loanValue, income, property_value, address_zip_code, installments } = questions;
+
   const sourceIp = requestContext.identity.sourceIp;
   const trackingCode = (await trackCode()) + `:${clientName}`;
   const motivation = loanMotivation.map(motivationItem => {
@@ -16,13 +16,11 @@ const parser = async event => {
   });
 
   return {
-    loanValue: loanValue,
+    loanValue,
     gracePeriod,
     age,
-    email,
-    terms,
-    phone,
-    cep: address.cep,
+    terms: installments,
+    cep: address_zip_code,
     documentNumber,
     loanMotivation: motivation,
     skipMonth,
@@ -30,9 +28,43 @@ const parser = async event => {
     trackCode: trackingCode,
     clientName,
     clientId,
-    propertyValue: propertyValue,
-    monthlyIncome: value
+    propertyValue: property_value,
+    monthlyIncome: income
   };
+};
+
+const parserBody = async data => {
+  const { cep, documentNumber, monthlyIncome, consumer, questions } = data;
+  const nickName = consumer.name
+    .split(' ')
+    .slice(0, -1)
+    .join(' ');
+
+  const entity = {
+    name: consumer.name,
+    nickName: nickName,
+    address: {
+      cep: cep,
+      city: questions.address_city,
+      neighborhood: questions.address_neighborhood,
+      number: questions.address_number,
+      state: questions.address_state.value,
+      streetAddress: questions.address
+    },
+    about: {
+      birthdate: consumer.birth_date
+    },
+    documentNumber: documentNumber,
+    income: [
+      {
+        activity: questions.profession.label,
+        value: monthlyIncome,
+        source: questions.ocupation.label.toUpperCase()
+      }
+    ]
+  };
+
+  return entity;
 };
 
 const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
@@ -53,4 +85,4 @@ const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
   ];
 };
 
-module.exports = { parser, parserResponseOfferSimulation };
+module.exports = { parserOfferSimulation, parserResponseOfferSimulation, parserBody };
