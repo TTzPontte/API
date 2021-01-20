@@ -73,11 +73,11 @@ const validate = async fields => {
       .required(),
     address_neighborhood: yup
       .string()
-      .stric()
+      .strict()
       .required(),
     address_city: yup
       .string()
-      .stric()
+      .strict()
       .required(),
     address_state: yup
       .object()
