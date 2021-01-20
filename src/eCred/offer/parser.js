@@ -9,6 +9,7 @@ const parserOfferSimulation = async event => {
   const { age, cpf: documentNumber } = customer;
   const { value: loanValue, income, property_value, address_zip_code, installments } = questions;
 
+  const cep = address_zip_code.replace('-', '');
   const sourceIp = requestContext.identity.sourceIp;
   const trackingCode = (await trackCode()) + `:${clientName}`;
   const motivation = loanMotivation.map(motivationItem => {
@@ -20,7 +21,7 @@ const parserOfferSimulation = async event => {
     gracePeriod,
     age,
     terms: installments,
-    cep: address_zip_code,
+    cep: cep,
     documentNumber,
     loanMotivation: motivation,
     skipMonth,
