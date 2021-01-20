@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const ContractModel = require('../models/contract');
-const { getEntity } = require('../elasticsearch/entity.es');
+const { getEntity, getEntityByDocNumber } = require('../elasticsearch/entity.es');
 const Property = require('./property.service');
 const Entity = require('./entity.service');
 const User = require('./user.service');
@@ -18,6 +18,20 @@ const setEntityType = documentNumber => {
 
 const isRegistered = async ({ email, documentNumber }) => {
   const entity = await getEntity({ email, documentNumber });
+
+  if (entity && entity.length) {
+    for (const person of entity) {
+      const contract = await getContractByOwner(person.id);
+      if (contract && contract.length) {
+        throw new createError.Conflict('Customer already exists');
+      }
+    }
+  }
+  return false;
+};
+
+const isRegisteredByDocNumber = async ({ documentNumber }) => {
+  const entity = await getEntityByDocNumber({ documentNumber });
 
   if (entity && entity.length) {
     for (const person of entity) {
@@ -132,4 +146,4 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   return savedContract;
 };
 
-module.exports = { save, isRegistered, getContractByOwner };
+module.exports = { save, isRegistered, isRegisteredByDocNumber, getContractByOwner };

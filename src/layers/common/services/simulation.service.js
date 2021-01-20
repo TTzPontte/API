@@ -1,7 +1,7 @@
 const { getNowDefaultDate, getDateIsoString } = require('../helpers/date');
 const Contract = require('../models/contract');
 const createError = require('http-errors');
-const { getClientContract } = require('../elasticsearch/contractsReport.es');
+const { getClientContract, getClientContractByDocNumber } = require('../elasticsearch/contractsReport.es');
 
 const save = async ({
   data: {
@@ -80,6 +80,15 @@ const isRegistered = async ({ documentNumber, email, clientId }) => {
   return false;
 };
 
+const isRegisteredByDocNumber = async ({ documentNumber, clientId }) => {
+  const contracts = await getClientContractByDocNumber({ documentNumber, clientId });
+
+  if (contracts && contracts.length) {
+    throw new createError.Conflict('Customer already exists');
+  }
+  return false;
+};
+
 const getLastContract = async simulationId => {
   try {
     return await Contract.queryOne({ id: simulationId }).exec();
@@ -88,4 +97,4 @@ const getLastContract = async simulationId => {
   }
 };
 
-module.exports = { save, getLastContract, isRegistered };
+module.exports = { save, getLastContract, isRegistered, isRegisteredByDocNumber };

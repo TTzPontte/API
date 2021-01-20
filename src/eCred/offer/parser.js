@@ -6,8 +6,8 @@ const { LOAN_MOTIVATION } = require('./constants');
 const parserOfferSimulation = async event => {
   const { body, clientId, clientName, requestContext } = event;
   const { gracePeriod = 0, skipMonth = 0, loanMotivation = [], consumer, questions } = body;
-  const { age, cpf: documentNumber } = consumer;
-  const { value: loanValue, income, property_value, address_zip_code, installments } = questions;
+  const { age, cpf } = consumer;
+  const { value, income, property_value, address_zip_code, installments } = questions;
 
   const cep = address_zip_code.replace('-', '');
   const sourceIp = requestContext.identity.sourceIp;
@@ -17,12 +17,12 @@ const parserOfferSimulation = async event => {
   });
 
   return {
-    loanValue,
+    loanValue: value,
     gracePeriod,
     age,
     terms: installments,
     cep: cep,
-    documentNumber,
+    documentNumber: cpf,
     loanMotivation: motivation,
     skipMonth,
     sourceIp,

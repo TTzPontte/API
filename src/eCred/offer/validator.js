@@ -96,15 +96,7 @@ const validate = async fields => {
   });
 
   const schema = yup.object().shape({
-    loanMotivation: yup
-      .array()
-      .of(
-        yup
-          .string(LOAN_MOTIVATION)
-          .strict()
-          .required()
-      )
-      .required(),
+    loanMotivation: yup.array().of(yup.string(LOAN_MOTIVATION).strict()),
     loanValue: yup.number().required(),
     terms: yup.number().required(),
     clientId: yup

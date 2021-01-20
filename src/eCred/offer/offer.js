@@ -17,13 +17,13 @@ const offer = async (event, context) => {
   const { body, clientId } = event;
   const offerParsed = await parserOfferSimulation(event);
   const { documentNumber } = offerParsed;
-  await validate(body);
+  await validate({ ...body, ...offerParsed });
 
   const address = await getAddress({ ...offerParsed });
 
   if (isValidCep(address)) {
-    await Simulation.isRegistered({ documentNumber, clientId });
-    await Contract.isRegistered({ documentNumber });
+    await Simulation.isRegisteredByDocNumber({ documentNumber, clientId });
+    await Contract.isRegisteredByDocNumber({ documentNumber });
     const calculated = await Calculator.calculate(offerParsed);
     await exceptionsCalculator(calculated);
 
