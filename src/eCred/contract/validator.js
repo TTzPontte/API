@@ -3,7 +3,19 @@ const yup = require(`${path}/node_modules/yup`);
 const createError = require(`${path}/node_modules/http-errors`);
 const { validateDocumentNumber } = require(`${path}/helpers/validator`);
 
-let { LOAN_MOTIVATION, PHONE_REG_EXP, PERSONAS, PROPERTY_TYPES, PROPERTY_AGE, BEDROOMS, suitesOptions, RESIDENTS, GARAGES } = require('./constants');
+let {
+  LOAN_MOTIVATION,
+  PHONE_REG_EXP,
+  PERSONAS,
+  PROPERTY_TYPES,
+  PROPERTY_AGE,
+  BEDROOMS,
+  suitesOptions,
+  RESIDENTS,
+  GARAGES,
+  EDUCATION_LEVELS,
+  MARITAL_STATUS
+} = require('./constants');
 
 yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', documentNumber => validateDocumentNumber(documentNumber)));
 
@@ -28,11 +40,54 @@ const validate = async fields => {
       .strict()
       .required(),
     marital_status: yup
-      .string()
+      .string(MARITAL_STATUS)
       .strict()
       .required(),
-    age: yup.number().required()
+    age: yup.number().required(),
+    education_level: yup
+      .string(EDUCATION_LEVELS)
+      .strict()
+      .required()
   });
+
+  // const relationsSchema = yup.object().shape({
+  //   relations: yup
+  //     .array()
+  //     .of(
+  //       yup.object().shape({
+  //         income: yup.number().required(),
+  //         cpf: yup
+  //           .string()
+  //           .strict()
+  //           .required()
+  //           .documentNumber(),
+  //         email: yup
+  //           .string()
+  //           .email()
+  //           .required(),
+  //         name: yup
+  //           .string()
+  //           .strict()
+  //           .required(),
+  //         birth_date: yup.date().required(),
+  //         ocupation: yup
+  //           .object()
+  //           .shape({
+  //             label: yup
+  //               .string()
+  //               .strict()
+  //               .required(),
+  //             value: yup
+  //               .string()
+  //               .strict()
+  //               .required()
+  //           })
+  //           .required()
+  //       })
+  //         .required()
+  //     )
+  //     .required()
+  // });
 
   const orderSchema = yup.object().shape({
     order: yup
@@ -117,36 +172,6 @@ const validate = async fields => {
           .required()
       })
       .required(),
-    spouse: yup.object().shape({
-      income: yup.number().required(),
-      cpf: yup
-        .string()
-        .strict()
-        .required()
-        .documentNumber(),
-      email: yup
-        .string()
-        .email()
-        .required(),
-      name: yup
-        .string()
-        .strict()
-        .required(),
-      birth_date: yup.date().required(),
-      ocupation: yup
-        .object()
-        .shape({
-          label: yup
-            .string()
-            .strict()
-            .required(),
-          value: yup
-            .string()
-            .strict()
-            .required()
-        })
-        .required()
-    }),
     loanMotivation: yup.array().of(yup.string(LOAN_MOTIVATION).strict()),
     secondPayers: yup
       .array()
@@ -156,8 +181,7 @@ const validate = async fields => {
           .strict()
           .required()
       )
-      .required(),
-    property_value: yup.number().required()
+      .required()
   });
 
   const propertySchema = yup
@@ -193,8 +217,8 @@ const validate = async fields => {
         })
         .required(),
       type: yup
-        .string()
-        .oneOf(PROPERTY_TYPES)
+        .string(PROPERTY_TYPES)
+        .strict()
         .required(),
       floorArea: yup
         .string()
@@ -202,32 +226,25 @@ const validate = async fields => {
         .required(),
       property_value: yup.number().required(),
       age: yup
-        .string()
+        .string(PROPERTY_AGE)
         .strict()
-        .oneOf(PROPERTY_AGE)
         .required(),
-      bedrooms: yup
-        .string()
-        .oneOf(BEDROOMS)
-        .required(),
+      bedrooms: yup.string(BEDROOMS).required(),
       suites: yup
-        .string()
-        .oneOf(suitesOptions(fields.property.bedrooms))
+        .string(suitesOptions(fields.questions.property.bedrooms))
+        .strict()
         .required(),
       isResident: yup
-        .string()
-        .oneOf(RESIDENTS)
+        .string(RESIDENTS)
+        .strict()
         .required(),
-      garages: yup
-        .string()
-        .oneOf(GARAGES)
-        .when('type', {
-          is: type => type === PROPERTY_TYPES[0],
-          then: yup
-            .string()
-            .strict()
-            .required()
-        }),
+      garages: yup.string(GARAGES).when('type', {
+        is: type => type === PROPERTY_TYPES[0],
+        then: yup
+          .string()
+          .strict()
+          .required()
+      }),
       financed: yup.boolean().required(),
       financingDebt: yup
         .string()
@@ -251,8 +268,10 @@ const validate = async fields => {
 
   try {
     const { clientId, consumer, questions, order } = fields;
+    // const { relations } = questions;
     await consumerSchema.validate(consumer);
-    await orderSchema.validate(order);
+    // await relationsSchema.validate({ relations });
+    await orderSchema.validate({ order });
     await questionsSchema.validate(questions);
     await propertySchema.validate(questions.property);
     const isValid = await schema.validate({ clientId });
