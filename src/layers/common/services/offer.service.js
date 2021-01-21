@@ -14,6 +14,10 @@ const getContractByOwner = async contractOwner => {
     .exec();
 };
 
+const getLastEntity = async documentNumber => {
+  return getEntityByDocNumber(documentNumber);
+};
+
 const setEntityType = documentNumber => {
   return documentNumber.length === 14 ? 'PJ' : 'PF';
 };
@@ -38,7 +42,7 @@ const save = async ({ entity, lastContract, ...data }) => {
   return savedContract;
 };
 
-const saveContract = async ({ entity, property, lastContract, secondPayers, ...data }) => {
+const saveContract = async ({ entity, property, lastContract, lastEntity, secondPayers, ...data }) => {
   const Cognito = require('./cognito.service');
 
   const { name, email, phone, documentNumber } = entity;
@@ -46,8 +50,6 @@ const saveContract = async ({ entity, property, lastContract, secondPayers, ...d
   const {
     parameters: { loanValue }
   } = simulation;
-
-  const lastEntity = await getEntityByDocNumber({ documentNumber });
 
   const relations = await Contract.saveRelations({ ...entity });
   entity.relations = relations;
@@ -96,4 +98,4 @@ const saveContract = async ({ entity, property, lastContract, secondPayers, ...d
   return savedContract;
 };
 
-module.exports = { save, saveContract, getContractByOwner };
+module.exports = { save, saveContract, getContractByOwner, getLastEntity };

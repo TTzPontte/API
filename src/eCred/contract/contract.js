@@ -16,11 +16,14 @@ const contract = async event => {
 
   const translatedBody = translateBody(body);
 
+  const bodyParsed = parserBody(translatedBody);
+  const { documentNumber } = bodyParsed.entity;
+
   const lastContract = await Simulation.getLastContract(proposal_id);
 
-  const bodyParsed = parserBody(translatedBody);
+  const lastEntity = await Offer.getLastEntity({ documentNumber });
 
-  const contract = await Offer.saveContract({ ...bodyParsed, clientId, lastContract });
+  const contract = await Offer.saveContract({ ...bodyParsed, clientId, lastContract, lastEntity });
 
   return success({ ...contract });
 };
