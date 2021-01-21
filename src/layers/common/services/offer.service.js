@@ -1,5 +1,6 @@
 const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const ContractModel = require('../models/contract');
+const EntityModel = require('../models/entity');
 const Entity = require('./entity.service');
 const Process = require('./process.service');
 const Contract = require(`${path}/services/contract.service`);
@@ -57,8 +58,14 @@ const saveContract = async ({ entity, property, lastContract, secondPayers, ...d
   entity.relations = relations;
 
   const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
-  const { id: contractOwner } = await Entity.save({ ...lastEntity });
   const { id: propertyId } = await Property.save(property, trackCode);
+
+  const updateEntity = new EntityModel({
+    ...lastEntity,
+    ...entity
+  });
+
+  const { id: contractOwner } = await updateEntity.save();
 
   await User.save({
     id: cognitoUser.Username,
