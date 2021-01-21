@@ -4,7 +4,7 @@ const _ = require(`${path}/node_modules/lodash`);
 const createError = require(`${path}/node_modules/http-errors`);
 const { validateDocumentNumber } = require(`${path}/helpers/validator`);
 
-let { PROPERTY_TYPES, PROPERTY_AGE, BEDROOMS, suitesOptions, PERSONAS, GARAGES, RESIDENTS, PHONE_REG_EXP } = require('./constants');
+let { PROPERTY_TYPES, PROPERTY_AGE, BEDROOMS, suitesOptions, PERSONAS, GARAGES, RESIDENTS, PHONE_REG_EXP, LOAN_MOTIVATION } = require('./constants');
 
 PROPERTY_TYPES = Object.keys(PROPERTY_TYPES);
 PERSONAS = Object.keys(PERSONAS);
@@ -130,7 +130,7 @@ const validate = async fields => {
       .string()
       .email()
       .required(),
-    contactEmail: yup.string().strict(),
+    contactEmail: yup.string().email(),
     type: yup.string().strict(),
     accounts: yup.array(),
     phone: yup
@@ -255,6 +255,17 @@ const validate = async fields => {
         .strict()
         .required()
     ),
+    loanMotivation: yup
+      .array()
+      .of(
+        yup
+          .string(LOAN_MOTIVATION)
+          .strict()
+          .required()
+      )
+      .required(),
+    loanValue: yup.number().required(),
+    terms: yup.number().required(),
     clientId: yup
       .string()
       .strict()
@@ -263,11 +274,11 @@ const validate = async fields => {
 
   try {
     const { isResident, owners } = _.get(fields, 'property', {});
-    const { clientId } = fields;
+    const { clientId, loanMotivation, terms, loanValue } = fields;
     const secondPayers = _.get(fields, 'secondPayers', []);
     await entitySchema.validate({ ...fields.entity, isResident, owners });
     await propertySchema.validate(fields.property);
-    const isValid = await schema.validate({ clientId, secondPayers });
+    const isValid = await schema.validate({ clientId, secondPayers, loanMotivation, terms, loanValue });
     return isValid;
   } catch (err) {
     throw new createError.BadRequest(err.message);
