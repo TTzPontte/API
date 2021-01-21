@@ -16,6 +16,10 @@ const parserBody = data => {
     phone: questions.cellphone,
     name: consumer.name,
     nickName: nickName,
+    accounts: [],
+    documents: [],
+    files: [],
+    registry: [],
     address: {
       cep: cepFormated,
       city: questions.address_city,
