@@ -59,7 +59,7 @@ const parserResponseContract = ({ id }) => {
     proposal_id: id,
     proposal_status: 'created',
     proposal_status_message: null,
-    redirect_url: `${getSiteUrl()}/cadastro/${id}`
+    redirect_url: `${getSiteUrl()}/welcome/login`
   };
 
   return response;
