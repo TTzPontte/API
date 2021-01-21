@@ -4,7 +4,7 @@ const _ = require(`${path}/node_modules/lodash`);
 const createError = require(`${path}/node_modules/http-errors`);
 const { validateDocumentNumber } = require(`${path}/helpers/validator`);
 
-let { PROPERTY_TYPES, PROPERTY_AGE, BEDROOMS, suitesOptions, PERSONAS, GARAGES, RESIDENTS, PHONE_REG_EXP, LOAN_MOTIVATION } = require('./constants');
+let { PROPERTY_TYPES, PROPERTY_AGE, BEDROOMS, suitesOptions, PERSONAS, GARAGES, RESIDENTS, PHONE_REG_EXP } = require('./constants');
 
 PROPERTY_TYPES = Object.keys(PROPERTY_TYPES);
 PERSONAS = Object.keys(PERSONAS);
@@ -62,31 +62,25 @@ const getAddressSchema = async address => {
 
 const getIncomeSchema = income => {
   const incomeSchema = yup.array().of(
-    yup
-      .object()
-      .shape({
-        source: yup
-          .string()
-          .strict()
-          .required(),
-        activity: yup
-          .string()
-          .strict()
-          .required(),
-        value: yup
-          .string()
-          .strict()
-          .required(),
-        incomeOrigin: yup
-          .string()
-          .strict()
-          .required(),
-        averageIncome: yup
-          .string()
-          .strict()
-          .required()
-      })
-      .required()
+    yup.object().shape({
+      type: yup
+        .string()
+        .strict()
+        .required(),
+      activity: yup
+        .string()
+        .strict()
+        .required(),
+      value: yup
+        .string()
+        .strict()
+        .required(),
+      incomeOrigin: yup
+        .string()
+        .strict()
+        .required(),
+      averageIncome: yup.string()
+    })
   );
   return { incomeSchema };
 };
@@ -118,9 +112,12 @@ const getAboutSchema = async about => {
 
 const validate = async fields => {
   const { relations, address, income, about } = fields.entity;
+
+  const { secondPayers } = fields.secondPayers;
+
   const relationsSchema = getRelationsSchema(relations);
   const addressSchema = getAddressSchema(address);
-  const incomeSchema = getIncomeSchema(income);
+  const incomeSchema = getIncomeSchema({ income, secondPayers });
   const aboutSchema = getAboutSchema(about);
 
   const entitySchema = yup.object({
@@ -133,7 +130,7 @@ const validate = async fields => {
       .string()
       .email()
       .required(),
-    contactEmail: yup.string().email(),
+    contactEmail: yup.string().strict(),
     type: yup.string().strict(),
     accounts: yup.array(),
     phone: yup
@@ -258,17 +255,6 @@ const validate = async fields => {
         .strict()
         .required()
     ),
-    loanMotivation: yup
-      .array()
-      .of(
-        yup
-          .string(LOAN_MOTIVATION)
-          .strict()
-          .required()
-      )
-      .required(),
-    loanValue: yup.number().required(),
-    terms: yup.number().required(),
     clientId: yup
       .string()
       .strict()
@@ -277,11 +263,11 @@ const validate = async fields => {
 
   try {
     const { isResident, owners } = _.get(fields, 'property', {});
-    const { clientId, loanMotivation, terms, loanValue } = fields;
+    const { clientId } = fields;
     const secondPayers = _.get(fields, 'secondPayers', []);
     await entitySchema.validate({ ...fields.entity, isResident, owners });
     await propertySchema.validate(fields.property);
-    const isValid = await schema.validate({ clientId, secondPayers, loanMotivation, terms, loanValue });
+    const isValid = await schema.validate({ clientId, secondPayers });
     return isValid;
   } catch (err) {
     throw new createError.BadRequest(err.message);
