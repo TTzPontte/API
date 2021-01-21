@@ -15,7 +15,7 @@ const getContractByOwner = async contractOwner => {
 };
 
 const getLastEntity = async documentNumber => {
-  return getEntityByDocNumber(documentNumber)[0];
+  return getEntityByDocNumber(documentNumber);
 };
 
 const setEntityType = documentNumber => {
