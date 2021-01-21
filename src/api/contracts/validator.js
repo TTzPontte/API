@@ -61,36 +61,27 @@ const getAddressSchema = async address => {
 };
 
 const getIncomeSchema = income => {
-  const incomeSchema = yup
-    .array()
-    .of(
-      yup
-        .object()
-        .shape({
-          type: yup
-            .string()
-            .strict()
-            .required(),
-          activity: yup
-            .string()
-            .strict()
-            .required(),
-          value: yup
-            .string()
-            .strict()
-            .required(),
-          incomeOrigin: yup
-            .string()
-            .strict()
-            .required(),
-          averageIncome: yup
-            .string()
-            .strict()
-            .required()
-        })
-        .required()
-    )
-    .required();
+  const incomeSchema = yup.array().of(
+    yup.object().shape({
+      type: yup
+        .string()
+        .strict()
+        .required(),
+      activity: yup
+        .string()
+        .strict()
+        .required(),
+      value: yup
+        .string()
+        .strict()
+        .required(),
+      incomeOrigin: yup
+        .string()
+        .strict()
+        .required(),
+      averageIncome: yup.string()
+    })
+  );
   return { incomeSchema };
 };
 
@@ -121,9 +112,12 @@ const getAboutSchema = async about => {
 
 const validate = async fields => {
   const { relations, address, income, about } = fields.entity;
+
+  const { secondPayers } = fields.secondPayers;
+
   const relationsSchema = getRelationsSchema(relations);
   const addressSchema = getAddressSchema(address);
-  const incomeSchema = getIncomeSchema(income);
+  const incomeSchema = getIncomeSchema({ income, secondPayers });
   const aboutSchema = getAboutSchema(about);
 
   const entitySchema = yup.object({

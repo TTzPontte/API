@@ -1,5 +1,5 @@
 const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
-const { parser, parserResponseOfferSimulation } = require('./parser');
+const { parserOfferSimulation, parserResponseOfferSimulation, parserBody } = require('./parser');
 const { validate } = require('./validator');
 const { created, badRequest } = require(`${path}/lambda/response`);
 const { exceptionsCalculator } = require(`${path}/helpers/exceptions`);
@@ -10,21 +10,20 @@ const Calculator = require(`${path}/services/calculator.service`);
 const Contract = require(`${path}/services/contract.service`);
 const { getAddress, isValidCep, isCovered } = require(`${path}/services/cep.service`);
 const middy = require(`${path}/middy/middy`);
-const translateBody = require('./translate');
 const { ssmCognito } = require(`${path}/middy/shared/ssm`);
 const AuditLog = require(`${path}/lambda/auditLog`);
 
 const offer = async (event, context) => {
   const { body, clientId } = event;
-  const offerParsed = await parser(event);
-  const { documentNumber, email } = body.entity;
-  await validate(body);
+  const offerParsed = await parserOfferSimulation(event);
+  const { documentNumber } = offerParsed;
+  await validate({ ...body, ...offerParsed });
 
   const address = await getAddress({ ...offerParsed });
 
   if (isValidCep(address)) {
-    await Simulation.isRegistered({ documentNumber, email, clientId });
-    await Contract.isRegistered({ documentNumber, email });
+    await Simulation.isRegisteredByDocNumber({ documentNumber, clientId });
+    await Contract.isRegisteredByDocNumber({ documentNumber });
     const calculated = await Calculator.calculate(offerParsed);
     await exceptionsCalculator(calculated);
 
@@ -32,8 +31,8 @@ const offer = async (event, context) => {
       if (isCovered(address)) {
         const simulation = await Simulation.save({ data: offerParsed, calculated });
         const lastContract = await Simulation.getLastContract(simulation.id);
-        const translatedBody = translateBody(body);
-        await Offer.save({ ...translatedBody, clientId, lastContract });
+        const bodyParserd = parserBody({ ...body, ...offerParsed });
+        await Offer.save({ ...bodyParserd, clientId, lastContract });
 
         const response = parserResponseOfferSimulation({ simulationId: simulation.id, calculated });
 
