@@ -61,36 +61,33 @@ const getAddressSchema = async address => {
 };
 
 const getIncomeSchema = income => {
-  const incomeSchema = yup
-    .array()
-    .of(
-      yup
-        .object()
-        .shape({
-          source: yup
-            .string()
-            .strict()
-            .required(),
-          activity: yup
-            .string()
-            .strict()
-            .required(),
-          value: yup
-            .string()
-            .strict()
-            .required(),
-          incomeOrigin: yup
-            .string()
-            .strict()
-            .required(),
-          averageIncome: yup
-            .string()
-            .strict()
-            .required()
-        })
-        .required()
-    )
-    .required();
+  const incomeSchema = yup.array().of(
+    yup
+      .object()
+      .shape({
+        source: yup
+          .string()
+          .strict()
+          .required(),
+        activity: yup
+          .string()
+          .strict()
+          .required(),
+        value: yup
+          .string()
+          .strict()
+          .required(),
+        incomeOrigin: yup
+          .string()
+          .strict()
+          .required(),
+        averageIncome: yup
+          .string()
+          .strict()
+          .required()
+      })
+      .required()
+  );
   return { incomeSchema };
 };
 
