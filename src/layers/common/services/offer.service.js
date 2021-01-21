@@ -58,7 +58,7 @@ const saveContract = async ({ entity, property, lastContract, lastEntity, second
   const { id: propertyId } = await Property.save(property, trackCode);
 
   const updateEntity = new EntityModel({
-    ...lastEntity,
+    ...lastEntity[0],
     ...entity
   });
 
