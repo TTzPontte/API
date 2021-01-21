@@ -6,7 +6,7 @@ const Process = require('./process.service');
 const Contract = require(`${path}/services/contract.service`);
 const Property = require('./property.service');
 const User = require('./user.service');
-const { getEntity } = require('../elasticsearch/entity.es');
+const { getEntityByDocNumber } = require('../elasticsearch/entity.es');
 
 const getContractByOwner = async contractOwner => {
   return ContractModel.query({ contractOwner: { eq: contractOwner } })
@@ -47,9 +47,7 @@ const saveContract = async ({ entity, property, lastContract, secondPayers, ...d
     parameters: { loanValue }
   } = simulation;
 
-  const entityType = setEntityType(documentNumber);
-
-  const lastEntity = await getEntity({ email, documentNumber });
+  const lastEntity = await getEntityByDocNumber({ documentNumber });
 
   const relations = await Contract.saveRelations({ ...entity });
   entity.relations = relations;
@@ -59,8 +57,7 @@ const saveContract = async ({ entity, property, lastContract, secondPayers, ...d
 
   const updateEntity = new EntityModel({
     ...lastEntity,
-    ...entity,
-    type: entityType
+    ...entity
   });
 
   const { id: contractOwner } = await updateEntity.save();
