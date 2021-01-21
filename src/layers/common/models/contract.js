@@ -123,7 +123,8 @@ const ContractsSchema = new Schema(
     ],
     clientId: String,
     trackCode: String,
-    statusGroupContractId: String
+    statusGroupContractId: String,
+    priorization: String
   })
 );
 
