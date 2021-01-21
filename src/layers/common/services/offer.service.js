@@ -47,6 +47,8 @@ const saveContract = async ({ entity, property, lastContract, secondPayers, ...d
     parameters: { loanValue }
   } = simulation;
 
+  const entityType = setEntityType(documentNumber);
+
   const lastEntity = await getEntity({ email, documentNumber });
 
   const relations = await Contract.saveRelations({ ...entity });
@@ -57,7 +59,8 @@ const saveContract = async ({ entity, property, lastContract, secondPayers, ...d
 
   const updateEntity = new EntityModel({
     ...lastEntity,
-    ...entity
+    ...entity,
+    type: entityType
   });
 
   const { id: contractOwner } = await updateEntity.save();
