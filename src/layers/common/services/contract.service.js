@@ -146,4 +146,11 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   return savedContract;
 };
 
-module.exports = { save, isRegistered, isRegisteredByDocNumber, getContractByOwner };
+module.exports = {
+  save,
+  isRegistered,
+  isRegisteredByDocNumber,
+  getContractByOwner,
+  saveRelations,
+  getSecondPayers
+};

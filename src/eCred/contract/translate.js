@@ -49,19 +49,27 @@ const translate = ({ questions, consumer, ...body }) => {
     return obj;
   }, {});
 
-  const translateConsumer = ({ consumer, questions }) => {
+  const translateConsumer = ({ consumer }) => {
     consumer.education_level = EDUCATION_LEVELS[level];
     consumer.marital_status = MARITAL_STATUS[marital];
-    questions.relations = translateRelations;
     consumer.contactEmail = consumer.email;
 
     return {
       ...consumer,
+      ...questions,
       ...personas,
       ...boolValues,
       incomeSource: INCOME_SOURCES[source]
     };
   };
+
+  const translateQuestions = ({ questions }) => {
+    questions.relations = translateRelations;
+
+    return { ...questions };
+  };
+
+  const translatedQuestions = translateQuestions({ questions });
 
   const translatedConsumer = translateConsumer({ consumer, questions });
 
@@ -74,8 +82,9 @@ const translate = ({ questions, consumer, ...body }) => {
 
   return {
     ...body,
+    questions: translatedQuestions,
     consumer: translatedConsumer,
-    questions: translatedProperty,
+    property: translatedProperty,
     secondPayers: translatedSecondPayers
   };
 };
