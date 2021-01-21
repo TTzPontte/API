@@ -67,7 +67,7 @@ const getIncomeSchema = income => {
       yup
         .object()
         .shape({
-          type: yup
+          source: yup
             .string()
             .strict()
             .required(),
