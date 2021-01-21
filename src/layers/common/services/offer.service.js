@@ -84,7 +84,8 @@ const saveContract = async ({ entity, property, lastContract, lastEntity, second
     contractOwners: [contractOwner],
     source,
     campaign,
-    secondPayers: payers
+    secondPayers: payers,
+    priorization: 'fast'
   });
 
   const savedContract = await contract.save();
