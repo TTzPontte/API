@@ -42,4 +42,12 @@ const parserBody = data => {
   return { entity, property, clientId, simulationId, secondPayers };
 };
 
-module.exports = { parserBody };
+const parserLastContract = ({ lastContract, bodyParsed }) => {
+  const { email, phone } = bodyParsed.entity;
+  lastContract.simulation.parameters.email = email;
+  lastContract.simulation.parameters.phone = phone;
+
+  return lastContract;
+};
+
+module.exports = { parserBody, parserLastContract };
