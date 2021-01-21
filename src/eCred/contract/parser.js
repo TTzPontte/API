@@ -1,6 +1,3 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
-const { getSiteUrl } = require(`${path}/helpers/url`);
-
 const parserBody = data => {
   const { order, clientId, questions, consumer, property, secondPayers } = data;
   const nickName = consumer.name
