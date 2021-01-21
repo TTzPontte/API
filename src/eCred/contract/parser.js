@@ -50,4 +50,16 @@ const parserLastContract = ({ lastContract, bodyParsed }) => {
   return lastContract;
 };
 
-module.exports = { parserBody, parserLastContract };
+const parserResponseContract = ({ id }) => {
+  const response = {
+    message: 'The Order has been successfully processed.',
+    proposal_id: id,
+    proposal_status: 'created',
+    proposal_status_message: null,
+    redirect_url: null
+  };
+
+  return response;
+};
+
+module.exports = { parserBody, parserLastContract, parserResponseContract };
