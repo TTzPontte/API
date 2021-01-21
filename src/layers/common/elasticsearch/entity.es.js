@@ -37,4 +37,33 @@ const getEntity = async ({ email, documentNumber }) => {
   return data;
 };
 
-module.exports = { getEntity };
+const getEntityByDocNumber = async ({ documentNumber }) => {
+  const query = {
+    index: INDEX,
+    type: TYPE,
+    body: {
+      query: {
+        bool: {
+          should: [
+            {
+              term: {
+                documentNumber
+              }
+            }
+          ]
+        }
+      }
+    }
+  };
+  const { body } = await es.search(query);
+
+  const data = [];
+  for (const hits of body.hits.hits) {
+    const source = hits._source;
+    data.push({ ...source });
+  }
+
+  return data;
+};
+
+module.exports = { getEntity, getEntityByDocNumber };

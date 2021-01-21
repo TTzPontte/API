@@ -1,10 +1,11 @@
-const createError = require('http-errors');
+const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const ContractModel = require('../models/contract');
-const { getEntity } = require('../elasticsearch/entity.es');
-const Property = require('./property.service');
+const EntityModel = require('../models/entity');
 const Entity = require('./entity.service');
-const User = require('./user.service');
 const Process = require('./process.service');
+const Contract = require(`${path}/services/contract.service`);
+const Property = require('./property.service');
+const { getEntityByDocNumber } = require('../elasticsearch/entity.es');
 
 const getContractByOwner = async contractOwner => {
   return ContractModel.query({ contractOwner: { eq: contractOwner } })
@@ -12,108 +13,60 @@ const getContractByOwner = async contractOwner => {
     .exec();
 };
 
+const getLastEntity = async documentNumber => {
+  return getEntityByDocNumber(documentNumber);
+};
+
 const setEntityType = documentNumber => {
   return documentNumber.length === 14 ? 'PJ' : 'PF';
 };
 
-const isRegistered = async ({ email, documentNumber }) => {
-  const entity = await getEntity({ email, documentNumber });
-
-  if (entity && entity.length) {
-    for (const person of entity) {
-      const contract = await getContractByOwner(person.id);
-      if (contract && contract.length) {
-        throw new createError.Conflict('Customer already exists');
-      }
-    }
-  }
-  return false;
-};
-
-const setRelations = entity => {
-  const relationsList = [];
-  const relations = entity.relations;
-  relations.map(relation => {
-    const relationType = setEntityType(relation.cpf);
-    const relationFormated = {
-      documentNumber: relation.cpf,
-      birth: relation.birth,
-      email: relation.email,
-      contactEmail: relation.email,
-      name: relation.name,
-      relation: relation.relation,
-      income: [
-        {
-          incomeSource: relation.incomeSource
-        }
-      ],
-      type: relationType
-    };
-    relationsList.push(relationFormated);
-  });
-  return relationsList;
-};
-
-const saveRelations = async entity => {
-  const relationsList = [];
-  const relations = setRelations(entity);
-  for (const relation of relations) {
-    const relat = await Entity.save(relation);
-    const rel = {
-      type: [relation.relation],
-      id: relat.id
-    };
-    relationsList.push(rel);
-  }
-  return relationsList;
-};
-
-const getSecondPayers = ({ relations, secondPayers }) => {
-  const secondPayerList = [];
-  for (const persona of secondPayers) {
-    for (const relation of relations) {
-      if (relation.type[0] === persona) {
-        secondPayerList.push(relation.id);
-      }
-    }
-  }
-  return secondPayerList;
-};
-
-const save = async ({ entity, property, lastContract, secondPayers, ...data }) => {
-  await isRegistered(entity);
+const save = async ({ entity, lastContract, ...data }) => {
   const { documentNumber } = entity;
+  const { source, campaign } = lastContract;
+  const entityType = setEntityType(documentNumber);
+  const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
+
+  const contract = new ContractModel({
+    ...lastContract,
+    ...data,
+    contractOwners: [contractOwner],
+    source,
+    campaign
+  });
+
+  const savedContract = await contract.save();
+
+  return savedContract;
+};
+
+const saveContract = async ({ entity, property, lastContract, lastEntity, secondPayers, ...data }) => {
   const { source, campaign, trackCode } = lastContract;
 
-  const entityType = setEntityType(documentNumber);
-
-  const relations = await saveRelations({ ...entity, type: entityType });
+  const relations = await Contract.saveRelations({ ...entity });
   entity.relations = relations;
-  entity.income = [entity.income];
 
-  const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
   const { id: propertyId } = await Property.save(property, trackCode);
 
-  await User.save({
-    id: documentNumber,
-    cpf: documentNumber,
-    trackingCode: trackCode,
-    entityId: contractOwner,
-    campaign: campaign,
-    source: source
+  const updateEntity = new EntityModel({
+    ...lastEntity[0],
+    ...entity
   });
 
-  const payers = getSecondPayers({ relations, secondPayers });
+  const { id: contractOwner } = await updateEntity.save();
+
+  const payers = Contract.getSecondPayers({ relations, secondPayers });
 
   const contract = new ContractModel({
     ...lastContract,
     ...data,
     propertyId,
-    contractOwner,
+    contractManager: contractOwner,
     contractOwners: [contractOwner],
     source,
     campaign,
-    secondPayers: payers
+    secondPayers: payers,
+    priorization: 'fast'
   });
 
   const savedContract = await contract.save();
@@ -127,4 +80,4 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   return savedContract;
 };
 
-module.exports = { save, isRegistered, getContractByOwner };
+module.exports = { save, saveContract, getContractByOwner, getLastEntity };
