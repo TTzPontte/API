@@ -1,6 +1,3 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
-const { getSiteUrl } = require(`${path}/helpers/url`);
-
 const parserBody = data => {
   const { order, clientId, questions, consumer, property, secondPayers } = data;
   const nickName = consumer.name
@@ -57,8 +54,7 @@ const parserResponseContract = ({ id }) => {
   const response = {
     message: 'The Order has been successfully processed.',
     proposal_id: id,
-    proposal_status: 'under-analysis-data',
-    redirect_url: `${getSiteUrl()}/welcome/login`
+    proposal_status: 'under-analysis-data'
   };
 
   return response;
