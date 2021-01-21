@@ -35,11 +35,6 @@ const save = async ({ entity, lastContract, ...data }) => {
 
   const savedContract = await contract.save();
 
-  await Process.save({
-    contractId: savedContract.id,
-    ...data
-  });
-
   return savedContract;
 };
 
