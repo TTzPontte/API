@@ -57,8 +57,7 @@ const parserResponseContract = ({ id }) => {
   const response = {
     message: 'The Order has been successfully processed.',
     proposal_id: id,
-    proposal_status: 'created',
-    proposal_status_message: null,
+    proposal_status: 'under-analysis-data',
     redirect_url: `${getSiteUrl()}/welcome/login`
   };
 

@@ -50,45 +50,6 @@ const validate = async fields => {
       .required()
   });
 
-  // const relationsSchema = yup.object().shape({
-  //   relations: yup
-  //     .array()
-  //     .of(
-  //       yup.object().shape({
-  //         income: yup.number().required(),
-  //         cpf: yup
-  //           .string()
-  //           .strict()
-  //           .required()
-  //           .documentNumber(),
-  //         email: yup
-  //           .string()
-  //           .email()
-  //           .required(),
-  //         name: yup
-  //           .string()
-  //           .strict()
-  //           .required(),
-  //         birth_date: yup.date().required(),
-  //         ocupation: yup
-  //           .object()
-  //           .shape({
-  //             label: yup
-  //               .string()
-  //               .strict()
-  //               .required(),
-  //             value: yup
-  //               .string()
-  //               .strict()
-  //               .required()
-  //           })
-  //           .required()
-  //       })
-  //         .required()
-  //     )
-  //     .required()
-  // });
-
   const orderSchema = yup.object().shape({
     order: yup
       .object()
@@ -118,10 +79,6 @@ const validate = async fields => {
         label: yup
           .string()
           .strict()
-          .required(),
-        value: yup
-          .string()
-          .strict()
           .required()
       })
       .required(),
@@ -129,10 +86,6 @@ const validate = async fields => {
       .object()
       .shape({
         label: yup
-          .string()
-          .strict()
-          .required(),
-        value: yup
           .string()
           .strict()
           .required()
@@ -268,9 +221,7 @@ const validate = async fields => {
 
   try {
     const { clientId, consumer, questions, order } = fields;
-    // const { relations } = questions;
     await consumerSchema.validate(consumer);
-    // await relationsSchema.validate({ relations });
     await orderSchema.validate({ order });
     await questionsSchema.validate(questions);
     await propertySchema.validate(questions.property);
