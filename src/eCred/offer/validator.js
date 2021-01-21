@@ -38,10 +38,6 @@ const validate = async fields => {
         label: yup
           .string()
           .strict()
-          .required(),
-        value: yup
-          .string()
-          .strict()
           .required()
       })
       .required(),
@@ -49,10 +45,6 @@ const validate = async fields => {
       .object()
       .shape({
         label: yup
-          .string()
-          .strict()
-          .required(),
-        value: yup
           .string()
           .strict()
           .required()
