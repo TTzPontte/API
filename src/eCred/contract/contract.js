@@ -10,6 +10,7 @@ const { ssmCognito } = require(`${path}/middy/shared/ssm`);
 
 const contract = async event => {
   const { body, clientId } = event;
+
   const { proposal_id } = body.order;
 
   await validate({ ...body, clientId });
@@ -17,6 +18,7 @@ const contract = async event => {
   const translatedBody = translateBody(body);
 
   const bodyParsed = parserBody(translatedBody);
+
   const { documentNumber } = bodyParsed.entity;
 
   const lastContract = await Simulation.getLastContract(proposal_id);
