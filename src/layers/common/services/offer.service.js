@@ -1,10 +1,7 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const ContractModel = require('../models/contract');
 const EntityModel = require('../models/entity');
 const Entity = require('./entity.service');
 const Process = require('./process.service');
-const Contract = require(`${path}/services/contract.service`);
-const Property = require('./property.service');
 const { getEntityByDocNumber } = require('../elasticsearch/entity.es');
 
 const getContractByOwner = async contractOwner => {
@@ -40,13 +37,8 @@ const save = async ({ entity, lastContract, ...data }) => {
   return savedContract;
 };
 
-const saveContract = async ({ entity, property, lastContract, lastEntity, secondPayers, ...data }) => {
-  const { source, campaign, trackCode } = lastContract;
-
-  const relations = await Contract.saveRelations({ ...entity });
-  entity.relations = relations;
-
-  const { id: propertyId } = await Property.save(property, trackCode);
+const saveContract = async ({ entity, lastContract, lastEntity, ...data }) => {
+  const { source, campaign } = lastContract;
 
   const updateEntity = new EntityModel({
     ...lastEntity[0],
@@ -55,17 +47,13 @@ const saveContract = async ({ entity, property, lastContract, lastEntity, second
 
   const { id: contractOwner } = await updateEntity.save();
 
-  const payers = Contract.getSecondPayers({ relations, secondPayers });
-
   const contract = new ContractModel({
     ...lastContract,
     ...data,
-    propertyId,
     contractManager: contractOwner,
     contractOwners: [contractOwner],
     source,
     campaign,
-    secondPayers: payers,
     priorization: 'fast'
   });
 
@@ -73,7 +61,6 @@ const saveContract = async ({ entity, property, lastContract, lastEntity, second
 
   await Process.save({
     contractId: savedContract.id,
-    suites: property.suites,
     ...data
   });
 

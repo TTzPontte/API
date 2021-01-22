@@ -7,8 +7,9 @@ const middy = require(`${path}/middy/middy`);
 const translateBody = require('./translate');
 const { success } = require(`${path}/lambda/response`);
 const { ssmCognito } = require(`${path}/middy/shared/ssm`);
+const AuditLog = require(`${path}/lambda/auditLog`);
 
-const contract = async event => {
+const contract = async (event, context) => {
   const { body, clientId } = event;
 
   const { proposal_id } = body.order;
@@ -28,6 +29,8 @@ const contract = async event => {
   const lastEntity = await Offer.getLastEntity({ documentNumber });
 
   const contract = await Offer.saveContract({ ...bodyParsed, clientId, lastContract: lastContractParsed, lastEntity });
+
+  await AuditLog.log(event, context, 'ecred', 'contract', body);
 
   const response = parserResponseContract({ ...contract });
 
