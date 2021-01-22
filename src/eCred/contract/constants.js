@@ -14,20 +14,18 @@ const suitesOptions = bedrooms => SUITES.slice(0, bedrooms + 1);
 
 const GARAGES = ['1', '2', '3', '4', '5+'];
 
-const EDUCATION_LEVELS = {
-  INCOMPLETE_ELEMENTARY_SCHOOL: 'ENSINO FUNDAMENTAL INCOMPLETO',
-  ELEMENTARY_SCHOOL: 'ENSINO FUNDAMENTAL COMPLETO',
-  INCOMPLETE_HIGHSCHOOL: 'ENSINO MÉDIO INCOMPLETO',
-  HIGHSCHOOL: 'ENSINO MÉDIO COMPLETO',
-  INCOMPLETE_COLLEGE: 'ENSINO SUPERIOR INCOMPLETO',
-  COLLEGE: 'ENSINO SUPERIOR COMPLETO'
-};
-
-const INCOME_SOURCES = {
-  SALARIED: 'ASSALARIADO',
-  INDEPENDENT: 'AUTONOMO',
-  PUBLIC_EMPLOYEE: 'PÚBLICO'
-};
+const INCOME_SOURCES = [
+  'Agricultor',
+  'Outros',
+  'Aposentado',
+  'Assalariado',
+  'Autônomo',
+  'Empresário',
+  'Funcionário Público',
+  'Pensionista',
+  'Profissional Liberal',
+  'Servidor Doméstico'
+];
 
 const RESIDENTS = {
   THIRD_PARTIES: 'Terceiros',
@@ -40,6 +38,12 @@ const PERSONAS = {
   spouse: 'Cônjuge',
   sibling: 'Irmão ou Irmã',
   father: 'Pai'
+};
+
+const PROPERTY_TYPES = {
+  APARTMENT: 'Apartamento',
+  HOME: 'Casa',
+  BUILDING: 'Comercial'
 };
 
 const LOAN_MOTIVATION = {
@@ -61,12 +65,6 @@ const MARITAL_STATUS = {
   SINGLE: 'SOLTEIRO',
   DIVORCED: 'DIVORCIADO',
   WIDOWER: 'VIÚVO'
-};
-
-const PROPERTY_TYPES = {
-  APARTMENT: 'Apartamento',
-  HOME: 'Casa',
-  BUILDING: 'Comercial'
 };
 
 const PHONE_REG_EXP = /^(\+\d{2}\d{2})(\d{4,5}\d{4})$/;
