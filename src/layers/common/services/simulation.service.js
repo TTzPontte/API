@@ -1,7 +1,7 @@
 const { getNowDefaultDate, getDateIsoString } = require('../helpers/date');
 const Contract = require('../models/contract');
 const createError = require('http-errors');
-const { getClientContract } = require('../elasticsearch/contractsReport.es');
+const { getClientContract, getClientContractByDocNumber } = require('../elasticsearch/contractsReport.es');
 
 const save = async ({
   data: {
@@ -26,6 +26,7 @@ const save = async ({
 }) => {
   const lastInstallment = installment[installment.length - 1].installment;
   const firstInstallment = installment[0].installment;
+  const { STATUS_GROUP_DEFAULT_ID } = process.env;
 
   const simulation = new Contract({
     simulation: {
@@ -63,7 +64,8 @@ const save = async ({
     campaign: clientName,
     source: clientName,
     trackCode: trackCode,
-    clientApiId: clientId
+    clientApiId: clientId,
+    statusGroupContractId: STATUS_GROUP_DEFAULT_ID
   });
 
   return simulation.save();
@@ -71,6 +73,15 @@ const save = async ({
 
 const isRegistered = async ({ documentNumber, email, clientId }) => {
   const contracts = await getClientContract({ documentNumber, email, clientId });
+
+  if (contracts && contracts.length) {
+    throw new createError.Conflict('Customer already exists');
+  }
+  return false;
+};
+
+const isRegisteredByDocNumber = async ({ documentNumber, clientId }) => {
+  const contracts = await getClientContractByDocNumber({ documentNumber, clientId });
 
   if (contracts && contracts.length) {
     throw new createError.Conflict('Customer already exists');
@@ -86,4 +97,4 @@ const getLastContract = async simulationId => {
   }
 };
 
-module.exports = { save, getLastContract, isRegistered };
+module.exports = { save, getLastContract, isRegistered, isRegisteredByDocNumber };

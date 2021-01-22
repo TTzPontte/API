@@ -73,21 +73,88 @@ Resources:
       RestApiId: !Ref APIEcred
       Stage: !Ref APIEcred.Stage
 
-  SimulationSaveApiEcredFn:
+  OfferSaveApiEcredFn:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub "SimulationSaveApiEcredFn-${Environment}"
-      Description: Save the simulations done from partners
-      CodeUri: simulation
-      Handler: simulation.handler
+      FunctionName: !Sub "OfferSaveApiEcredFn-${Environment}"
+      Description: Save the Offers done from partners
+      CodeUri: offer
+      Handler: offer.handler
       Tracing: Active
       Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'cognito/${Environment}/*'
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'statusGroup/${Environment}/*'
+        - SQSSendMessagePolicy:
+            QueueName: !Sub "AuditLog-Api-${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub '${Project}-AuditLog.${Environment}'
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Contract.${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Property.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Simulations.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "User.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Process.${Environment}"
+        - LambdaInvokePolicy:
+            FunctionName: !Sub 'CepGetFn-${Environment}'
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Entity.${Environment}"
+        - LambdaInvokePolicy:
+            FunctionName: !Sub 'SimulatorCalculatorFn-${Environment}'
       Events:
         api1:
           Type: Api
           Properties:
             RestApiId: !Ref APIEcred
-            Path: "/v1/simulation"
+            Path: "/v1/offers"
+            Method: POST
+  
+  ContractSaveApiEcredFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "ContractSaveApiEcredFn-${Environment}"
+      Description: Save the Contracts done from partners
+      CodeUri: contract
+      Handler: contract.handler
+      Tracing: Active
+      Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'cognito/${Environment}/*'
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'statusGroup/${Environment}/*'
+        - SQSSendMessagePolicy:
+            QueueName: !Sub "AuditLog-Api-${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub '${Project}-AuditLog.${Environment}'
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Contract.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DBClients
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Property.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Simulations.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "User.${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Process.${Environment}"
+        - LambdaInvokePolicy:
+            FunctionName: !Sub 'CepGetFn-${Environment}'
+        - DynamoDBCrudPolicy:
+            TableName: !Sub "Entity.${Environment}"
+        - LambdaInvokePolicy:
+            FunctionName: !Sub 'SimulatorCalculatorFn-${Environment}'
+      Events:
+        api1:
+          Type: Api
+          Properties:
+            RestApiId: !Ref APIEcred
+            Path: "/v1/contract"
             Method: POST

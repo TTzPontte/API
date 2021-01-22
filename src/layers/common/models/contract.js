@@ -28,6 +28,7 @@ const ContractsSchema = new Schema(
         cep: String,
         email: String,
         age: Number,
+        phone: String,
         monthlyIncome: Number,
         propertyValue: Number,
         loanValue: Number,
@@ -122,7 +123,8 @@ const ContractsSchema = new Schema(
     ],
     clientId: String,
     trackCode: String,
-    statusGroupContractId: String
+    statusGroupContractId: String,
+    priorization: String
   })
 );
 
