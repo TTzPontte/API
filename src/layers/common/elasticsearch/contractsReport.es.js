@@ -39,7 +39,7 @@ const getClientContract = async ({ documentNumber, email, clientId }) => {
   return data;
 };
 
-const getClientContractByDocNumber = async ({ documentNumber, email, clientId }) => {
+const getClientContractByDocNumber = async ({ documentNumber, clientId }) => {
   const query = {
     index: 'contract',
     type: 'report',
