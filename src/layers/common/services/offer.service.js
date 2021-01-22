@@ -27,6 +27,7 @@ const save = async ({ entity, lastContract, ...data }) => {
   const contract = new ContractModel({
     ...lastContract,
     ...data,
+    contractOwner: contractOwner,
     contractOwners: [contractOwner],
     source,
     campaign
@@ -51,6 +52,7 @@ const saveContract = async ({ entity, lastContract, lastEntity, ...data }) => {
     ...lastContract,
     ...data,
     contractManager: contractOwner,
+    contractOwner: contractOwner,
     contractOwners: [contractOwner],
     source,
     campaign,
