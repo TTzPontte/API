@@ -1,5 +1,5 @@
 const parserBody = data => {
-  const { order, clientId, questions, consumer, property, secondPayers } = data;
+  const { order, clientId, questions, consumer } = data;
   const nickName = consumer.name
     .split(' ')
     .slice(0, -1)
@@ -29,11 +29,9 @@ const parserBody = data => {
       streetAddress: questions.address
     },
     about: {
-      birthdate: consumer.birth_date,
-      educationLevel: consumer.education_level,
-      maritalStatus: consumer.marital_status
+      birthdate: consumer.birth_date
     },
-    relations: questions.relations,
+    relations: [],
     income: [
       {
         activity: questions.profession.label,
@@ -43,7 +41,7 @@ const parserBody = data => {
     ]
   };
 
-  return { entity, property, clientId, simulationId, secondPayers };
+  return { entity, clientId, simulationId };
 };
 
 const parserLastContract = ({ lastContract, bodyParsed }) => {

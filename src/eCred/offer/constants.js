@@ -10,4 +10,17 @@ const LOAN_MOTIVATION = {
   JUST_CURIOSITY: 'Apenas curiosidade'
 };
 
-module.exports = { LOAN_MOTIVATION };
+const INCOME_SOURCES = [
+  'Agricultor',
+  'Outros',
+  'Aposentado',
+  'Assalariado',
+  'Autônomo',
+  'Empresário',
+  'Funcionário Público',
+  'Pensionista',
+  'Profissional Liberal',
+  'Servidor Doméstico'
+];
+
+module.exports = { INCOME_SOURCES, LOAN_MOTIVATION };
