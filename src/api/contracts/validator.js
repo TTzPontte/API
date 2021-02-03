@@ -255,17 +255,6 @@ const validate = async fields => {
         .strict()
         .required()
     ),
-    loanMotivation: yup
-      .array()
-      .of(
-        yup
-          .string(LOAN_MOTIVATION)
-          .strict()
-          .required()
-      )
-      .required(),
-    loanValue: yup.number().required(),
-    terms: yup.number().required(),
     clientId: yup
       .string()
       .strict()
@@ -274,11 +263,11 @@ const validate = async fields => {
 
   try {
     const { isResident, owners } = _.get(fields, 'property', {});
-    const { clientId, loanMotivation, terms, loanValue } = fields;
+    const { clientId } = fields;
     const secondPayers = _.get(fields, 'secondPayers', []);
     await entitySchema.validate({ ...fields.entity, isResident, owners });
     await propertySchema.validate(fields.property);
-    const isValid = await schema.validate({ clientId, secondPayers, loanMotivation, terms, loanValue });
+    const isValid = await schema.validate({ clientId, secondPayers });
     return isValid;
   } catch (err) {
     throw new createError.BadRequest(err.message);
