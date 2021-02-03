@@ -6,7 +6,7 @@ const { parserBody, parserLastContract, parserResponseContract } = require('./pa
 const middy = require(`${path}/middy/middy`);
 const translateBody = require('./translate');
 const { success } = require(`${path}/lambda/response`);
-const { ssmCognito } = require(`${path}/middy/shared/ssm`);
+const { ssmGroup } = require(`${path}/middy/shared/ssm`);
 const AuditLog = require(`${path}/lambda/auditLog`);
 
 const contract = async (event, context) => {
@@ -37,4 +37,4 @@ const contract = async (event, context) => {
   return success(response);
 };
 
-module.exports = { handler: middy(contract).use(ssmCognito()), contract };
+module.exports = { handler: middy(contract).use(ssmGroup()), contract };

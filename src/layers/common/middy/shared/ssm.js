@@ -15,4 +15,14 @@ const ssmCognito = () => {
   });
 };
 
-module.exports = { ssmCognito };
+const ssmGroup = () => {
+  return ssm({
+    cache: true,
+    cacheExpiryInMillis: 3 * 60 * 60,
+    names: {
+      STATUS_GROUP_DEFAULT_ID: `/statusGroup/${ENV}/defaultId`
+    }
+  });
+};
+
+module.exports = { ssmCognito, ssmGroup };
