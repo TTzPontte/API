@@ -4,7 +4,7 @@ const _ = require(`${path}/node_modules/lodash`);
 const createError = require(`${path}/node_modules/http-errors`);
 const { validateDocumentNumber } = require(`${path}/helpers/validator`);
 
-let { PROPERTY_TYPES, PROPERTY_AGE, BEDROOMS, suitesOptions, PERSONAS, GARAGES, RESIDENTS, PHONE_REG_EXP, LOAN_MOTIVATION } = require('./constants');
+let { PROPERTY_TYPES, PROPERTY_AGE, BEDROOMS, suitesOptions, PERSONAS, GARAGES, RESIDENTS, PHONE_REG_EXP } = require('./constants');
 
 PROPERTY_TYPES = Object.keys(PROPERTY_TYPES);
 PERSONAS = Object.keys(PERSONAS);
