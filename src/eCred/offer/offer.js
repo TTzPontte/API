@@ -10,7 +10,7 @@ const Calculator = require(`${path}/services/calculator.service`);
 const Contract = require(`${path}/services/contract.service`);
 const { getAddress, isValidCep, isCovered } = require(`${path}/services/cep.service`);
 const middy = require(`${path}/middy/middy`);
-const { ssmCognito } = require(`${path}/middy/shared/ssm`);
+const { ssmGroup } = require(`${path}/middy/shared/ssm`);
 const AuditLog = require(`${path}/lambda/auditLog`);
 
 const offer = async (event, context) => {
@@ -52,4 +52,4 @@ const offer = async (event, context) => {
   return badRequest('Algo deu errado.');
 };
 
-module.exports = { handler: middy(offer).use(ssmCognito()), offer };
+module.exports = { handler: middy(offer).use(ssmGroup()), offer };
