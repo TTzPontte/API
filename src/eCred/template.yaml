@@ -154,20 +154,3 @@ Resources:
             RestApiId: !Ref APIEcred
             Path: "/v1/contract"
             Method: POST
-
-  DBStatusContractReportStreamFn:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'DBStatusContractReportStream-${Environment}'
-      Description: Coletar os statusContract inseridos no elasticsearch
-      Handler: statusContractStream.handler
-      Tracing: Active
-      Policies:
-        - SQSSendMessagePolicy:
-            QueueName: !Sub "AuditLog-Api-${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Sub 'ContractsReport.${Environment}'
-        - DynamoDBCrudPolicy:
-            TableName: !Sub 'Upload.${Environment}'
-        - SSMParameterReadPolicy:
-            ParameterName: !Sub 'system/${Environment}/*'
