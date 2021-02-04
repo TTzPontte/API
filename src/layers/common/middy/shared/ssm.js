@@ -25,4 +25,16 @@ const ssmGroup = () => {
   });
 };
 
-module.exports = { ssmCognito, ssmGroup };
+const ssmSystem = () => {
+  const prefix = `/system/${ENV}/`;
+
+  return ssm({
+    cache: true,
+    cacheExpiryInMillis: 3 * 60 * 60,
+    names: {
+      SYSTEM_USER: `${prefix}user`
+    }
+  });
+};
+
+module.exports = { ssmCognito, ssmGroup, ssmSystem };
