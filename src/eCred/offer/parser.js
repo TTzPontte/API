@@ -92,8 +92,8 @@ const parserResponseUpdateStatusContract = ({ contract, statusContract }) => {
     status: statusContract.label,
     contract_date: contract.createdAt,
     tax_credit_operation_percent_contracted: 0.98,
-    total_effective_cost_percent_monthly_contracted: 0.0,
-    total_effective_cost_percent_annually_contracted: 0.0,
+    total_effective_cost_percent_monthly_contracted: contract.simulation.cet * 100,
+    total_effective_cost_percent_annually_contracted: monthToYear(contract.simulation.cet) * 100,
     tax_rate_percent_monthly_contracted: 0.0,
     tax_rate_percent_annually_contracted: 0.0,
     fee_credit_opening_contracted: contract.simulation.loanValueSelected
