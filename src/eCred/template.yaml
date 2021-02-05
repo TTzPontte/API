@@ -154,3 +154,16 @@ Resources:
             RestApiId: !Ref APIEcred
             Path: "/v1/contract"
             Method: POST
+  
+  GetStatusContractFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'GetStatusContractFn-${Environment}'
+      Description: Coletar os statusContract inseridos no elasticsearch
+      Handler: GetStatusContract.handler
+      Tracing: Active
+      Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'statusGroup/${Environment}/*'
+        - SQSSendMessagePolicy:
+            QueueName: !Sub "AuditLog-Api-${Environment}"
