@@ -1,11 +1,12 @@
 const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
-const middy = require(`${path}/middy/middy`);
-const { ssmGroup } = require(`${path}/middy/shared/ssm`);
+const { parserResponseUpdateStatusContract } = require('./offer/parser');
 
 const handler = async (event, context) => {
-  console.log('event -> ', event);
+  const { body } = event;
+  const data = parserResponseUpdateStatusContract(body);
+  console.log('data -> ', data);
 
   return 'Finish';
 };
 
-exports.handler = middy(handler).use(ssmGroup());
+exports.handler = handler;
