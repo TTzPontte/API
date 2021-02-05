@@ -89,7 +89,7 @@ const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
 const parserResponseUpdateStatusContract = ({ contract, statusContract }) => {
   return {
     proposal_id: contract.id,
-    status: statusContract.label,
+    status: statusContract,
     contract_date: contract.createdAt,
     tax_credit_operation_percent_contracted: 0.98,
     total_effective_cost_percent_monthly_contracted: contract.simulation.cet * 100,
