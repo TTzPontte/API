@@ -167,3 +167,5 @@ Resources:
             ParameterName: !Sub 'statusGroup/${Environment}/*'
         - SQSSendMessagePolicy:
             QueueName: !Sub "AuditLog-Api-${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DBClients
