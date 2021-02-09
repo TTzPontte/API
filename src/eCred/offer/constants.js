@@ -24,11 +24,11 @@ const INCOME_SOURCES = [
 ];
 
 const PROPOSAL_STATUS = {
-  'SIMULAÇÃO': 'under-analysis-data',
-  'CADASTRADO': 'under-analysis-data',
-  'CONCLUÍDO': 'released',
-  'NEGADO': 'declined',
-  'DESISTÊNCIA': 'cancelled'
+  SIMULAÇÃO: 'under-analysis-data',
+  CADASTRADO: 'under-analysis-data',
+  CONCLUÍDO: 'released',
+  NEGADO: 'declined',
+  DESISTÊNCIA: 'cancelled'
 };
 
 module.exports = { INCOME_SOURCES, LOAN_MOTIVATION, PROPOSAL_STATUS };
