@@ -1,7 +1,7 @@
 const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { trackCode } = require(`${path}/helpers/trackCode`);
 const { monthToYear } = require(`${path}/helpers/rate`);
-const { LOAN_MOTIVATION } = require('./constants');
+const { LOAN_MOTIVATION, PROPOSAL_STATUS } = require('./constants');
 
 const parserOfferSimulation = async event => {
   const { body, clientId, clientName, requestContext } = event;
