@@ -25,4 +25,14 @@ const ssmGroup = () => {
   });
 };
 
-module.exports = { ssmCognito, ssmGroup };
+const ssmEcred = () => {
+  return ssm({
+    cache: true,
+    cacheExpiryInMillis: 3 * 60 * 60,
+    names: {
+      ECRED_DOMAIN: `/ecred/${ENV}/domain`
+    }
+  });
+};
+
+module.exports = { ssmCognito, ssmGroup, ssmEcred };

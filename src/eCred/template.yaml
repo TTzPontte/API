@@ -164,7 +164,7 @@ Resources:
       Tracing: Active
       Policies:
         - SSMParameterReadPolicy:
-            ParameterName: !Sub 'statusGroup/${Environment}/*'
+            ParameterName: !Sub 'ecred/${Environment}/domain'
         - SQSSendMessagePolicy:
             QueueName: !Sub "AuditLog-Api-${Environment}"
         - DynamoDBCrudPolicy:
