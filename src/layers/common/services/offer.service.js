@@ -1,4 +1,5 @@
 const ContractModel = require('../models/contract');
+const PropertytModel = require('../models/property');
 const EntityModel = require('../models/entity');
 const Entity = require('./entity.service');
 const Process = require('./process.service');
@@ -48,9 +49,13 @@ const saveContract = async ({ entity, lastContract, lastEntity, ...data }) => {
 
   const { id: contractOwner } = await updateEntity.save();
 
+  const property = new PropertytModel();
+  const { id: propertyId } = await property.save();
+
   const contract = new ContractModel({
     ...lastContract,
     ...data,
+    propertyId,
     contractManager: contractOwner,
     contractOwner: contractOwner,
     contractOwners: [contractOwner],
