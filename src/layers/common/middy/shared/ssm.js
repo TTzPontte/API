@@ -30,7 +30,7 @@ const ssmEcred = () => {
     cache: true,
     cacheExpiryInMillis: 3 * 60 * 60,
     names: {
-      ECRED_DOMAIN: `/ecred/${ENV}/domain`
+      ECRED_DOMAIN: `/partners/ecred/${ENV}/domain`
     }
   });
 };
