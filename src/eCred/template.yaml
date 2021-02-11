@@ -160,7 +160,7 @@ Resources:
     Properties:
       FunctionName: !Sub 'GetStatusContractFn-${Environment}'
       Description: Coletar os statusContract inseridos no elasticsearch
-      Handler: GetStatusContract.handler
+      Handler: getStatusContract.handler
       Tracing: Active
       Policies:
         - SSMParameterReadPolicy:

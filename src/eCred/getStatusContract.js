@@ -1,16 +1,17 @@
 const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
+const StatusContract = require('./sendStatusContract');
 const { ssmEcred } = require(`${path}/middy/shared/ssm`);
+const AuditLog = require(`${path}/lambda/auditLog`);
 const { parserResponseUpdateStatusContract } = require('./offer/parser');
-const { ECRED_DOMAIN } = process.env;
 
 const handler = async (event, context) => {
   const { body } = event;
   const data = parserResponseUpdateStatusContract(JSON.parse(body));
-  console.log('data -> ', data);
-  const endpointEcred = `${ECRED_DOMAIN}/ecred-integration/v1/order/status/{partnerKey}`;
-  console.log('endpointEcred -> ', endpointEcred);
 
-  return 'Finish';
+  const response = await StatusContract.send(data);
+  await AuditLog.log(event, context, 'ecred', 'updateStatus', body);
+
+  return response;
 };
 
 exports.handler = handler.use(ssmEcred);
