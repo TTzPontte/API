@@ -28,6 +28,7 @@
     "node-fetch": "^2.6.1",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
+    "requestify": "^0.2.5",
     "uuid-apikey": "^1.4.6"
   },
   "devDependencies": {
