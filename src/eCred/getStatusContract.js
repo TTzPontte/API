@@ -5,6 +5,7 @@ const AuditLog = require(`${path}/lambda/auditLog`);
 const { parserResponseUpdateStatusContract } = require('./offer/parser');
 
 const handler = async (event, context) => {
+  ssmEcred();
   const { body } = event;
   const data = parserResponseUpdateStatusContract(JSON.parse(body));
 
@@ -14,4 +15,4 @@ const handler = async (event, context) => {
   return response;
 };
 
-exports.handler = handler.use(ssmEcred);
+exports.handler = handler;
