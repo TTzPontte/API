@@ -11,28 +11,17 @@ jobs:
   InformDeploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Notify slack PROD
-        uses: pullreminders/slack-action@master
-        if: "endsWith(github.ref, 'master')"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN_GIT_ACTION }}
-        with:
-          args: '{\"channel\":\"C010FF5DQ72\",\"text\":\":ship: PROD\n:package: [API]\n:date: [NOW]\"}'
-
-      - name: Notify slack STAGING
-        uses: pullreminders/slack-action@master
-        if: "endsWith(github.ref, 'staging')"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN_GIT_ACTION }}
-        with:
-          args: '{\"channel\":\"C010FF5DQ72\",\"text\":\":ship: STAGING\n:package: [API]\n:date: [NOW]\"}'
-
-      - name: Notify slack DEV
-        uses: pullreminders/slack-action@master
-        if: "endsWith(github.ref, 'develop')"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN_GIT_ACTION }}
-        with:
-          args: '{\"channel\":\"C010FF5DQ72\",\"text\":\":ship: DEV\n:package: [API]\n:date: [NOW]\"}'
+      - name: Notify slack
+        run: >
+          curl -X POST \
+            -H "Content-type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN_GIT_ACTION }}" \
+            -d '{
+              "channel": "C010FF5DQ72",
+            "text": ":ship: '$(echo $GITHUB_REF|cut -f3 -d/)'
+           :package: ['$(echo $GITHUB_REPOSITORY|cut -f2 -d/)']
+           :bust_in_silhouette: '${GITHUB_ACTOR}$(
+            grep -q master <<< "$GITHUB_REF" && echo "\nDEPLOY EM PROD\nhttps://gfycat.com/ifr/search/thumbs-up?_=${{ github.run_id }}")'
+            "}' \
+            https://slack.com/api/chat.postMessage
+            
