@@ -1,7 +1,6 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
-const fetch = require(`${path}/node_modules/node-fetch`);
+const fetch = require('../node_modules/node-fetch');
 const { ECRED_DOMAIN, PARTNER_KEY_ECRED, ECRED_USER, ECRED_PASSWD } = process.env;
-const { basicToken } = require(`${path}/helpers/makeTokens`);
+const { basicToken } = require('./makeTokens');
 
 const getHeaders = (typeAuth, token) => ({
   Authorization: `${typeAuth} ${token}`,
