@@ -25,17 +25,17 @@ const ssmGroup = () => {
   });
 };
 
-const ssmEcred = () => {
+const ssmPartner = partner => {
   return ssm({
     cache: true,
     cacheExpiryInMillis: 3 * 60 * 60,
     names: {
-      ECRED_DOMAIN: `/partners/ecred/${ENV}/domain`,
-      PARTNER_KEY_ECRED: `/partners/ecred/${ENV}/key`,
-      ECRED_USER: `/partners/ecred/${ENV}/user`,
-      ECRED_PASSWD: `/partners/ecred/${ENV}/passwd`
+      ECRED_DOMAIN: `/partners/${partner}/${ENV}/domain`,
+      PARTNER_KEY_ECRED: `/partners/${partner}/${ENV}/key`,
+      ECRED_USER: `/partners/${partner}/${ENV}/user`,
+      ECRED_PASSWD: `/partners/${partner}/${ENV}/passwd`
     }
   });
 };
 
-module.exports = { ssmCognito, ssmGroup, ssmEcred };
+module.exports = { ssmCognito, ssmGroup, ssmPartner };

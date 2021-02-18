@@ -1,11 +1,11 @@
 const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const StatusContract = require('./sendStatusContract');
-const { ssmEcred } = require(`${path}/middy/shared/ssm`);
+const { ssmPartner } = require(`${path}/middy/shared/ssm`);
 const AuditLog = require(`${path}/lambda/auditLog`);
 const { parserResponseUpdateStatusContract } = require('./offer/parser');
 
 const handler = async (event, context) => {
-  ssmEcred();
+  ssmPartner('ecred');
   const { body } = event;
   const data = parserResponseUpdateStatusContract(JSON.parse(body));
 
