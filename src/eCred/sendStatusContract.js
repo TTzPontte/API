@@ -7,4 +7,4 @@ class StatusContract {
   }
 }
 
-module.exports = { StatusContract };
+module.exports = StatusContract;
