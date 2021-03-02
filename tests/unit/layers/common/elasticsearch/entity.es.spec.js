@@ -29,7 +29,7 @@ jest.mock(
   { virtual: true }
 );
 
-const EntityES = require('../../../../../src/layers/common/elasticsearch/entity.es');
+const EntityES = require('api-src/layers/common/elasticsearch/entity.es');
 
 describe('EntityES', () => {
   it('should get entity source', async () => {

@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const auth = require('../../../../../src/layers/common/middy/auth');
-const Clients = require('../../../../../src/layers/common/models/clients');
-const Auth = require('../../../../../src/layers/common/services/auth');
+const auth = require('api-src/layers/common/middy/auth');
+const Clients = require('api-src/layers/common/models/clients');
+const Auth = require('api-src/layers/common/services/auth');
 
-jest.mock('../../../../../src/layers/common/services/auth');
+jest.mock('api-src/layers/common/services/auth');
 describe('Auth Middleware', () => {
   let handler;
   let next;

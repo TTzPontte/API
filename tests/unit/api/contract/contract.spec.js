@@ -1,8 +1,8 @@
-const { contract } = require('../../../src/contracts/contract');
-const Contract = require('../../../src/layers/common/services/contract.service');
-const Simulation = require('../../../src/layers/common/services/simulation.service');
-const Cognito = require('../../../src/layers/common/services/cognito.service');
-const body = require('../../utils/contractBody');
+const { contract } = require('api-src/api/contracts/contract');
+const Contract = require('api-src/layers/common/services/contract.service');
+const Simulation = require('api-src/layers/common/services/simulation.service');
+const Cognito = require('api-src/layers/common/services/cognito.service');
+const body = require('../../../utils/contractBody');
 
 describe('contract handler', () => {
   let event, saveResult;

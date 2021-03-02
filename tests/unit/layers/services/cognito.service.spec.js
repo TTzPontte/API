@@ -1,6 +1,6 @@
 const faker = require('faker');
 
-const layerPath = '../../../../src/layers/common/';
+const layerPath = 'api-src/layers/common/';
 const CognitoService = require(`${layerPath}services/cognito.service`);
 
 describe('create user', () => {

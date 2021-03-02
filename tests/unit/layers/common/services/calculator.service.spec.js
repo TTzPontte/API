@@ -1,4 +1,4 @@
-const layerPath = '../../../../../src/layers/common/';
+const layerPath = 'api-src/layers/common/';
 const Invoke = require(`${layerPath}aws/invoke`);
 const { calculate } = require(`${layerPath}services/calculator.service`);
 

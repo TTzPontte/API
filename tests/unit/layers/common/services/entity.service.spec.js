@@ -1,4 +1,4 @@
-const layerPath = '../../../../../src/layers/common/';
+const layerPath = 'api-src/layers/common/';
 let { save } = require(`${layerPath}services/entity.service`);
 
 describe('save entity', () => {

@@ -1,24 +1,18 @@
-const layerPath = '../../../../../src/layers/common/';
-let { isRegistered, getContractByOwner, save } = require(`${layerPath}services/contract.service`);
-const Entity = require(`${layerPath}services/entity.service`);
-const Property = require(`${layerPath}services/property.service`);
-const Cognito = require(`${layerPath}services/cognito.service`);
-const Process = require(`${layerPath}services/process.service`);
-const User = require(`${layerPath}services/user.service`);
-const ContractModel = require(`${layerPath}models/contract`);
-const translateBody = require('../../../../../src/contracts/translate');
-const { getEntity } = require(`${layerPath}elasticsearch/entity.es`);
-const body = require('../../../../utils/contractBody');
+let { isRegistered, getContractByOwner, save } = require('common/services/contract.service');
+const Entity = require('common/services/entity.service');
+const Property = require('common/services/property.service');
+const Cognito = require('common/services/cognito.service');
+const Process = require('common/services/process.service');
+const User = require('common/services/user.service');
+const ContractModel = require('common/models/contract');
+const translateBody = require('api-src/api/contracts/translate');
+const { getEntity } = require('common/elasticsearch/entity.es');
 
 const faker = require('faker');
 
-jest.mock('../../../../../src/layers/common/elasticsearch/entity.es');
+jest.mock('common/elasticsearch/entity.es');
 
 describe('Contract service', () => {
-  let contract;
-  beforeEach(() => {
-    contract = body();
-  });
   describe('get contract by contract owner', () => {
     it('should return the contract', async () => {
       const contractOwner = faker.random.uuid();

@@ -1,6 +1,5 @@
-const path = process.env.NODE_ENV === 'test' ? '../layers/common/' : '/opt/';
-const Lambda = require(`${path}lambda`);
-const middy = require(`${path}middy/middy`);
+const Lambda = require('common/lambda');
+const middy = require('common/middy/middy');
 
 const handler = async event => {
   return Lambda.Response.success(`Hello world: ${event.clientId} e ${event.body}`);

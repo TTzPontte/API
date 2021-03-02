@@ -5,28 +5,18 @@
   "main": "index.js",
   "scripts": {
     "pretest": "npm run test:clean && npm run lint",
-    "test": "ENV=test jest",
-    "test:coverage": "ENV=test jest --coverage",
-    "test:clean": "rimraf ./coverage",
-    "test:watch": "ENV=test jest --watchAll",
-    "lint": "./node_modules/.bin/eslint ."
+    "test": "lerna run test --scope=api-tests",
+    "test:coverage": "lerna run test:coverage --scope=api-tests",
+    "test:clean": "lerna run test:clean --scope=api-tests",
+    "lint": "eslint . --fix"
   },
   "author": "Devs Pontte <dev@pontte.com.br> (https://www.pontte.com.br)",
   "license": "ISC",
   "dependencies": {
     "aws-xray-sdk": "^2.5.0",
     "dynamoose": "^1.11.1",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-config-strongloop": "^2.1.0",
-    "eslint-plugin-jest": "^23.8.2",
-    "eslint-plugin-prettier": "^3.1.2",
     "http-errors": "^1.7.3",
-    "faker": "^4.1.0",
-    "jest": "^25.1.0",
     "jsonwebtoken": "^8.5.1",
-    "prettier": "^1.19.1",
-    "pretty-quick": "^2.0.1",
     "uuid-apikey": "^1.4.6"
   },
   "devDependencies": {
@@ -34,12 +24,18 @@
     "@commitlint/config-conventional": "^8.3.4",
     "@types/jest": "^25.1.4",
     "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-strongloop": "^2.1.0",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1",
+    "lerna": "^3.22.1",
     "husky": "^4.2.3"
   },
   "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+    "extends": ["@commitlint/config-conventional"]
   },
   "husky": {
     "hooks": {
