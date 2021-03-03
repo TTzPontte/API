@@ -1,11 +1,11 @@
 const { simulation } = require('api-src/simulation/simulation');
-const Simulation = require('api-src/layers/common/services/simulation.service');
-const Calculator = require('api-src/layers/common/services/calculator.service');
-const Contract = require('api-src/layers/common/services/contract.service');
-const Cep = require('api-src/layers/common/services/cep.service');
-const { getSiteUrl } = require('api-src/layers/common/helpers/url');
+const Simulation = require('common/services/simulation.service');
+const Calculator = require('common/services/calculator.service');
+const Contract = require('common/services/contract.service');
+const Cep = require('common/services/cep.service');
+const { getSiteUrl } = require('common/helpers/url');
 
-jest.mock('api-src/layers/common/services/cep.service');
+jest.mock('common/services/cep.service');
 
 describe('simulation handler', () => {
   let event, calculatedResult, saveResult, address;

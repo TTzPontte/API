@@ -26,7 +26,7 @@ const getEntity = async ({ email, documentNumber }) => {
       }
     }
   };
-  const { body } = await es.search(query);
+  const { body } = await es().search(query);
 
   const data = [];
   for (const hits of body.hits.hits) {
@@ -55,7 +55,7 @@ const getEntityByDocNumber = async ({ documentNumber }) => {
       }
     }
   };
-  const { body } = await es.search(query);
+  const { body } = await es().search(query);
 
   const data = [];
   for (const hits of body.hits.hits) {

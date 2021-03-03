@@ -1,10 +1,9 @@
-const layerPath = 'api-src/layers/common/';
-const { getClientContract } = require(`${layerPath}elasticsearch/contractsReport.es`);
-const { save, isRegistered, getLastContract } = require(`${layerPath}services/simulation.service`);
-const ContractModel = require(`${layerPath}models/contract`);
+const { getClientContract } = require('common/elasticsearch/contractsReport.es');
+const { save, isRegistered, getLastContract } = require('common/services/simulation.service');
+const ContractModel = require('common/models/contract');
 const faker = require('faker');
 
-jest.mock('api-src/layers/common/elasticsearch/contractsReport.es');
+jest.mock('common/elasticsearch/contractsReport.es');
 
 describe('Simulation service', () => {
   describe('save', () => {

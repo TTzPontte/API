@@ -1,7 +1,6 @@
 const faker = require('faker');
 
-const layerPath = 'api-src/layers/common/';
-const CognitoService = require(`${layerPath}services/cognito.service`);
+const CognitoService = require('common/services/cognito.service');
 
 describe('create user', () => {
   let dataMock = {

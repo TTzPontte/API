@@ -35,7 +35,7 @@ jest.mock(
   { virtual: true }
 );
 
-const AWS = require('api-src/layers/common/elasticsearch/aws_es_connector');
+const AWS = require('common/elasticsearch/aws_es_connector');
 
 describe('elasticsearch', () => {
   describe('AwsConnector', () => {

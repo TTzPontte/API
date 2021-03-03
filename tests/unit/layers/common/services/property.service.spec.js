@@ -1,8 +1,7 @@
-const layerPath = 'api-src/layers/common/';
-const { save } = require(`${layerPath}services/property.service`);
-const { getAddress, isCovered, isValidCep } = require(`${layerPath}services/cep.service`);
+const { save } = require('common/services/property.service');
+const { getAddress, isCovered, isValidCep } = require('common/services/cep.service');
 
-jest.mock('api-src/layers/common/services/cep.service');
+jest.mock('common/services/cep.service');
 
 describe('save property', () => {
   let property;

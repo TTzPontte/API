@@ -1,5 +1,4 @@
-const layerPath = 'api-src/layers/common/';
-const { save } = require(`${layerPath}services/subscribeCep.service`);
+const { save } = require('common/services/subscribeCep.service');
 
 describe('Simulation service', () => {
   describe('save', () => {

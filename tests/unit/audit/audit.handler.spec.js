@@ -2,7 +2,7 @@ const { handler } = require('api-src/audit/receiver');
 const mock = require('./mock.json');
 const mockerror = require('./mockerror.json');
 
-const AuditLog = require('api-src/layers/common/services/auditlog');
+const AuditLog = require('common/services/auditlog');
 
 describe('Audit Log', () => {
   beforeEach(() => {
