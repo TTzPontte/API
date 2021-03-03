@@ -1,4 +1,4 @@
-const { simulation } = require('api-src/simulation/simulation');
+const { simulation } = require('api-src/api/simulation/simulation');
 const Simulation = require('common/services/simulation.service');
 const Calculator = require('common/services/calculator.service');
 const Contract = require('common/services/contract.service');

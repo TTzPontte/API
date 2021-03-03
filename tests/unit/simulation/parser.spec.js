@@ -1,4 +1,4 @@
-const { parser } = require('api-src/simulation/parser');
+const { parser } = require('api-src/api/simulation/parser');
 const { trackCode } = require('common/helpers/trackCode');
 jest.mock('common/helpers/trackCode');
 
