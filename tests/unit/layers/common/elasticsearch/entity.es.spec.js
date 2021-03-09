@@ -18,8 +18,8 @@ const mockSearch = jest.fn(() => mockResult);
 const mockUpdateByQuery = jest.fn(() => 'OK');
 
 jest.mock(
-  '@elastic/elasticsearch',
-  () => ({
+  'common/elasticsearch/entity.es',
+  () => () => ({
     Connection: class Connection {},
     Client: jest.fn(() => ({
       search: mockSearch,

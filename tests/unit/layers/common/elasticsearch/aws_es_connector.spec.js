@@ -28,8 +28,8 @@ jest.mock(
   { virtual: true }
 );
 jest.mock(
-  '@elastic/elasticsearch',
-  () => ({
+  'common/elasticsearch/entity.es',
+  () => () => ({
     Connection: mockConnection
   }),
   { virtual: true }

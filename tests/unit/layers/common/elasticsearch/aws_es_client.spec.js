@@ -3,7 +3,7 @@ const faker = require('faker');
 const mockClient = jest.fn();
 const mockAwsConnector = faker.internet.url();
 
-jest.mock('common/elasticsearch/aws_es_connector', () => ({ AwsConnector: mockAwsConnector }));
+jest.mock('common/elasticsearch/aws_es_connector', () => () => ({ AwsConnector: mockAwsConnector }));
 jest.mock('@elastic/elasticsearch', () => ({ Client: mockClient }), { virtual: true });
 
 describe('elasticsearch', () => {
