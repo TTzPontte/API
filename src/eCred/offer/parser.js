@@ -1,6 +1,6 @@
 const { trackCode } = require('common/helpers/trackCode');
 const { monthToYear } = require('common/helpers/rate');
-const { LOAN_MOTIVATION } = require('./constants');
+const { LOAN_MOTIVATION, PROPOSAL_STATUS } = require('./constants');
 
 const parserOfferSimulation = async event => {
   const { body, clientId, clientName, requestContext } = event;
@@ -85,4 +85,18 @@ const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
   ];
 };
 
-module.exports = { parserOfferSimulation, parserResponseOfferSimulation, parserBody };
+const parserResponseUpdateStatusContract = ({ contract, statusContract }) => {
+  return {
+    proposal_id: contract.id,
+    status: PROPOSAL_STATUS[statusContract.label],
+    contract_date: contract.createdAt,
+    tax_credit_operation_percent_contracted: 0.98, // IOF
+    total_effective_cost_percent_monthly_contracted: contract.simulation.cet * 100,
+    total_effective_cost_percent_annually_contracted: monthToYear(contract.simulation.cet) * 100,
+    tax_rate_percent_monthly_contracted: 0.0, // interest_rate
+    tax_rate_percent_annually_contracted: 0.0, // interest_rate
+    fee_credit_opening_contracted: contract.simulation.loanValueSelected
+  };
+};
+
+module.exports = { parserOfferSimulation, parserResponseOfferSimulation, parserBody, parserResponseUpdateStatusContract };

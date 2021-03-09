@@ -17,6 +17,8 @@
     "dynamoose": "^1.11.1",
     "http-errors": "^1.7.3",
     "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^2.6.1",
+    "requestify": "^0.2.5",
     "uuid-apikey": "^1.4.6"
   },
   "devDependencies": {
@@ -25,17 +27,21 @@
     "@types/jest": "^25.1.4",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
+    "faker": "^4.1.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-strongloop": "^2.1.0",
     "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-prettier": "^3.1.2",
-    "prettier": "^1.19.1",
-    "pretty-quick": "^2.0.1",
+    "husky": "^4.2.3",
+    "jest": "^25.1.0",
     "lerna": "^3.22.1",
-    "husky": "^4.2.3"
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1"
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "husky": {
     "hooks": {

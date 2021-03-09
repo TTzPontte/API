@@ -11,28 +11,10 @@ jobs:
   InformDeploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Notify slack PROD
-        uses: pullreminders/slack-action@master
-        if: "endsWith(github.ref, 'master')"
+      - name: Notify slack
+        run: curl -s https://gist.githubusercontent.com/$SLACK_SCRIPT_VERSION/inform-merge.sh|bash -s
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN_GIT_ACTION }}
-        with:
-          args: '{\"channel\":\"C010FF5DQ72\",\"text\":\":ship: PROD\n:package: [API]\n:date: [NOW]\"}'
-
-      - name: Notify slack STAGING
-        uses: pullreminders/slack-action@master
-        if: "endsWith(github.ref, 'staging')"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN_GIT_ACTION }}
-        with:
-          args: '{\"channel\":\"C010FF5DQ72\",\"text\":\":ship: STAGING\n:package: [API]\n:date: [NOW]\"}'
-
-      - name: Notify slack DEV
-        uses: pullreminders/slack-action@master
-        if: "endsWith(github.ref, 'develop')"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN_GIT_ACTION }}
-        with:
-          args: '{\"channel\":\"C010FF5DQ72\",\"text\":\":ship: DEV\n:package: [API]\n:date: [NOW]\"}'
+          GIPHY_TOKEN: ${{ secrets.GIPHY_TOKEN }}
+          SLACK_BOT_CHANNEL: ${{ secrets.SLACK_BOT_CHANNEL }}
+          SLACK_BOT_TOKEN_GIT_ACTION: ${{ secrets.SLACK_BOT_TOKEN_GIT_ACTION }}
+          SLACK_SCRIPT_VERSION: ${{ secrets.SLACK_SCRIPT_VERSION }}

@@ -15,14 +15,14 @@ const createClient = async () => {
 
   let { apiKey: clientId } = uuidAPIKey.create();
 
-  let check = await checkIfExists(clientId);
-  while (check) {
-    clientId = uuidAPIKey.create().apiKey;
-    check = await checkIfExists(clientId);
-  }
+  // let check = await checkIfExists(clientId);
+  // while (check) {
+  //   clientId = uuidAPIKey.create().apiKey;
+  //   check = await checkIfExists(clientId);
+  // }
 
-  const clients = new Clients({ clientName, clientId, clientSecret });
-  await clients.save();
+  // const clients = new Clients({ clientName, clientId, clientSecret });
+  // await clients.save();
 
   console.log('New client created. Credentials: ');
   console.log({
