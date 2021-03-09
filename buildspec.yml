@@ -7,7 +7,7 @@ phases:
       python: 3.7
 
     commands:
-      - pip install awscli aws-sam-cli --upgrade
+      - pip install awscli aws-sam-cli==1.19.1
       - sam --version
 
   pre_build:
