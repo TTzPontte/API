@@ -154,3 +154,18 @@ Resources:
             RestApiId: !Ref APIEcred
             Path: "/v1/contract"
             Method: POST
+  
+  GetStatusContractFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'GetStatusContractFn-${Environment}'
+      Description: Coletar os statusContract inseridos no elasticsearch
+      Handler: getStatusContract.handler
+      Tracing: Active
+      Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'partners/ecred/${Environment}/*'
+        - SQSSendMessagePolicy:
+            QueueName: !Sub "AuditLog-Api-${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DBClients
