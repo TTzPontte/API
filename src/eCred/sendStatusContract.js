@@ -1,5 +1,4 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
-const { postEcredStatusContractUpdated } = require(`${path}/helpers/requests`);
+const { postEcredStatusContractUpdated } = require('common/helpers/requests');
 
 class StatusContract {
   static async send(data) {

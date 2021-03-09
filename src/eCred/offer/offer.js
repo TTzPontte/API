@@ -8,7 +8,7 @@ const Subscribe = require('common/services/subscribeCep.service');
 const Calculator = require('common/services/calculator.service');
 const Contract = require('common/services/contract.service');
 const { getAddress, isValidCep, isCovered } = require('common/services/cep.service');
-const middy = require('common/middy/middy');
+const middyBasicAuth = require('common/middy/middyBasicAuth');
 const { ssmGroup } = require('common/middy/shared/ssm');
 const AuditLog = require('common/lambda/auditLog');
 
@@ -51,4 +51,4 @@ const offer = async (event, context) => {
   return badRequest('Algo deu errado.');
 };
 
-module.exports = { handler: middy(offer).use(ssmGroup()), offer };
+module.exports = { handler: middyBasicAuth(offer).use(ssmGroup()), offer };

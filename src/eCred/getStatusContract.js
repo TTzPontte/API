@@ -1,7 +1,6 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const StatusContract = require('./sendStatusContract');
-const { ssmPartner } = require(`${path}/middy/shared/ssm`);
-const AuditLog = require(`${path}/lambda/auditLog`);
+const { ssmPartner } = require('common/middy/shared/ssm');
+const AuditLog = require('common/lambda/auditLog');
 const { parserResponseUpdateStatusContract } = require('./offer/parser');
 
 const handler = async (event, context) => {
