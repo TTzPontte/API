@@ -4,7 +4,7 @@ const Clients = require('../layers/common/models/clients');
 const args = process.argv.slice(2);
 const clientName = args[0];
 
-const checkIfExists = async clientId => Clients.queryOne({ clientId }).exec();
+// const checkIfExists = async clientId => Clients.queryOne({ clientId }).exec();
 
 const createClient = async () => {
   const clientSecret = crypto
