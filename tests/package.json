@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:clean": "rimraf ./coverage"
+    "test:clean": "rimraf ./coverage",
+    "test:integration": "java -cp karate.jar com.intuit.karate.Main **/*.feature",
+    "postinstall": "curl -L https://github.com/intuit/karate/releases/download/v0.9.6/karate-0.9.6.jar > karate.jar"
   },
   "author": "",
   "license": "ISC",
