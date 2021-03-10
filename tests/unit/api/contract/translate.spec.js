@@ -1,5 +1,5 @@
-const translate = require('../../../src/contracts/translate');
-const body = require('../../utils/contractBody');
+const translate = require('api-src/api/contracts/translate');
+const body = require('../../../utils/contractBody');
 
 describe('Translate Contract', () => {
   let data;

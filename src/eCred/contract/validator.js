@@ -1,7 +1,6 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
-const yup = require(`${path}/node_modules/yup`);
-const createError = require(`${path}/node_modules/http-errors`);
-const { validateDocumentNumber } = require(`${path}/helpers/validator`);
+const yup = require('common/node_modules/yup');
+const createError = require('common/node_modules/http-errors');
+const { validateDocumentNumber } = require('common/helpers/validator');
 let { PHONE_REG_EXP, INCOME_SOURCES } = require('./constants');
 
 yup.addMethod(yup.string, 'documentNumber', () => yup.string().test('validate', documentNumber => validateDocumentNumber(documentNumber)));

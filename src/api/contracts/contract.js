@@ -1,11 +1,10 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { validate } = require('./validator');
-const Contract = require(`${path}/services/contract.service`);
-const Simulation = require(`${path}/services/simulation.service`);
-const { success } = require(`${path}/lambda/response`);
-const middy = require(`${path}/middy/middy`);
+const Contract = require('common/services/contract.service');
+const Simulation = require('common/services/simulation.service');
+const { success } = require('common/lambda/response');
+const middy = require('common/middy/middy');
 const translateBody = require('./translate');
-const { ssmCognito } = require(`${path}/middy/shared/ssm`);
+const { ssmCognito } = require('common/middy/shared/ssm');
 
 const contract = async event => {
   const { body, clientId } = event;

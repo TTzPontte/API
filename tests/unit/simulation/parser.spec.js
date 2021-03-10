@@ -1,6 +1,6 @@
-const { parser } = require('../../../src/simulation/parser');
-const { trackCode } = require('../../../src/layers/common/helpers/trackCode');
-jest.mock('../../../src/layers/common/helpers/trackCode');
+const { parser } = require('api-src/api/simulation/parser');
+const { trackCode } = require('common/helpers/trackCode');
+jest.mock('common/helpers/trackCode');
 
 describe('simulation', () => {
   describe('parser', () => {

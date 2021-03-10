@@ -1,5 +1,5 @@
-const { validate } = require('../../../src/contracts/validator');
-const body = require('../../utils/contractBody');
+const { validate } = require('api-src/api/contracts/validator');
+const body = require('../../../utils/contractBody');
 
 describe('contract validator', () => {
   let data;

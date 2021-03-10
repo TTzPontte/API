@@ -1,6 +1,5 @@
-const layerPath = '../../../../../src/layers/common/';
-const Invoke = require(`${layerPath}aws/invoke`);
-const { getAddress, isValidCep, isCovered } = require(`${layerPath}services/cep.service`);
+const Invoke = require('common/aws/invoke');
+const { getAddress, isValidCep, isCovered } = require('common/services/cep.service');
 
 describe('Cep service', () => {
   describe('getAddress', () => {

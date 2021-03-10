@@ -1,6 +1,5 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common/' : '/opt/';
-const Lambda = require(`${path}lambda`);
-const AuditLogService = require(`${path}services/auditlog.js`);
+const Lambda = require('common/lambda');
+const AuditLogService = require('common/services/auditlog.js');
 
 exports.handler = async event => {
   const { Records } = event;

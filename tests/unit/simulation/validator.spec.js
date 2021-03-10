@@ -1,4 +1,4 @@
-const { validate } = require('../../../src/simulation/validator');
+const { validate } = require('api-src/api/simulation/validator');
 
 describe('simulation', () => {
   describe('validator', () => {

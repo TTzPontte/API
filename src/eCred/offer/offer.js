@@ -1,17 +1,16 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { parserOfferSimulation, parserResponseOfferSimulation, parserBody } = require('./parser');
 const { validate } = require('./validator');
-const { created, badRequest } = require(`${path}/lambda/response`);
-const { exceptionsCalculator } = require(`${path}/helpers/exceptions`);
-const Simulation = require(`${path}/services/simulation.service`);
-const Offer = require(`${path}/services/offer.service`);
-const Subscribe = require(`${path}/services/subscribeCep.service`);
-const Calculator = require(`${path}/services/calculator.service`);
-const Contract = require(`${path}/services/contract.service`);
-const { getAddress, isValidCep, isCovered } = require(`${path}/services/cep.service`);
-const middy = require(`${path}/middy/middy`);
-const { ssmGroup } = require(`${path}/middy/shared/ssm`);
-const AuditLog = require(`${path}/lambda/auditLog`);
+const { created, badRequest } = require('common/lambda/response');
+const { exceptionsCalculator } = require('common/helpers/exceptions');
+const Simulation = require('common/services/simulation.service');
+const Offer = require('common/services/offer.service');
+const Subscribe = require('common/services/subscribeCep.service');
+const Calculator = require('common/services/calculator.service');
+const Contract = require('common/services/contract.service');
+const { getAddress, isValidCep, isCovered } = require('common/services/cep.service');
+const middyBasicAuth = require('common/middy/middyBasicAuth');
+const { ssmGroup } = require('common/middy/shared/ssm');
+const AuditLog = require('common/lambda/auditLog');
 
 const offer = async (event, context) => {
   const { body, clientId } = event;
@@ -52,4 +51,4 @@ const offer = async (event, context) => {
   return badRequest('Algo deu errado.');
 };
 
-module.exports = { handler: middy(offer).use(ssmGroup()), offer };
+module.exports = { handler: middyBasicAuth(offer).use(ssmGroup()), offer };

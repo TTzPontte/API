@@ -18,8 +18,8 @@ const mockSearch = jest.fn(() => mockResult);
 const mockUpdateByQuery = jest.fn(() => 'OK');
 
 jest.mock(
-  '@elastic/elasticsearch',
-  () => ({
+  'common/elasticsearch/entity.es',
+  () => () => ({
     Connection: class Connection {},
     Client: jest.fn(() => ({
       search: mockSearch,
@@ -29,7 +29,7 @@ jest.mock(
   { virtual: true }
 );
 
-const EntityES = require('../../../../../src/layers/common/elasticsearch/entity.es');
+const EntityES = require('common/elasticsearch/entity.es');
 
 describe('EntityES', () => {
   it('should get entity source', async () => {

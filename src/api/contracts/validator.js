@@ -1,8 +1,7 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
-const yup = require(`${path}/node_modules/yup`);
-const _ = require(`${path}/node_modules/lodash`);
-const createError = require(`${path}/node_modules/http-errors`);
-const { validateDocumentNumber } = require(`${path}/helpers/validator`);
+const yup = require('common/node_modules/yup');
+const _ = require('common/node_modules/lodash');
+const createError = require('common/node_modules/http-errors');
+const { validateDocumentNumber } = require('common/helpers/validator');
 
 let { PROPERTY_TYPES, PROPERTY_AGE, BEDROOMS, suitesOptions, PERSONAS, GARAGES, RESIDENTS, PHONE_REG_EXP } = require('./constants');
 

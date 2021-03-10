@@ -1,13 +1,12 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { validate } = require('./validator');
-const Simulation = require(`${path}/services/simulation.service`);
-const Offer = require(`${path}/services/offer.service`);
+const Simulation = require('common/services/simulation.service');
+const Offer = require('common/services/offer.service');
 const { parserBody, parserLastContract, parserResponseContract } = require('./parser');
-const middy = require(`${path}/middy/middy`);
+const middyBasicAuth = require('common/middy/middyBasicAuth');
 const translateBody = require('./translate');
-const { success } = require(`${path}/lambda/response`);
-const { ssmGroup } = require(`${path}/middy/shared/ssm`);
-const AuditLog = require(`${path}/lambda/auditLog`);
+const { success } = require('common/lambda/response');
+const { ssmGroup } = require('common/middy/shared/ssm');
+const AuditLog = require('common/lambda/auditLog');
 
 const contract = async (event, context) => {
   const { body, clientId } = event;
@@ -37,4 +36,4 @@ const contract = async (event, context) => {
   return success(response);
 };
 
-module.exports = { handler: middy(contract).use(ssmGroup()), contract };
+module.exports = { handler: middyBasicAuth(contract).use(ssmGroup()), contract };

@@ -1,6 +1,5 @@
-const layerPath = '../../../../../src/layers/common/';
-const Invoke = require(`${layerPath}aws/invoke`);
-const { calculate } = require(`${layerPath}services/calculator.service`);
+const Invoke = require('common/aws/invoke');
+const { calculate } = require('common/services/calculator.service');
 
 describe('Calculator service', () => {
   describe('calculate', () => {

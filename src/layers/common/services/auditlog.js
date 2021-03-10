@@ -1,5 +1,4 @@
-const path = process.env.ENV === 'test' ? '../' : '/opt/';
-const AuditLogModel = require(`${path}models/auditLog`);
+const AuditLogModel = require('../models/auditLog');
 
 const save = async records => {
   return Promise.all(

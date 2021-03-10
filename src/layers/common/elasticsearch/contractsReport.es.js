@@ -28,7 +28,7 @@ const getClientContract = async ({ documentNumber, email, clientId }) => {
       }
     }
   };
-  const { body } = await es.search(query);
+  const { body } = await es().search(query);
 
   const data = [];
   for (const hits of body.hits.hits) {
@@ -62,7 +62,7 @@ const getClientContractByDocNumber = async ({ documentNumber, clientId }) => {
       }
     }
   };
-  const { body } = await es.search(query);
+  const { body } = await es().search(query);
 
   const data = [];
   for (const hits of body.hits.hits) {

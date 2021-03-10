@@ -1,16 +1,15 @@
-const path = process.env.NODE_ENV === 'test' ? '../../layers/common' : '/opt';
 const { validate } = require('./validator');
 const { parser } = require('./parser');
-const { created, badRequest } = require(`${path}/lambda/response`);
-const { getSiteUrl } = require(`${path}/helpers/url`);
-const Simulation = require(`${path}/services/simulation.service`);
-const Subscribe = require(`${path}/services/subscribeCep.service`);
-const Calculator = require(`${path}/services/calculator.service`);
-const Contract = require(`${path}/services/contract.service`);
-const { getAddress, isValidCep, isCovered } = require(`${path}/services/cep.service`);
-const middy = require(`${path}/middy/middy`);
+const { created, badRequest } = require('common/lambda/response');
+const { getSiteUrl } = require('common/helpers/url');
+const Simulation = require('common/services/simulation.service');
+const Subscribe = require('common/services/subscribeCep.service');
+const Calculator = require('common/services/calculator.service');
+const Contract = require('common/services/contract.service');
+const { getAddress, isValidCep, isCovered } = require('common/services/cep.service');
+const middy = require('common/middy/middy');
 const translateBody = require('./translate');
-const { ssmCognito } = require(`${path}/middy/shared/ssm`);
+const { ssmCognito } = require('common/middy/shared/ssm');
 
 const simulation = async event => {
   const data = await parser(event);

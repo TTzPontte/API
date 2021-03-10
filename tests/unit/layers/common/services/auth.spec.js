@@ -1,5 +1,5 @@
-const Auth = require('../../../../../src/layers/common/services/auth');
-const Clients = require('../../../../../src/layers/common/models/clients');
+const Auth = require('common/services/auth');
+const Clients = require('common/models/clients');
 const jwt = require('jsonwebtoken');
 
 describe('Auth service', () => {
