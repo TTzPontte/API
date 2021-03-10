@@ -2,3 +2,5 @@ node_modules
 libs
 docs/dist
 coverage
+**/karate-config.js
+tests/target

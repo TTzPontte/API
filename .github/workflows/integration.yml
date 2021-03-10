@@ -1,0 +1,29 @@
+name: Integration tests
+
+on: 
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: Env
+        required: true
+        default: dev
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '9.0.4'
+        java-package: jdk
+        architecture: x64
+
+    - run:  
+    - working-directory: tests
+      run: |
+        curl -L https://github.com/intuit/karate/releases/download/v0.9.6/karate-0.9.6.jar > karate.jar
+        java \
+          -Dkarate.env=${{ github.event.inputs.logLevel }} \
+          -cp karate.jar com.intuit.karate.Main \
+          **/*.feature
