@@ -23,4 +23,5 @@ jobs:
         run: curl -L https://github.com/intuit/karate/releases/download/v0.9.6/karate-0.9.6.jar > karate.jar
 
       - name: Test
+        working-directory: tests
         run: java -Dkarate.env=${{ github.event.inputs.logLevel }} -cp karate.jar com.intuit.karate.Main **/*.feature
