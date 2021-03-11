@@ -1,0 +1,18 @@
+service: serverless-simple-http-endpoint
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
+  stage: ${opt:stage}
+
+functions:
+  Financing:
+    name: Financing.${opt:stage}
+    handler: src/handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
