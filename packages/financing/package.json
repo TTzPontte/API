@@ -4,7 +4,7 @@
   "description": "",
   "author": "",
   "license": "ISC",
-  "main": "src/index.js",
+  "main": "src/handler.js",
   "files": [
     "src"
   ],
