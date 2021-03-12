@@ -16,7 +16,11 @@ phases:
 
   build:
     commands:
+      - ls -lah
+      - ./install-layer-deps
+      - ls -lah
       - sam build --debug
+      - ls -lah
       - sam package --debug --s3-bucket $BUILD_OUTPUT_BUCKET --output-template-file ./serverless-output.yaml
 
 artifacts:
