@@ -73,14 +73,14 @@ Resources:
     Type: AWS::Serverless::LayerVersion
     Properties:
       Description: Common libraries
-      ContentUri: src/layers/common
+      ContentUri: packages/api-layer-deps/layer
       CompatibleRuntimes:
         - nodejs14.x
 
   ApiAuditLogApp:
     Type: AWS::Serverless::Application
     Properties:
-      Location: src/audit/template.yaml
+      Location: packages/audit/template.yaml
       Parameters:
         Project: !Ref Project
         Environment: !Ref Environment
@@ -89,7 +89,7 @@ Resources:
   ApiApp:
     Type: AWS::Serverless::Application
     Properties:
-      Location: src/api/template.yaml
+      Location: packages/api/template.yaml
       Parameters:
         Environment: !Ref Environment
         ESEndpoint: !FindInMap [Config, !Ref Environment, esEndpoint]
@@ -99,7 +99,7 @@ Resources:
   ApiECredApp:
     Type: AWS::Serverless::Application
     Properties:
-      Location: src/eCred/template.yaml
+      Location: packages/eCred/template.yaml
       Parameters:
         Environment: !Ref Environment
         ESEndpoint: !FindInMap [Config, !Ref Environment, esEndpoint]

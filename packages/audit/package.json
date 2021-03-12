@@ -1,0 +1,14 @@
+{
+  "name": "api-audit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "null",
+  "scripts": {
+    "test": "null"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "common": "^1.0.0"
+  }
+}

@@ -19,7 +19,7 @@ jobs:
           java-package: jdk
           architecture: x64
       - name: Downlaod karate
-        working-directory: tests
+        working-directory: packages/tests
         run: curl -L https://github.com/intuit/karate/releases/download/v0.9.6/karate-0.9.6.jar > karate.jar
 
       - name: Test

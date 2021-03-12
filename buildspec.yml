@@ -12,11 +12,7 @@ phases:
 
   pre_build:
     commands:
-      # Build do layer
       - npm install
-      - cd ./src/layers/common/
-      - npm install
-      - cd ../../../
 
   build:
     commands:
