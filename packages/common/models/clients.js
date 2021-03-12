@@ -1,5 +1,5 @@
 const { Schema } = require('dynamoose');
-const dynamoose = require('../aws/dynamoose');
+const dynamoose = require('../aws/dynamooses');
 const baseModel = require('./baseModel');
 
 const { ENV } = process.env;
