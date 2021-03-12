@@ -1,5 +1,5 @@
-const yup = require('common/node_modules/yup');
-const createError = require('common/node_modules/http-errors');
+const yup = require('yup');
+const createError = require('http-errors');
 const { validateDocumentNumber } = require('common/helpers/validator');
 
 let {

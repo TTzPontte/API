@@ -1,6 +1,6 @@
-const yup = require('common/node_modules/yup');
-const _ = require('common/node_modules/lodash');
-const createError = require('common/node_modules/http-errors');
+const yup = require('yup');
+const _ = require('lodash');
+const createError = require('http-errors');
 const { validateDocumentNumber } = require('common/helpers/validator');
 
 let { PROPERTY_TYPES, PROPERTY_AGE, BEDROOMS, suitesOptions, PERSONAS, GARAGES, RESIDENTS, PHONE_REG_EXP } = require('./constants');

@@ -106,5 +106,5 @@ dist
 # TernJS port file
 .tern-port
 packages/tests/target/
-packages/api-layer-deps/layer
+layer
 !.github

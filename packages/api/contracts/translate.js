@@ -1,4 +1,4 @@
-const _ = require('common/node_modules/lodash');
+const _ = require('lodash');
 const { EDUCATION_LEVELS, MARITAL_STATUS, PERSONAS, PROPERTY_TYPES, INCOME_SOURCES, RESIDENTS } = require('./constants');
 
 const find = (obj, compare) => Object.keys(obj).find(item => compare === item);
