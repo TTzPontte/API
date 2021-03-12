@@ -24,4 +24,6 @@ jobs:
           python-version: 3.x
 
       - run: npm install
+      - run: ./install-layer-deps.sh
+      - run: ./node_modules/.bin/lerna bootstrap
       - run: npm test
