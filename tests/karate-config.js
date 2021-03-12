@@ -6,7 +6,9 @@ function fn() {
   var config = {
     response: {},
     host: 'https://api' + env + '.pontte.com.br',
-    hostECred: 'https://apiecred-' + env + '.pontte.com.br'
+    hostAuth: java.lang.System.getenv('HOST_AUTH'),
+    hostECred: 'https://apiecred-' + env + '.pontte.com.br',
+    hostECredAuth: java.lang.System.getenv('HOST_ECRED_AUTH')
   };
   if (env == 'prod') {
     config.host = 'https://apid.pontte.com.br';

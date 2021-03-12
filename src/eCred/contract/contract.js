@@ -2,7 +2,7 @@ const { validate } = require('./validator');
 const Simulation = require('common/services/simulation.service');
 const Offer = require('common/services/offer.service');
 const { parserBody, parserLastContract, parserResponseContract } = require('./parser');
-const middyBasicAuth = require('common/middy/middyBasicAuth');
+const middyNoAuth = require('common/middy/middyNoAuth');
 const translateBody = require('./translate');
 const { success } = require('common/lambda/response');
 const { ssmGroup } = require('common/middy/shared/ssm');
@@ -36,4 +36,4 @@ const contract = async (event, context) => {
   return success(response);
 };
 
-module.exports = { handler: middyBasicAuth(contract).use(ssmGroup()), contract };
+module.exports = { handler: middyNoAuth(contract).use(ssmGroup()), contract };

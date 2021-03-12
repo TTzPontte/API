@@ -65,6 +65,16 @@ Resources:
     Properties:
       Name: !Sub 'API-eCred-${Environment}'
       StageName: !Ref Environment
+      Auth:
+        DefaultAuthorizer: ECredAPIAuthorizer
+        Authorizers:
+          ECredAPIAuthorizer:
+            FunctionPayloadType: REQUEST
+            FunctionArn: !GetAtt ECredAPIAuthorizerFn.Arn
+            Identity:
+              Headers:
+                - Authorization
+
 
   APIMappingEcred:
     Type: AWS::ApiGateway::BasePathMapping
@@ -161,6 +171,21 @@ Resources:
       FunctionName: !Sub 'GetStatusContractFn-${Environment}'
       Description: Coletar os statusContract inseridos no elasticsearch
       Handler: getStatusContract.handler
+      Tracing: Active
+      Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'partners/ecred/${Environment}/*'
+        - SQSSendMessagePolicy:
+            QueueName: !Sub "AuditLog-Api-${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DBClients
+
+  ECredAPIAuthorizerFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'ECredAPIAuthorizerFn-${Environment}'
+      Description: Autozizar chamadas de api
+      Handler: customAuthorizer.handler
       Tracing: Active
       Policies:
         - SSMParameterReadPolicy:
