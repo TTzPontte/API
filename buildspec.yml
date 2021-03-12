@@ -10,14 +10,10 @@ phases:
       - pip install awscli aws-sam-cli==1.19.1
       - sam --version
 
-  pre_build:
-    commands:
-      - npm install
-
   build:
     commands:
+      - npm install
       - ./install-layer-deps.sh
-      - lerna bootstrap
       - sam build --debug
       - sam package --debug --s3-bucket $BUILD_OUTPUT_BUCKET --output-template-file ./serverless-output.yaml
 
