@@ -1,0 +1,11 @@
+{
+  "Records":
+  [
+    {
+      "body": "{\"uid\":\"7b754be0-a4a3-11e9-9a50-c1304fb22817\",\"id\":\"4883a470-a8b3-11e9-b0ba-0b4851f790ba\",\"document\":\"contracts\",\"operation\":\"list\",\"ts\":\"2019-07-17T16:52:38.071Z\",\"ip\":\"999.999.999.99\",\"email\":\"fabiano.furlan@codeminer42.com\",\"user\":{\"name\":\"Fabiano Furlan\",\"picture\":\"https:\/\/lh6.googleusercontent.com\/-EJRqdndMqOM\/AAAAAAAAAAI\/AAAAAAAAAAc\/ZKKXq_i0n8k\/s96-c\/photo.jpg\"},\"data\":{}}"
+    },
+    {
+      "body": "{\"uid\":\"7b754be0-a4a3-11e9-9a50-c1304fb22818\",\"id\":\"4883a470-a8b3-11e9-b0ba-0b4851f790ba\",\"document\":\"contracts\",\"operation\":\"list\",\"ts\":\"2019-07-17T16:52:38.071Z\",\"ip\":\"999.999.999.99\",\"email\":\"victor.kunzler@codeminer42.com\",\"user\":{\"name\":\"Victor Kunzler\",\"picture\":\"https:\/\/lh6.googleusercontent.com\/-EJRqdndMqOM\/AAAAAAAAAAI\/AAAAAAAAAAc\/ZKKXq_i0n8k\/s96-c\/photo.jpg\"},\"data\":{}}"
+    }
+  ]
+}
