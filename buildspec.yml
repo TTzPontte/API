@@ -24,7 +24,6 @@ phases:
       - sam package --s3-bucket $BUILD_OUTPUT_BUCKET --output-template-file ./serverless-output.yaml
 
 artifacts:
-  type: zip
   files:
     - template.yaml
     - serverless-output.yaml
