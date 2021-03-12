@@ -16,9 +16,8 @@ phases:
 
   build:
     commands:
-      - sam build
-      - ls
-      - sam package --s3-bucket $BUILD_OUTPUT_BUCKET --output-template-file ./serverless-output.yaml
+      - sam build --debug
+      - sam package --debug --s3-bucket $BUILD_OUTPUT_BUCKET --output-template-file ./serverless-output.yaml
 
 artifacts:
   files:
