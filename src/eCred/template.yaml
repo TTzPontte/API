@@ -84,7 +84,7 @@ Resources:
         DefaultAuthorizer: ECredAPIAuthorizer
         Authorizers:
           ECredAPIAuthorizer:
-            FunctionArn: !GetAtt MyAuthFunction.Arn
+            FunctionArn: !GetAtt ECredAPIAuthorizerFn.Arn
             FunctionPayloadType: REQUEST
             Identity:
               Headers:
