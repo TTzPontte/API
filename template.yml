@@ -50,7 +50,6 @@ Globals:
         ES_ENDPOINT: !FindInMap [Config, !Ref Environment, esEndpoint]
 
 Resources:
-
   DBClients:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -70,7 +69,7 @@ Resources:
         - { Key: Project, Value: !Ref Project }
         - { Key: Environment, Value: !Ref Environment }
 
-   :
+  CommonAPILayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
       Description: Common libraries
