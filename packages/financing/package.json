@@ -13,7 +13,7 @@
     "url": "git+https://github.com/pontte/API.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "start:dev": "sls invoke local -f Financing -s dev"
   },
   "bugs": {
     "url": "https://github.com/pontte/API/issues"
