@@ -73,7 +73,7 @@ Resources:
     Type: AWS::Serverless::LayerVersion
     Properties:
       Description: Common libraries
-      ContentUri: layer
+      ContentUri: ./layer
       CompatibleRuntimes:
         - nodejs14.x
 
