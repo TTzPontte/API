@@ -3,14 +3,16 @@ Feature: API Authorization
 Scenario: Request without api key
 Given url hostECred +  '/v1/contract'
 And header Accept = 'application/json'
-When method get
-Then status 403
-And match response == { message: 'Missing Authentication Token' }
+And request { }
+When method POST
+Then status 401
+And match response == {"message":"Unauthorized"}
 
 Scenario: Request with api key
 Given url hostECred +  '/v1/contract'
 And header Accept = 'application/json'
 And header Authorization = hostECredAuth
-When method get
+And request { }
+When method POST
 Then status 404
 And match response == { message: 'Missing Authentication Token' }

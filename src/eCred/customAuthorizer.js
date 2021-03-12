@@ -1,4 +1,4 @@
-const Clients = require('./models/clients');
+const Clients = require('common/models/clients');
 
 const generatePolicy = (principalId, clientName, resource, effect = 'Deny') => ({
   principalId,
