@@ -73,7 +73,7 @@ Resources:
             FunctionArn: !Ref ECredAPIAuthorizerFn
             Identity:
               Headers:
-                - Authorization
+              - Authorization
 
   APIMappingEcred:
     Type: AWS::ApiGateway::BasePathMapping
