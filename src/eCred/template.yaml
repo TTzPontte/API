@@ -60,6 +60,21 @@ Resources:
         !If [Prod, "apiecred.pontte.com.br", !Sub "apiecred-${Environment}.pontte.com.br"]
       CertificateArn: "arn:aws:acm:us-east-1:848638426587:certificate/639f5ab2-c77a-4f62-8250-c85716a6753f"
 
+  ECredAPIAuthorizerFn:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'ECredAPIAuthorizerFn-${Environment}'
+      Description: Autozizar chamadas de api
+      Handler: customAuthorizer.handler
+      Tracing: Active
+      Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub 'partners/ecred/${Environment}/*'
+        - SQSSendMessagePolicy:
+            QueueName: !Sub "AuditLog-Api-${Environment}"
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DBClients
+
   APIEcred:
     Type: AWS::Serverless::Api
     Properties:
@@ -69,8 +84,8 @@ Resources:
         DefaultAuthorizer: ECredAPIAuthorizer
         Authorizers:
           ECredAPIAuthorizer:
+            FunctionArn: !GetAtt MyAuthFunction.Arn
             FunctionPayloadType: REQUEST
-            FunctionArn: !Ref ECredAPIAuthorizerFn
             Identity:
               Headers:
                 - Authorization
@@ -170,21 +185,6 @@ Resources:
       FunctionName: !Sub 'GetStatusContractFn-${Environment}'
       Description: Coletar os statusContract inseridos no elasticsearch
       Handler: getStatusContract.handler
-      Tracing: Active
-      Policies:
-        - SSMParameterReadPolicy:
-            ParameterName: !Sub 'partners/ecred/${Environment}/*'
-        - SQSSendMessagePolicy:
-            QueueName: !Sub "AuditLog-Api-${Environment}"
-        - DynamoDBCrudPolicy:
-            TableName: !Ref DBClients
-
-  ECredAPIAuthorizerFn:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'ECredAPIAuthorizerFn-${Environment}'
-      Description: Autozizar chamadas de api
-      Handler: customAuthorizer.handler
       Tracing: Active
       Policies:
         - SSMParameterReadPolicy:

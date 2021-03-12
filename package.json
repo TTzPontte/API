@@ -4,10 +4,11 @@
   "description": "Pontte API",
   "main": "index.js",
   "scripts": {
-    "pretest": "npm run test:clean && npm run lint",
+    "pretest": "npm run test:clean && npm run lint && npm run test:template",
     "test": "lerna run test --scope=api-tests",
     "test:coverage": "lerna run test:coverage --scope=api-tests",
     "test:clean": "lerna run test:clean --scope=api-tests",
+    "test:template": "sam validate -t template.yml",
     "lint": "eslint . --fix"
   },
   "author": "Devs Pontte <dev@pontte.com.br> (https://www.pontte.com.br)",
