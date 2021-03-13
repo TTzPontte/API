@@ -17,7 +17,7 @@ const generatePolicy = (principalId, clientName, resource, effect = 'Deny') => (
 
 module.exports = async ({ methodArn, headers: { Authorization } }) => {
   try {
-    const [clientId, pass] = Buffer.from(Authorization.replace(/basic/, '').replace(/ /g, ''), 'base64')
+    const [clientId, pass] = Buffer.from(Authorization.replace(/^\s+basic\s+/i, ''), 'base64')
       .toString()
       .split(':');
 
