@@ -1,6 +1,6 @@
 const Clients = require('common/models/clients');
 
-const generatePolicy = (principalId, clientName, resource, effect = 'Deny') => ({
+const generatePolicy = (principalId, clientName, resource, effect) => ({
   principalId,
   context: { clientName },
   policyDocument: {
@@ -8,20 +8,24 @@ const generatePolicy = (principalId, clientName, resource, effect = 'Deny') => (
     Statement: [
       {
         Action: 'execute-api:Invoke',
-        Effect: effect,
+        Effect: effect || 'Deny',
         Resource: resource
       }
     ]
   }
 });
 
-module.exports = async ({ methodArn, headers: { Authorization } }) => {
+const handler = async ({ methodArn, headers: { Authorization } }) => {
   try {
-    const [clientId, pass] = Buffer.from(Authorization.replace(/^\s+basic\s+/i, ''), 'base64')
+    const [clientId, pass] = Buffer.from(Authorization.replace(/^\s*[Bb]asic\s+/, ''), 'base64')
       .toString()
       .split(':');
 
+    console.log(clientId);
+
     const { clientName, clientSecret } = await Clients.queryOne({ clientId }).exec();
+
+    console.log(clientName);
 
     return generatePolicy(clientId, clientName, methodArn, clientSecret !== pass && 'Allow');
   } catch (e) {
@@ -29,3 +33,4 @@ module.exports = async ({ methodArn, headers: { Authorization } }) => {
   }
   return 'Unauthorized';
 };
+module.exports = { handler };
