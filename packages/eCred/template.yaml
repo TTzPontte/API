@@ -102,8 +102,7 @@ Resources:
     Properties:
       FunctionName: !Sub "OfferSaveApiEcredFn-${Environment}"
       Description: Save the Offers done from partners
-      CodeUri: offer
-      Handler: offer.handler
+      Handler: offer/offer.handler
       Tracing: Active
       Policies:
         - SSMParameterReadPolicy:
@@ -143,8 +142,7 @@ Resources:
     Properties:
       FunctionName: !Sub "ContractSaveApiEcredFn-${Environment}"
       Description: Save the Contracts done from partners
-      CodeUri: contract
-      Handler: contract.handler
+      Handler: contract/contract.handler
       Tracing: Active
       Policies:
         - SSMParameterReadPolicy:
