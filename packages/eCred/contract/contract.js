@@ -11,15 +11,15 @@ const AuditLog = require('common/lambda/auditLog');
 const contract = async (event, context) => {
   const { body, clientId } = event;
 
-  const { proposal_id } = body.order;
-
   await validate({ ...body, clientId });
-
+  
   const translatedBody = translateBody(body);
-
+  
   const bodyParsed = parserBody(translatedBody);
-
+  
   const { documentNumber } = bodyParsed.entity;
+  
+  const { proposal_id } = body.order;
 
   const lastContract = await Simulation.getLastContract(proposal_id);
 

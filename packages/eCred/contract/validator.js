@@ -121,6 +121,7 @@ const validate = async fields => {
     const isValid = await schema.validate({ clientId });
     return isValid;
   } catch (err) {
+    console.log(err);
     throw new createError.BadRequest(err.message);
   }
 };

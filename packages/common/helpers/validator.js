@@ -11,6 +11,7 @@ const calc = (string, size) => {
 };
 
 const validateDocumentNumber = documentNumber => {
+  if (!documentNumber) return false;
   if (documentNumber.length === 11) {
     return validateCpf(documentNumber);
   } else if (documentNumber.length === 14) {
