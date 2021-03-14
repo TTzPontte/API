@@ -21,15 +21,15 @@ const handler = async ({ methodArn, headers: { Authorization } }) => {
       .toString()
       .split(':');
 
-    console.log(clientId);
+    console.log(`clientId: ${clientId}`);
 
     const { clientName, clientSecret } = await Clients.queryOne({ clientId }).exec();
 
-    console.log(clientName);
+    console.log(`clientName: ${clientName}`);
 
     return generatePolicy(clientId, clientName, methodArn, clientSecret !== pass && 'Allow');
   } catch (e) {
-    console.log(e);
+    console.log('Error: ', e);
   }
   return 'Unauthorized';
 };
