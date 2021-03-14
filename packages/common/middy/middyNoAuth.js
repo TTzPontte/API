@@ -3,7 +3,7 @@ const { httpSecurityHeaders } = require('middy/middlewares');
 
 const httpErrorHandler = require('./httpErrorHandler');
 const xray = require('./xray');
-const parserBody = require('./parserJsonBody');
+const parserBody = require('./parseJsonBody');
 
 module.exports = handler => {
   return middy(handler)
