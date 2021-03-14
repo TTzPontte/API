@@ -13,8 +13,7 @@ phases:
   build:
     commands:
       - npm install
-      - ./install-layer-deps.sh
-      - ./node_modules/.bin/lerna bootstrap
+      - npm run postinstall
       - sam build --debug
       - sam package --debug --s3-bucket $BUILD_OUTPUT_BUCKET --output-template-file ./serverless-output.yaml
 
