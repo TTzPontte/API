@@ -26,7 +26,8 @@ jobs:
         run: npx lerna run pre:test:integration --scope=api-tests
 
       - name: Test
-        run: java -Dkarate.env=dev -cp karate.jar com.intuit.karate.Main integration/*.feature integration/**/*.feature
+        run: npx lerna run test:integration --scope=api-tests
         env:
+          TEST_ENV: ${{ github.event.inputs.apiEnv }}
           ECRED_API_CLIENT: ${{ github.event.inputs.apiLogin || secrets.ECRED_API_CLIENT }}
           ECRED_API_SECRET_KEY: ${{ github.event.inputs.apiPass ||secrets.ECRED_API_SECRET_KEY }}

@@ -1,9 +1,9 @@
 function fn() {
   // ESSE JAVASCRIPT não é lido pelo node mas por um JAVA
   // NÃO TEM SUPORTE A ES6
-  var env = karate.env || 'dev';
-  karate.log('karate.env system property was:', env);
   var allEnvVars = java.lang.System.getenv();
+  var env = allEnvVars['TEST_ENV'] || 'dev';
+  karate.log('TEST_ENV:', env);
   var eCredClient = allEnvVars['ECRED_API_CLIENT'] || '';
   var eCredKey = allEnvVars['ECRED_API_SECRET_KEY'] || '';
   if (!eCredClient || !eCredKey) {
