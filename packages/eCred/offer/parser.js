@@ -4,9 +4,9 @@ const { LOAN_MOTIVATION, PROPOSAL_STATUS } = require('./constants');
 
 const parserOfferSimulation = async event => {
   const { body, clientId, clientName, requestContext } = event;
-  const { gracePeriod = 0, skipMonth = 0, loanMotivation = [], consumer, questions } = body;
+  const { gracePeriod = 0, skipMonth = 0, loanMotivation = [], consumer = {}, questions = {} } = body;
   const { age, cpf } = consumer;
-  const { value, income, property_value, address_zip_code, installments } = questions;
+  const { value, income, property_value, address_zip_code = '', installments } = questions;
 
   const cep = address_zip_code.replace('-', '');
   const sourceIp = requestContext.identity.sourceIp;
