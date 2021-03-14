@@ -27,7 +27,7 @@ const handler = async ({ methodArn, headers: { Authorization } }) => {
 
     console.log(`clientName: ${clientName}`);
 
-    return generatePolicy(clientId, clientName, methodArn, clientSecret !== pass && 'Allow');
+    return generatePolicy(clientId, clientName, methodArn, clientSecret === pass && 'Allow');
   } catch (e) {
     console.log('Error: ', e);
   }

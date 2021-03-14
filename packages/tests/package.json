@@ -7,7 +7,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:clean": "rimraf ./coverage",
-    "test:integration": "env HOST_ECRED_AUTH='Basic ZGV2ZWxvcGVyLXRlc3Q6WkdWMlpXeHZjR1Z5TFhSbGMzUQa==' java -cp karate.jar com.intuit.karate.Main integration/*.feature integration/**/*.feature",
+    "test:integration": "java -cp karate.jar com.intuit.karate.Main integration/*.feature integration/**/*.feature",
     "pre:test:integration": "curl -L https://github.com/intuit/karate/releases/download/v0.9.6/karate-0.9.6.jar > karate.jar"
   },
   "author": "",
