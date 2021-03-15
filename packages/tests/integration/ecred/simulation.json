@@ -1,0 +1,30 @@
+{
+    "consumer": {
+        "name": "John Ecredina da Silva",
+        "cpf": "75798405028",
+        "birth_date": "1997-01-18",
+        "age": 28,
+        "mother_name": "Testiana Ecredina da Silva"
+    },
+    "questions": {
+        "value": "50000",
+        "installments": "60",
+        "ocupation": {
+            "label": "Assalariado"
+        },
+        "profession": {
+            "label": "Engenheiro"
+        },
+        "income": 15000,
+        "address_zip_code": "02141-000",
+        "address": "Rua Osvaldo Borges",
+        "address_number": "212",
+        "address_neighborhood": "São Caetano",
+        "address_city": "São Paulo",
+        "address_state": {
+            "label": "São Paulo",
+            "value": "SP"
+        },
+        "property_value": 200000
+    }
+}

@@ -1,0 +1,33 @@
+name: Integration
+
+on: 
+  workflow_dispatch:
+    inputs:
+      apiEnv:
+        description: Env
+        default: dev
+      apiLogin:
+        description: API login (clientId)
+      apiPass:
+        description: API password (clientSecrectKey)
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '9.0.4'
+          java-package: jdk
+          architecture: x64
+
+      - name: Downlaod karate
+        run: npx lerna run pre:test:integration --scope=api-tests
+
+      - name: Test
+        run: npx lerna run test:integration --scope=api-tests
+        env:
+          TEST_ENV: ${{ github.event.inputs.apiEnv }}
+          ECRED_API_CLIENT: ${{ github.event.inputs.apiLogin || secrets.ECRED_API_CLIENT }}
+          ECRED_API_SECRET_KEY: ${{ github.event.inputs.apiPass ||secrets.ECRED_API_SECRET_KEY }}

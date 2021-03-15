@@ -4,37 +4,48 @@
   "description": "Pontte API",
   "main": "index.js",
   "scripts": {
+    "postinstall": "lerna bootstrap && ./install-layer-deps.sh || echo INSTALADO",
     "pretest": "npm run test:clean && npm run lint",
-    "test": "ENV=test jest",
-    "test:coverage": "ENV=test jest --coverage",
-    "test:clean": "rimraf ./coverage",
-    "test:watch": "ENV=test jest --watchAll",
-    "lint": "./node_modules/.bin/eslint ."
+    "test": "lerna run test --scope=api-tests",
+    "test:coverage": "lerna run test:coverage --scope=api-tests",
+    "test:clean": "lerna run test:clean --scope=api-tests",
+    "test:template": "sam validate -t template.yml",
+    "lint": "eslint . --fix"
   },
   "author": "Devs Pontte <dev@pontte.com.br> (https://www.pontte.com.br)",
   "license": "ISC",
   "dependencies": {
+    "@elastic/elasticsearch": "^6.7.1",
+    "aws-sdk": "^2.636.0",
     "aws-xray-sdk": "^2.5.0",
+    "axios": "^0.21.1",
     "dynamoose": "^1.11.1",
+    "http-errors": "^1.7.3",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "middy": "^0.34.0",
+    "node-fetch": "^2.6.1",
+    "requestify": "^0.2.5",
+    "uuid": "^7.0.2",
+    "uuid-apikey": "^1.4.6",
+    "yup": "^0.28.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.0.1",
+    "@types/jest": "^25.1.4",
+    "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-strongloop": "^2.1.0",
     "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-prettier": "^3.1.2",
-    "http-errors": "^1.7.3",
     "faker": "^4.1.0",
+    "husky": "^4.2.3",
     "jest": "^25.1.0",
-    "jsonwebtoken": "^8.5.1",
+    "lerna": "^3.22.1",
     "prettier": "^1.19.1",
-    "pretty-quick": "^2.0.1",
-    "uuid-apikey": "^1.4.6"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
-    "@types/jest": "^25.1.4",
-    "babel-eslint": "^10.1.0",
-    "husky": "^4.2.3"
+    "pretty-quick": "^2.0.1"
   },
   "commitlint": {
     "extends": [
@@ -44,7 +55,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "npm run lint && pretty-quick --staged --pattern '**/*.*(js)'"
+      "pre-commit": "npm run pretest && pretty-quick --staged --pattern '**/*.*(js)'"
     }
   }
 }
