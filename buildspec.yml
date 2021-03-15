@@ -3,28 +3,21 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 14
+      nodejs: 10
       python: 3.7
 
     commands:
       - pip install awscli aws-sam-cli==1.19.1
       - sam --version
 
-  pre_build:
-    commands:
-      # Build do layer
-      - npm install
-      - cd ./src/layers/common/
-      - npm install
-      - cd ../../../
-
   build:
     commands:
-      - sam build
-      - sam package --s3-bucket $BUILD_OUTPUT_BUCKET --output-template-file ./serverless-output.yaml
+      - npm install
+      - npm run postinstall
+      - sam build --debug
+      - sam package --debug --s3-bucket $BUILD_OUTPUT_BUCKET --output-template-file ./serverless-output.yaml
 
 artifacts:
-  type: zip
   files:
     - template.yaml
     - serverless-output.yaml

@@ -3,10 +3,13 @@ name: Integration
 on: 
   workflow_dispatch:
     inputs:
-      logLevel:
+      apiEnv:
         description: Env
-        required: true
         default: dev
+      apiLogin:
+        description: API login (clientId)
+      apiPass:
+        description: API password (clientSecrectKey)
 
 jobs:
   Test:
@@ -18,10 +21,13 @@ jobs:
           java-version: '9.0.4'
           java-package: jdk
           architecture: x64
+
       - name: Downlaod karate
-        working-directory: tests
-        run: curl -L https://github.com/intuit/karate/releases/download/v0.9.6/karate-0.9.6.jar > karate.jar
+        run: npx lerna run pre:test:integration --scope=api-tests
 
       - name: Test
-        working-directory: tests
-        run: java -Dkarate.env=${{ github.event.inputs.logLevel }} -cp karate.jar com.intuit.karate.Main **/*.feature
+        run: npx lerna run test:integration --scope=api-tests
+        env:
+          TEST_ENV: ${{ github.event.inputs.apiEnv }}
+          ECRED_API_CLIENT: ${{ github.event.inputs.apiLogin || secrets.ECRED_API_CLIENT }}
+          ECRED_API_SECRET_KEY: ${{ github.event.inputs.apiPass ||secrets.ECRED_API_SECRET_KEY }}
