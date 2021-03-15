@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "lerna bootstrap && ./install-layer-deps.sh || echo INSTALADO",
-    "pretest": "npm run test:clean && npm run lint && npm run test:template",
+    "pretest": "npm run test:clean && npm run lint",
     "test": "lerna run test --scope=api-tests",
     "test:coverage": "lerna run test:coverage --scope=api-tests",
     "test:clean": "lerna run test:clean --scope=api-tests",
