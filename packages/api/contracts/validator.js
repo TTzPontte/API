@@ -189,10 +189,7 @@ const validate = async fields => {
             .required()
         })
         .required(),
-      type: yup
-        .string()
-        .oneOf(PROPERTY_TYPES)
-        .required(),
+      type: yup.string().oneOf(PROPERTY_TYPES),
       floorArea: yup
         .string()
         .strict()
