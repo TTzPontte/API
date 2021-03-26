@@ -1,5 +1,5 @@
 const yup = require('yup');
-const _ = require('lodash');
+const { get } = require('lodash');
 const createError = require('http-errors');
 const { validateDocumentNumber } = require('common/helpers/validator');
 
@@ -110,9 +110,9 @@ const getAboutSchema = async about => {
 };
 
 const validate = async fields => {
-  const { relations, address, income, about } = fields.entity;
+  const { relations, address, income, about } = fields.entity || {};
 
-  const { secondPayers } = fields.secondPayers;
+  const { secondPayers } = fields.secondPayers || {};
 
   const relationsSchema = getRelationsSchema(relations);
   const addressSchema = getAddressSchema(address);
@@ -208,7 +208,7 @@ const validate = async fields => {
         .required(),
       suites: yup
         .string()
-        .oneOf(suitesOptions(fields.property.bedrooms))
+        .oneOf(suitesOptions(get(fields, 'property.bedrooms', 0)))
         .required(),
       isResident: yup
         .string()
@@ -261,9 +261,9 @@ const validate = async fields => {
   });
 
   try {
-    const { isResident, owners } = _.get(fields, 'property', {});
+    const { isResident, owners } = get(fields, 'property', {});
     const { clientId } = fields;
-    const secondPayers = _.get(fields, 'secondPayers', []);
+    const secondPayers = get(fields, 'secondPayers', []);
     await entitySchema.validate({ ...fields.entity, isResident, owners });
     await propertySchema.validate(fields.property);
     const isValid = await schema.validate({ clientId, secondPayers });
