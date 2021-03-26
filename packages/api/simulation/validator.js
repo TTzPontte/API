@@ -32,9 +32,10 @@ const validate = async fields => {
     monthlyIncome: yup.number().required(),
     age: yup
       .number()
-      .required()
       .min(MIN_AGE)
-      .max(MAX_AGE),
+      .max(MAX_AGE)
+      .default(MIN_AGE)
+      .required(),
     documentNumber: yup
       .string()
       .strict()
