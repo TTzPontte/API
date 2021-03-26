@@ -6,18 +6,38 @@ function fn() {
   karate.log('TEST_ENV:', env);
   var eCredClient = allEnvVars['ECRED_API_CLIENT'] || '';
   var eCredKey = allEnvVars['ECRED_API_SECRET_KEY'] || '';
+  var apiClientId = allEnvVars['API_CLIENT'] || '';
+  var apiClientSecretKey = allEnvVars['API_SECRET_KEY'] || '';
   if (!eCredClient || !eCredKey) {
     throw 'Informe as variáveis de ambiente ECRED_API_CLIENT e ECRED_API_SECRET_KEY';
   }
   var eCredClientKey = eCredClient + ':' + eCredKey;
   var eCredClientKeyBytes = eCredClientKey.getBytes();
 
+  function signer(jwtLib, content) {
+    var crypto = jwtLib();
+    var JWS = crypto.KJUR.jws.JWS;
+    return JWS.sign('HS256', { alg: 'HS256' }, content, apiClientSecretKey);
+  }
+
+  function authHeader(jwtLib) {
+    return 'Bearer ' + signer(jwtLib, { clientId: apiClientId });
+  }
+
+  function signedBody(jwtLib, content) {
+    return {
+      payload: signer(jwtLib, content)
+    };
+  }
+
   var config = {
     response: {},
     host: 'https://api' + env + '.pontte.com.br',
     hostAuth: java.lang.System.getenv('HOST_AUTH'),
     hostECred: 'https://apiecred-' + env + '.pontte.com.br',
-    hostECredAuth: 'Basic ' + java.util.Base64.getEncoder().encodeToString(eCredClientKeyBytes)
+    hostECredAuth: 'Basic ' + java.util.Base64.getEncoder().encodeToString(eCredClientKeyBytes),
+    authHeader: authHeader,
+    signedBody: signedBody
   };
   if (env == 'prod') {
     config.host = 'https://apid.pontte.com.br';

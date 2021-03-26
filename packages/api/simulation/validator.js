@@ -22,12 +22,12 @@ const validate = async fields => {
   const schema = yup.object().shape({
     loanValue: yup
       .number()
-      .moreThan(MIN_LOAN_VALUE)
+      .min(MIN_LOAN_VALUE)
       .max(MAX_LOAN_VALUE)
       .required(),
     propertyValue: yup
       .number()
-      .moreThan(MIN_PROPERTY_VALUE)
+      .min(MIN_PROPERTY_VALUE)
       .required(),
     monthlyIncome: yup.number().required(),
     age: yup

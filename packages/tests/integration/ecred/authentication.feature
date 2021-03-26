@@ -1,4 +1,4 @@
-Feature: API Authorization
+Feature: ECred API Authorization
 
 Scenario: Request without api key
 Given url hostECred +  '/v1/contract'
