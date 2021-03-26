@@ -31,7 +31,7 @@ const validate = async fields => {
       .string()
       .strict()
       .required(),
-    ocupation: yup
+    occupation: yup
       .object()
       .shape({
         label: yup
