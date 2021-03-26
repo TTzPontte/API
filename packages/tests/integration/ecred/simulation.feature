@@ -1,9 +1,8 @@
-Feature: Simulation
-
+Feature: ECred Simulation
 Background:
-    * url hostECred + '/v1/offers'
-    * def simulation = read('simulation.json')
-    * def simulation_response = read('simulation_response.json')
+* url hostECred + '/v1/offers'
+* def simulation = read('simulation.json')
+* def simulation_response = read('simulation_response.json')
 
 Scenario: Create a new simulation
 Given request simulation

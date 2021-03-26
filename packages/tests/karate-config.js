@@ -17,8 +17,7 @@ function fn() {
   function signer(jwtLib, content) {
     var crypto = jwtLib();
     var JWS = crypto.KJUR.jws.JWS;
-    var signature = JWS.sign(null, { alg: 'HS256', cty: 'JWT' }, content, apiClientSecretKey);
-    return signature;
+    return JWS.sign('HS256', { alg: 'HS256' }, content, apiClientSecretKey);
   }
 
   function authHeader(jwtLib) {

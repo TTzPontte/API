@@ -2,7 +2,6 @@ Feature: API Authorization
 Background:
 * def jwtLib = read('jsrsasign-all-min.js');
 * def jwtHeader = authHeader(jwtLib);
-* karate.log(jwtHeader)
 
 Scenario: Request without api key
 Given url host +  '/v1/contract'
