@@ -8,11 +8,7 @@ module.exports = () => {
       const { body, clientSecret } = event;
       const { payload } = JSON.parse(body);
 
-      console.log('body', body);
-      console.log('payload', payload);
-      console.log('clientSecret', clientSecret);
-
-      if (!payload) return;
+      if (!payload) throw new createError.Unauthorized();
 
       try {
         const body = await jwt.verify(payload, clientSecret);

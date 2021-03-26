@@ -10,6 +10,10 @@ on:
         description: API login (clientId)
       apiPass:
         description: API password (clientSecrectKey)
+      apiECredLogin:
+        description: API ECred login (clientId)
+      apiECredPass:
+        description: API ECred password (clientSecrectKey)
 
 jobs:
   Test:
@@ -29,5 +33,7 @@ jobs:
         run: npx lerna run test:integration --scope=api-tests
         env:
           TEST_ENV: ${{ github.event.inputs.apiEnv }}
-          ECRED_API_CLIENT: ${{ github.event.inputs.apiLogin || secrets.ECRED_API_CLIENT }}
-          ECRED_API_SECRET_KEY: ${{ github.event.inputs.apiPass ||secrets.ECRED_API_SECRET_KEY }}
+          API_CLIENT: ${{ github.event.inputs.apiLogin || secrets.API_TEST_CLIENT_ID }}
+          API_SECRET_KEY: ${{ github.event.inputs.apiPass || secrets.API_TEST_SECRET_KEY }}
+          ECRED_API_CLIENT: ${{ github.event.inputs.apiECredLogin || secrets.ECRED_API_CLIENT }}
+          ECRED_API_SECRET_KEY: ${{ github.event.inputs.apiECredPass ||secrets.ECRED_API_SECRET_KEY }}
