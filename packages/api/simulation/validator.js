@@ -60,7 +60,10 @@ const validate = async fields => {
       .strict()
       .email()
       .required(),
-    loanMotivation: yup.array().of(yup.string().oneOf(LOAN_MOTIVATION)),
+    loanMotivation: yup
+      .default([])
+      .array()
+      .of(yup.string().oneOf(LOAN_MOTIVATION)),
     gracePeriod: yup
       .number()
       .oneOf(GRACE_PERIOD)
