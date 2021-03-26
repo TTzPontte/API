@@ -50,8 +50,7 @@ const validate = async fields => {
     cep: yup
       .string()
       .strict()
-      .length(8)
-      .required(),
+      .length(8),
     terms: yup
       .number()
       .oneOf(TERMS)
