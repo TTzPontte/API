@@ -9,7 +9,7 @@
     "questions": {
         "value": "50000",
         "installments": "60",
-        "ocupation": {
+        "occupation": {
             "label": "Assalariado"
         },
         "profession": {
