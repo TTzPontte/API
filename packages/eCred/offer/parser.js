@@ -59,7 +59,7 @@ const parserBody = data => {
       {
         activity: questions.profession.label,
         value: monthlyIncome,
-        source: questions.ocupation.label.toUpperCase()
+        source: questions.occupation.label.toUpperCase()
       }
     ]
   };
