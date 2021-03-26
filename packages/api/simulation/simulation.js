@@ -19,16 +19,16 @@ const simulation = async event => {
   const calculated = await Calculator.calculate(data);
 
   if (calculated.netLoan) {
-      const translatedData = translateBody(data);
-      const simulation = await Simulation.save({ data: translatedData, calculated });
+    const translatedData = translateBody(data);
+    const simulation = await Simulation.save({ data: translatedData, calculated });
 
-      const response = {
-        id: simulation.id,
-        registrationUrl: `${getSiteUrl()}/cadastro/${simulation.id}`,
-        simulation: calculated
-      };
+    const response = {
+      id: simulation.id,
+      registrationUrl: `${getSiteUrl()}/cadastro/${simulation.id}`,
+      simulation: calculated
+    };
 
-      return created({ ...response });
+    return created({ ...response });
   }
 
   return badRequest('Algo deu errado.');
