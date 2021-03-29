@@ -51,7 +51,7 @@ const validate = async fields => {
       .strict()
       .matches(PHONE_REG_EXP, 'Phone number is invalid')
       .required(),
-    ocupation: yup
+    occupation: yup
       .object()
       .shape({
         label: yup

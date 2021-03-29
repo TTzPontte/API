@@ -1,7 +1,6 @@
 const { parserOfferSimulation, parserResponseOfferSimulation, parserBody } = require('./parser');
 const { validate } = require('./validator');
-const { created, badRequest } = require('common/lambda/response');
-const { exceptionsCalculator } = require('common/helpers/exceptions');
+const { created, success } = require('common/lambda/response');
 const Simulation = require('common/services/simulation.service');
 const Offer = require('common/services/offer.service');
 const Subscribe = require('common/services/subscribeCep.service');
@@ -24,7 +23,6 @@ const offer = async (event, context) => {
     await Simulation.isRegisteredByDocNumber({ documentNumber, clientId });
     await Contract.isRegisteredByDocNumber({ documentNumber });
     const calculated = await Calculator.calculate(offerParsed);
-    await exceptionsCalculator(calculated);
 
     if (calculated.netLoan) {
       if (isCovered(address)) {
@@ -41,14 +39,14 @@ const offer = async (event, context) => {
       } else {
         await Subscribe.save({ offerParsed, calculated });
         await AuditLog.log(event, context, 'ecred', 'offer', offerParsed);
-        return badRequest('Region not supported');
+        return success('');
       }
     }
   }
 
   await AuditLog.log(event, context, 'ecred', 'offer', body);
 
-  return badRequest('Algo deu errado.');
+  return success('');
 };
 
 module.exports = { handler: middyNoAuth(offer).use(ssmGroup()), offer };

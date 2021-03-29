@@ -22,19 +22,20 @@ const validate = async fields => {
   const schema = yup.object().shape({
     loanValue: yup
       .number()
-      .moreThan(MIN_LOAN_VALUE)
+      .min(MIN_LOAN_VALUE)
       .max(MAX_LOAN_VALUE)
       .required(),
     propertyValue: yup
       .number()
-      .moreThan(MIN_PROPERTY_VALUE)
+      .min(MIN_PROPERTY_VALUE)
       .required(),
     monthlyIncome: yup.number().required(),
     age: yup
       .number()
-      .required()
       .min(MIN_AGE)
-      .max(MAX_AGE),
+      .max(MAX_AGE)
+      .default(MIN_AGE)
+      .required(),
     documentNumber: yup
       .string()
       .strict()
@@ -49,8 +50,7 @@ const validate = async fields => {
     cep: yup
       .string()
       .strict()
-      .length(8)
-      .required(),
+      .length(8),
     terms: yup
       .number()
       .oneOf(TERMS)
@@ -60,7 +60,10 @@ const validate = async fields => {
       .strict()
       .email()
       .required(),
-    loanMotivation: yup.array().of(yup.string().oneOf(LOAN_MOTIVATION)),
+    loanMotivation: yup
+      .default([])
+      .array()
+      .of(yup.string().oneOf(LOAN_MOTIVATION)),
     gracePeriod: yup
       .number()
       .oneOf(GRACE_PERIOD)

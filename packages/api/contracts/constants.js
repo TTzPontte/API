@@ -43,11 +43,11 @@ const MARITAL_STATUS = {
 
 const PROPERTY_AGE = ['<=2', '3-5', '6-10', '11-20', '21-30', '31-40', '41-50', '>=51'];
 
-const BEDROOMS = ['1', '2', '3', '4', '5', '6', '7', '8'];
+const BEDROOMS = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
 
-const SUITES = ['0', ...BEDROOMS];
+const SUITES = [...BEDROOMS];
 
-const GARAGES = ['1', '2', '3', '4', '5+'];
+const GARAGES = ['0', '1', '2', '3', '4', '5+'];
 
 const suitesOptions = bedrooms => SUITES.slice(0, bedrooms + 1);
 
