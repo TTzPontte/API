@@ -27,7 +27,7 @@ const translate = ({ entity, property, secondPayers, ...body }) => {
     return relations[0];
   });
 
-    const translatedSecondPayers = (secondPayers || []).map(secondPayer => {
+  const translatedSecondPayers = (secondPayers || []).map(secondPayer => {
     const persona = find(PERSONAS, secondPayer);
     return PERSONAS[persona];
   });
