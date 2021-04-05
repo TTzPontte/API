@@ -80,7 +80,10 @@ const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
       value: calculated.netLoan,
       installments_value: calculated.installment[0].installment,
       total_payable: calculated.grossLoan,
-      fee_credit_opening: calculated.registry_value
+      fee_credit_opening: calculated.registry_value,
+      depreciation_system: 'sac',
+      first_installment_value: calculated.installment[0].installment,
+      fee_administration: 0.0,
     }
   ];
 };
