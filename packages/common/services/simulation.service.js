@@ -91,7 +91,7 @@ const isRegisteredByDocNumber = async ({ documentNumber, clientId }) => {
 
 const getLastContract = async simulationId => {
   try {
-    const simulation = await Contract.queryOne({ id: simulationId }).exec()
+    const simulation = await Contract.queryOne({ id: simulationId }).exec();
     if (simulation) return simulation;
   } catch (error) {
     console.log(error);
