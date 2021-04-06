@@ -1,0 +1,46 @@
+{
+    "consumer": {
+        "name": "João Silva",
+        "cpf": "54489173482",
+        "birth_date": "1993-06-09",
+        "age": 27,
+        "mother_name": "Maria da silva",
+        "email": "test@mail.com"
+    },
+    "order": {
+        "proposal_id": "00000000-0000-0000-0000-000000000000"
+    },
+    "questions": {
+        "value": "30000",
+        "installments": "12",
+        "cellphone": "(11)981498025",
+        "occupation": {
+            "label": "Assalariado",
+            "value": "3"
+        },
+        "profession": {
+            "label": "Estilista/Modelista",
+            "value": "115"
+        },
+        "income": 6000,
+        "address_zip_code": "45601-050",
+        "address": "Rua Osvaldo Borges",
+        "address_number": "212",
+        "address_neighborhood": "São Caetano",
+        "address_city": "São Paulo",
+        "address_state": {
+            "label": "São Paulo",
+            "value": "SP"
+        },
+        "property_type": {
+            "label": "Casa",
+            "value": "Casa"
+        },
+        "property_state": {
+            "label": "São Paulo",
+            "value": "SP"
+        },
+        "property_value": 150000,
+        "address_complement": ""
+    }
+}
