@@ -11,6 +11,6 @@ const INCOME_SOURCES = [
   'Servidor Doméstico'
 ];
 
-const PHONE_REG_EXP = /^(\+\d{2}\d{2})(\d{4,5}\d{4})$/;
+const PHONE_REG_EXP = /^\(?(\d{2})?\d{2}\)?\s*\d{4,5}-?\d{4}$/;
 
 module.exports = { PHONE_REG_EXP, INCOME_SOURCES };

@@ -47,18 +47,17 @@ function fn() {
   var config = {
     response: {},
     host: 'https://api' + env + '.pontte.com.br/v1/',
-    hostAuth: java.lang.System.getenv('HOST_AUTH'),
-    hostECred: 'https://apiecred-' + env + '.pontte.com.br',
-    hostECredAuth: 'Basic ' + base64(eCredClientKey),
+    hostECred: 'https://apiecred-' + env + '.pontte.com.br/v1/',
+    authHeaderECred: 'Basic ' + base64(eCredClientKey),
     authHeader: authHeader(),
     signedBody: signedBody,
     signedFile: signedFile
   };
   if (env == 'prod') {
     config.host = 'https://apid.pontte.com.br/v1/';
-    config.hostECred = 'https://apiecred.pontte.com.br';
+    config.hostECred = 'https://apiecred.pontte.com.br/v1/';
   }
-  karate.configure('connectTimeout', 5000);
-  karate.configure('readTimeout', 5000);
+  karate.configure('connectTimeout', 25000);
+  karate.configure('readTimeout', 25000);
   return config;
 }

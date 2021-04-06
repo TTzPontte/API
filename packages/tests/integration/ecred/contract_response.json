@@ -1,0 +1,18 @@
+[
+    {
+        "proposal_id": "c0476a56-e22a-4104-b393-cd3189034df9",
+        "total_effective_cost_percent_monthly": 17.9,
+        "total_effective_cost_percent_annually": 621.3825972872158,
+        "tax_rate_percent_monthly": 0.79,
+        "tax_rate_percent_annually": 9.902948120543776,
+        "tax_credit_operation_percent": 1730.8831768717548,
+        "installments": 60,
+        "value": 50000,
+        "installments_value": 1423.46,
+        "total_payable": 55461.983176871756,
+        "fee_credit_opening": 1981.1,
+        "depreciation_system": "sac",
+        "first_installment_value": 1423.46,
+        "fee_administration": 0
+    }
+]
