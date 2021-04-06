@@ -1,14 +1,11 @@
 Feature: Simulation
 
-Background:
-* def jwtLib = read('jsrsasign-all-min.js');
-* def simulation = read('simulation.json')
-* def jwtHeader = authHeader(jwtLib);
-* url host + '/v1/simulation'
-
 Scenario: Create a new simulation
-Given request simulation
+* karate.set('simulation', "call read 'simulation.json'")
+Given url host 
+And path 'simulation'
 And header Accept = 'application/json'
-And header Authorization = jwtHeader
-When method post
+And header Authorization = authHeader
+And request signedFile('simulation.json')
+When method POST
 Then status 201

@@ -193,24 +193,20 @@ const validate = async fields => {
       floorArea: yup
         .string()
         .strict()
-        .default('50')
-        .required(),
+        .default('50'),
       age: yup
         .string()
         .strict()
         .default(PROPERTY_AGE[0])
-        .oneOf(PROPERTY_AGE)
-        .required(),
+        .oneOf(PROPERTY_AGE),
       bedrooms: yup
         .string()
         .default(BEDROOMS[0])
-        .oneOf(BEDROOMS)
-        .required(),
+        .oneOf(BEDROOMS),
       suites: yup
         .string()
         .default(BEDROOMS[0])
-        .oneOf(suitesOptions(get(fields, 'property.bedrooms', 0)))
-        .required(),
+        .oneOf(suitesOptions(get(fields, 'property.bedrooms', 0))),
       isResident: yup
         .string()
         .oneOf(RESIDENTS)
