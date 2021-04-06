@@ -1,0 +1,53 @@
+{
+    "simulationId":"00000000-0000-0000-0000-000000000000",
+    "clientId":"00000000-0000-0000-0000-000000000000",
+    "entity":{
+        "name":"Leonardo Cesar",
+        "nickname":"Leonardo",
+        "documentNumber":"12533052345",
+        "email":"bob1617629788446@alice.com",
+        "phone":"+5521994291140",
+        "liveInProperty":true,
+        "secondPayer":false,
+        "address":{
+            "cep":"20040000",
+            "streetAddress":"Rua Tamaru",
+            "number":"21",
+            "neighborhood":"Jacutinga",
+            "complement":"Casa",
+            "city":"Mesquita",
+            "state":"RJ"
+        },
+        "income":[
+            {
+                "source":"INDEPENDENT",
+                "activity":"Saude",
+                "averageIncome":10000
+            }
+        ],
+        "about":{
+            "birthdate":"09081978",
+            "educationLevel":"COLLEGE",
+            "maritalStatus":"SINGLE",
+            "hasChild":true,
+            "hasSiblings":true
+        },
+        "relations":["asdfasdf"]
+    },
+    "property":{
+        "address":{
+            "cep":"20040000",
+            "streetAddress":"Rua da Ajuda",
+            "number":"sem número",
+            "neighborhood":"Centro",
+            "city":"Rio de Janeiro",
+            "state":"RJ"
+        },
+        "financed":true,
+        "financingDebt":"10000",
+        "owners":["OWN"]
+    },
+    "secondPayer":[],
+    "makeUpIncome":[],
+    "pendencies":[]
+}

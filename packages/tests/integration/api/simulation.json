@@ -1,3 +1,9 @@
 {
-    "payload": "eyJhbGciOiJIUzI1NiJ9.eyJsb2FuVmFsdWUiOjMwMDAwLCJwcm9wZXJ0eVZhbHVlIjoyMDAwMDAsIm1vbnRobHlJbmNvbWUiOjYwMDAsImRvY3VtZW50TnVtYmVyIjoiMzYwODM4MTE0NzMiLCJwaG9uZSI6Iis1NTk5OTk5OTk5OTk5IiwidGVybXMiOjIxMCwiZW1haWwiOiJ4aGFtcHNAcG9udHRlLmNvbS5iciJ9.GhvpkL_OZKGr_SwguyNDc_NQwzn53pSowJ5zsXmqA8w"
+    "loanValue": 30000,
+    "propertyValue": 200000,
+    "monthlyIncome": 6000,
+    "documentNumber": "36083811473",
+    "phone": "+5599999999999",
+    "terms": 210,
+    "email": "xhamps@pontte.com.br"
 }
