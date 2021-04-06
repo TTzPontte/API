@@ -20,8 +20,6 @@ const offer = async (event, context) => {
   const address = await getAddress({ ...offerParsed });
 
   if (isValidCep(address)) {
-    await Simulation.isRegisteredByDocNumber({ documentNumber, clientId });
-    await Contract.isRegisteredByDocNumber({ documentNumber });
     const calculated = await Calculator.calculate(offerParsed);
 
     if (calculated.netLoan) {
