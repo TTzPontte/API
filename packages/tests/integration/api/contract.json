@@ -32,7 +32,7 @@
             "hasChild":true,
             "hasSiblings":true
         },
-        "relations":["asdfasdf"]
+        "relations":[]
     },
     "property":{
         "address":{
