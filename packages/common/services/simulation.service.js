@@ -91,10 +91,12 @@ const isRegisteredByDocNumber = async ({ documentNumber, clientId }) => {
 
 const getLastContract = async simulationId => {
   try {
-    return await Contract.queryOne({ id: simulationId }).exec();
+    const simulation = await Contract.queryOne({ id: simulationId }).exec();
+    if (simulation) return simulation;
   } catch (error) {
-    throw new createError.NotFound('Simulation not found');
+    console.log(error);
   }
+  throw new createError.NotFound('Simulation not found');
 };
 
 module.exports = { save, getLastContract, isRegistered, isRegisteredByDocNumber };
