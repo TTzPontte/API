@@ -28,8 +28,8 @@ const PROPERTY_TYPES = {
 };
 
 const RESIDENTS = {
-  THIRD_PARTIES: 'Terceiros',
-  OWN: 'Próprio'
+  OWN: 'Próprio',
+  THIRD_PARTIES: 'Terceiros'
 };
 
 const MARITAL_STATUS = {

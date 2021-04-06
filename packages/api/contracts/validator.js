@@ -209,6 +209,7 @@ const validate = async fields => {
         .oneOf(suitesOptions(get(fields, 'property.bedrooms', 0))),
       isResident: yup
         .string()
+        .default(RESIDENTS[0])
         .oneOf(RESIDENTS)
         .required(),
       owners: yup.array().of(
