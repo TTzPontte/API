@@ -9,7 +9,7 @@ const generatePolicy = (principalId, clientName, resource, effect) => ({
       {
         Action: 'execute-api:Invoke',
         Effect: effect || 'Deny',
-        Resource: resource
+        Resource: resource.replace(/\/.+\/(.+)\/.+$/, '/*/$1/*')
       }
     ]
   }
