@@ -33,7 +33,7 @@ const buildAttributes = ({ name, email, documentNumber, phone }) => [
   { Name: 'name', Value: name },
   { Name: 'email', Value: email },
   { Name: 'phone_number', Value: phone },
-  { Name: 'custom:cpf', Value: documentNumber }
+  { Name: 'custom:cpf', Value: documentNumber.replace(/\.|-|\//g, '').slice(0, 11) }
 ];
 
 const buildValidationData = ({ trackCode, id, loanValue, term, installment, loanValueSelected, phone }) => [
