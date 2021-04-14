@@ -34,12 +34,10 @@ const validate = async fields => {
       .number()
       .min(MIN_AGE)
       .max(MAX_AGE)
-      .default(MIN_AGE)
-      .required(),
+      .default(MIN_AGE),
     documentNumber: yup
       .string()
       .strict()
-      .length(11)
       .required()
       .documentNumber(),
     phone: yup
@@ -61,8 +59,8 @@ const validate = async fields => {
       .email()
       .required(),
     loanMotivation: yup
-      .default([])
       .array()
+      .default([])
       .of(yup.string().oneOf(LOAN_MOTIVATION)),
     gracePeriod: yup
       .number()
