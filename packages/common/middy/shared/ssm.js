@@ -26,8 +26,6 @@ const ssmGroup = () => {
 };
 
 const ssmPartner = partner => {
-  console.log('to no ssm!');
-  console.log('partner -> ', partner);
   return ssm({
     cache: true,
     cacheExpiryInMillis: 3 * 60 * 60,
