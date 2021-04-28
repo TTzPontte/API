@@ -28,12 +28,21 @@ Parameters:
     Description: Ref of CommonAPILayer
     Type: String
 
-  TBContractReportStreamArn:
+  TBContractReportStreamArnDev:
     Type: AWS::SSM::Parameter::Value<String>
-    Default: !Sub '/pontte/${Environment}/tbcontractreportstream'
+    Default: !Sub '/pontte/dev/tbcontractreportstream'
+
+  TBContractReportStreamArnStaging:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: !Sub '/pontte/dev/tbcontractreportstream'
+
+  TBContractReportStreamArnProd:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: !Sub '/pontte/dev/tbcontractreportstream'
 
 Conditions:
   Prod: !Equals [!Ref Environment, prod]
+  Staging: !Equals [!Ref Environment, staging]
 
 Globals:
   Function:
@@ -199,6 +208,6 @@ Resources:
         DBContractReport:
           Type: DynamoDB
           Properties:
-            Stream: !Ref TBContractReportStreamArn
             StartingPosition: TRIM_HORIZON
             BatchSize: 10
+            Stream: !If [Prod, !Ref TBContractReportStreamArnProd, !If [Staging, !Ref TBContractReportStreamArnStaging, !Ref TBContractReportStreamArnDev]]
