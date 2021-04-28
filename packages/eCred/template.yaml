@@ -28,6 +28,10 @@ Parameters:
     Description: Ref of CommonAPILayer
     Type: String
 
+  TBContractReportStreamArn:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: !Sub '/pontte/${Environment}/tbcontractreportstream'
+
 Conditions:
   Prod: !Equals [!Ref Environment, prod]
 
@@ -191,3 +195,10 @@ Resources:
             QueueName: !Sub "AuditLog-Api-${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
+      Events:
+        DBContractReport:
+          Type: DynamoDB
+          Properties:
+            Stream: !Ref TBContractReportStreamArn
+            StartingPosition: TRIM_HORIZON
+            BatchSize: 10
