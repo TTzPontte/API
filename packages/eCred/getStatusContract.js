@@ -1,4 +1,4 @@
-const { memoize } = require('lodash')
+const { memoize } = require('lodash');
 const { ssmPartner } = require('common/middy/shared/ssm');
 const AuditLog = require('common/lambda/auditLog');
 const StatusContract = require('./sendStatusContract');
@@ -12,7 +12,7 @@ const handler = async (event, context) => {
   const data = parserResponseUpdateStatusContract(JSON.parse(body));
 
   await AuditLog.log(event, context, 'ecred', 'updateStatus', body);
-  
+
   return StatusContract.send(data);
 };
 
