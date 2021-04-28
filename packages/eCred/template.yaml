@@ -34,11 +34,11 @@ Parameters:
 
   TBContractReportStreamArnStaging:
     Type: AWS::SSM::Parameter::Value<String>
-    Default: '/pontte/dev/tbcontractreportstream'
+    Default: '/pontte/staging/tbcontractreportstream'
 
   TBContractReportStreamArnProd:
     Type: AWS::SSM::Parameter::Value<String>
-    Default: '/pontte/dev/tbcontractreportstream'
+    Default: '/pontte/prod/tbcontractreportstream'
 
 Conditions:
   Prod: !Equals [!Ref Environment, prod]
