@@ -1,19 +1,29 @@
-const { memoize } = require('lodash');
+const { memoize, get, map } = require('lodash');
+const AWS = require('aws-sdk');
 const { ssmPartner } = require('common/middy/shared/ssm');
 const AuditLog = require('common/lambda/auditLog');
+
 const StatusContract = require('./sendStatusContract');
 const { parserResponseUpdateStatusContract } = require('./offer/parser');
 
 const loadEnv = memoize(async () => ssmPartner('ecred').before());
 
+const shouldInformECred = record => record.eventName == "MODIFY" &&
+    get(record, "dynamodb.NewImage.source.S", "").toLowerCase().match(/ecred$/);
+
+const unmarshall = value => AWS.DynamoDB.Converter.unmarshall(value)
+
 const handler = async (event, context) => {
   await loadEnv();
-  const { body } = event;
-  const data = parserResponseUpdateStatusContract(JSON.parse(body));
+  const updates = event.Records
+    .filter(shouldInformECred)
+    .map(({ dynamodb }) => unmarshall(dynamodb.NewImage))
+    .map(parserResponseUpdateStatusContract);
 
-  await AuditLog.log(event, context, 'ecred', 'updateStatus', body);
+  await AuditLog.log(event, context, 'ecred', 'updateStatus', { updates });
+  await Promise.all(updates.map(StatusContract.send));
 
-  return StatusContract.send(data);
+  return updates;
 };
 
 exports.handler = handler;
