@@ -90,7 +90,7 @@ const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
 
 const parserResponseUpdateStatusContract = ({ id, statusContract, createdAt, simulation }) => {
   const optionIndex = simulation.bestOptionSelect;
-  const termIndex = simulation.terms.indexOf(simulation.term)
+  const termIndex = simulation.terms.indexOf(simulation.term);
   return {
     proposal_id: id,
     status: PROPOSAL_STATUS[statusContract.label],
