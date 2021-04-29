@@ -88,17 +88,23 @@ const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
   ];
 };
 
-const parserResponseUpdateStatusContract = ({ contract, statusContract }) => {
+const parserResponseUpdateStatusContract = ({ id, statusContract, createdAt, simulation }) => {
+  const optionIndex = simulation.bestOptionSelect;
+  const termIndex = simulation.terms.indexOf(simulation.term);
   return {
-    proposal_id: contract.id,
+    proposal_id: id,
     status: PROPOSAL_STATUS[statusContract.label],
-    contract_date: contract.createdAt,
-    tax_credit_operation_percent_contracted: 0.98, // IOF
-    total_effective_cost_percent_monthly_contracted: contract.simulation.cet * 100,
-    total_effective_cost_percent_annually_contracted: monthToYear(contract.simulation.cet) * 100,
-    tax_rate_percent_monthly_contracted: 0.0, // interest_rate
-    tax_rate_percent_annually_contracted: 0.0, // interest_rate
-    fee_credit_opening_contracted: contract.simulation.loanValueSelected
+    contract_date: createdAt,
+    value_contracted: simulation.loanValueSelected,
+    total_contracted: simulation.loanValuesGross[optionIndex],
+    first_installment_value_contracted: simulation.installment,
+    installments_contracted: simulation.term,
+    tax_credit_operation_percent_contracted: 0.0338, // IOF // TODO: Dicover how to get this information
+    total_effective_cost_percent_monthly_contracted: simulation.cet[termIndex][optionIndex],
+    total_effective_cost_percent_annually_contracted: monthToYear(simulation.cet[termIndex][optionIndex]),
+    tax_rate_percent_monthly_contracted: 0.79, // interest_rate // TODO: Dicover how to get this information
+    tax_rate_percent_annually_contracted: 9.9029, // interest_rate // TODO: Dicover how to get this information
+    fee_credit_opening_contracted: 0
   };
 };
 
