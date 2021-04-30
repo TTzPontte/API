@@ -88,23 +88,29 @@ const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
   ];
 };
 
-const parserResponseUpdateStatusContract = ({ id, statusContract, createdAt, simulation }) => {
-  const optionIndex = simulation.bestOptionSelect;
-  const termIndex = simulation.terms.indexOf(simulation.term);
+const parserResponseUpdateStatusContract = ({ id, activeProposal, statusContract, createdAt }) => {
+  const activeProposalData =
+    activeProposal && activeProposal.active
+      ? {
+          value_contracted: activeProposal.loanValue,
+          total_contracted: activeProposal.grossLoan,
+          first_installment_value_contracted: activeProposal.debts[0].debtValue,
+          installments_contracted: activeProposal.terms,
+          tax_credit_operation_percent_contracted: activeProposal.iof,
+          total_effective_cost_percent_monthly_contracted: activeProposal.interestRate,
+          total_effective_cost_percent_annually_contracted: monthToYear(activeProposal.interestRate),
+          tax_rate_percent_monthly_contracted: activeProposal.interestRate,
+          tax_rate_percent_annually_contracted: monthToYear(activeProposal.interestRate),
+          fee_credit_opening_contracted: 0,
+          contract_date: createdAt
+        }
+      : {};
+
   return {
     proposal_id: id,
-    status: PROPOSAL_STATUS[statusContract.label],
-    contract_date: createdAt,
-    value_contracted: simulation.loanValueSelected,
-    total_contracted: simulation.loanValuesGross[optionIndex],
-    first_installment_value_contracted: simulation.installment,
-    installments_contracted: simulation.term,
-    tax_credit_operation_percent_contracted: 0.0338, // IOF // TODO: Dicover how to get this information
-    total_effective_cost_percent_monthly_contracted: simulation.cet[termIndex][optionIndex],
-    total_effective_cost_percent_annually_contracted: monthToYear(simulation.cet[termIndex][optionIndex]),
-    tax_rate_percent_monthly_contracted: 0.79, // interest_rate // TODO: Dicover how to get this information
-    tax_rate_percent_annually_contracted: 9.9029, // interest_rate // TODO: Dicover how to get this information
-    fee_credit_opening_contracted: 0
+    status: PROPOSAL_STATUS[statusContract.label] || console.log(id, 'unkown status', statusContract.label),
+    partners: ['platform-pontte'],
+    ...activeProposalData
   };
 };
 

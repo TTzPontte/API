@@ -20,7 +20,8 @@ const handler = async (event, context) => {
   await loadEnv();
   const updates = event.Records.filter(shouldInformECred)
     .map(({ dynamodb }) => unmarshall(dynamodb.NewImage))
-    .map(parserResponseUpdateStatusContract);
+    .map(parserResponseUpdateStatusContract)
+    .filter(({ status }) => status);
 
   await AuditLog.log(event, context, 'ecred', 'updateStatus', { updates });
   await Promise.all(updates.map(StatusContract.send));
