@@ -93,6 +93,7 @@ Resources:
     Properties:
       Name: !Sub 'API-eCred-${Environment}'
       StageName: !Ref Environment
+      TracingEnabled:  true
       Auth:
         DefaultAuthorizer: ECredAPIAuthorizer
         Authorizers:
