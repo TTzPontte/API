@@ -193,7 +193,7 @@ Resources:
   GetStatusContractFn:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'GetStatusContractFn-${Environment}'
+      FunctionName: !Sub 'ApiGetStatusContractFn-${Environment}'
       Description: Coletar os statusContract inseridos no elasticsearch
       Handler: getStatusContract.handler
       Tracing: Active
