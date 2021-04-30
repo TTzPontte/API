@@ -89,28 +89,28 @@ const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
 };
 
 const parserResponseUpdateStatusContract = ({ id, activeProposal, statusContract, createdAt }) => {
-  const activeProposalData =
-    activeProposal && activeProposal.active
-      ? {
-          value_contracted: activeProposal.loanValue,
-          total_contracted: activeProposal.grossLoan,
-          first_installment_value_contracted: activeProposal.debts[0].debtValue,
-          installments_contracted: activeProposal.terms,
-          tax_credit_operation_percent_contracted: activeProposal.iof,
-          total_effective_cost_percent_monthly_contracted: activeProposal.interestRate,
-          total_effective_cost_percent_annually_contracted: monthToYear(activeProposal.interestRate),
-          tax_rate_percent_monthly_contracted: activeProposal.interestRate,
-          tax_rate_percent_annually_contracted: monthToYear(activeProposal.interestRate),
-          fee_credit_opening_contracted: 0,
-          contract_date: createdAt
-        }
-      : {};
+  if (!activeProposal || !activeProposal.active)
+    return {
+      proposal_id: id,
+      status: PROPOSAL_STATUS[statusContract.label] || console.log(id, 'unkown status', statusContract.label),
+      partners: ['platform-pontte']
+    };
 
   return {
     proposal_id: id,
     status: PROPOSAL_STATUS[statusContract.label] || console.log(id, 'unkown status', statusContract.label),
     partners: ['platform-pontte'],
-    ...activeProposalData
+    value_contracted: activeProposal.loanValue,
+    total_contracted: activeProposal.grossLoan,
+    first_installment_value_contracted: activeProposal.debts[0].debtValue,
+    installments_contracted: activeProposal.terms,
+    tax_credit_operation_percent_contracted: activeProposal.iof,
+    total_effective_cost_percent_monthly_contracted: activeProposal.interestRate,
+    total_effective_cost_percent_annually_contracted: monthToYear(activeProposal.interestRate),
+    tax_rate_percent_monthly_contracted: activeProposal.interestRate,
+    tax_rate_percent_annually_contracted: monthToYear(activeProposal.interestRate),
+    fee_credit_opening_contracted: 0,
+    contract_date: createdAt
   };
 };
 
