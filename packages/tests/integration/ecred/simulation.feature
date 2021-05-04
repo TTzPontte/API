@@ -10,5 +10,5 @@ And header Accept = 'application/json'
 And header Authorization = authHeaderECred
 And request simulation
 When method POST
-Then status 201
+Then status 200
 And match response[0] == simulation_response
