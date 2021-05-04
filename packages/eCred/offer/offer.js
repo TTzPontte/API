@@ -1,6 +1,6 @@
 const { parserOfferSimulation, parserResponseOfferSimulation, parserBody } = require('./parser');
 const { validate } = require('./validator');
-const { created, success } = require('common/lambda/response');
+const { success } = require('common/lambda/response');
 const Simulation = require('common/services/simulation.service');
 const Offer = require('common/services/offer.service');
 const Subscribe = require('common/services/subscribeCep.service');
@@ -31,7 +31,7 @@ const offer = async (event, context) => {
 
         await AuditLog.log(event, context, 'ecred', 'offer', body);
 
-        return created(response);
+        return success(response);
       } else {
         await Subscribe.save({ offerParsed, calculated });
         await AuditLog.log(event, context, 'ecred', 'offer', offerParsed);
