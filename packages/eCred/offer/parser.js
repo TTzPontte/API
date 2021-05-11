@@ -68,11 +68,12 @@ const parserBody = data => {
 };
 
 const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
+  const cet = calculated.interest_rate + calculated.cet / 100;
   return [
     {
       proposal_id: simulationId,
-      total_effective_cost_percent_monthly: calculated.interest_rate * 100 + calculated.cet,
-      total_effective_cost_percent_annually: monthToYear(calculated.interest_rate * 100 + calculated.cet),
+      total_effective_cost_percent_monthly: cet * 100,
+      total_effective_cost_percent_annually: monthToYear(cet) * 100,
       tax_rate_percent_monthly: calculated.interest_rate * 100,
       tax_rate_percent_annually: monthToYear(calculated.interest_rate) * 100,
       tax_credit_operation_percent: calculated.iof,
