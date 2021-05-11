@@ -71,8 +71,8 @@ const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
   return [
     {
       proposal_id: simulationId,
-      total_effective_cost_percent_monthly: calculated.cet * 100,
-      total_effective_cost_percent_annually: monthToYear(calculated.cet) * 100,
+      total_effective_cost_percent_monthly: calculated.cet,
+      total_effective_cost_percent_annually: monthToYear(calculated.cet),
       tax_rate_percent_monthly: calculated.interest_rate * 100,
       tax_rate_percent_annually: monthToYear(calculated.interest_rate) * 100,
       tax_credit_operation_percent: calculated.iof,
