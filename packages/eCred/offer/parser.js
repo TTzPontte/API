@@ -68,7 +68,7 @@ const parserBody = data => {
 };
 
 const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
-  const monthly_cet = (1 + calculated.cet) ** (1 / 12) - 1;
+  const monthly_cet = (1 + (calculated.bacen_cet || calculated.cet)) ** (1 / 12) - 1;
   return [
     {
       proposal_id: simulationId,
