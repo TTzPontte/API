@@ -83,7 +83,7 @@ const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
       installments_value: calculated.installment[0].installment,
       total_payable: calculated.grossLoan,
       fee_credit_opening: calculated.registry_value,
-      depreciation_system: 'Sac',
+      depreciation_system: 'SAC',
       first_installment_value: calculated.installment[0].installment,
       fee_administration: 0.0
     }
