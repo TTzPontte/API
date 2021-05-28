@@ -78,6 +78,7 @@ Resources:
   API:
     Type: AWS::Serverless::Api
     Properties:
+      TracingEnabled:  true
       Name: !Sub 'API-${Environment}'
       StageName: !Ref Environment
 

@@ -68,11 +68,13 @@ const parserBody = data => {
 };
 
 const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
+  const cet = calculated.bacen_cet || calculated.cet;
+  const monthly_cet = (1 + cet) ** (1 / 12) - 1;
   return [
     {
       proposal_id: simulationId,
-      total_effective_cost_percent_monthly: calculated.cet * 100,
-      total_effective_cost_percent_annually: monthToYear(calculated.cet) * 100,
+      total_effective_cost_percent_monthly: monthly_cet * 100,
+      total_effective_cost_percent_annually: cet * 100,
       tax_rate_percent_monthly: calculated.interest_rate * 100,
       tax_rate_percent_annually: monthToYear(calculated.interest_rate) * 100,
       tax_credit_operation_percent: calculated.iof,
@@ -80,25 +82,36 @@ const parserResponseOfferSimulation = ({ simulationId, calculated }) => {
       value: calculated.netLoan,
       installments_value: calculated.installment[0].installment,
       total_payable: calculated.grossLoan,
-      fee_credit_opening: calculated.registry_value,
-      depreciation_system: 'sac',
+      depreciation_system: 'SAC',
       first_installment_value: calculated.installment[0].installment,
       fee_administration: 0.0
     }
   ];
 };
 
-const parserResponseUpdateStatusContract = ({ contract, statusContract }) => {
+const parserResponseUpdateStatusContract = ({ id, activeProposal, statusContract, createdAt }) => {
+  if (!activeProposal || !activeProposal.active)
+    return {
+      proposal_id: id,
+      status: PROPOSAL_STATUS[statusContract.label] || console.log(id, 'unkown status', statusContract.label),
+      partners: ['platform-pontte']
+    };
+
   return {
-    proposal_id: contract.id,
-    status: PROPOSAL_STATUS[statusContract.label],
-    contract_date: contract.createdAt,
-    tax_credit_operation_percent_contracted: 0.98, // IOF
-    total_effective_cost_percent_monthly_contracted: contract.simulation.cet * 100,
-    total_effective_cost_percent_annually_contracted: monthToYear(contract.simulation.cet) * 100,
-    tax_rate_percent_monthly_contracted: 0.0, // interest_rate
-    tax_rate_percent_annually_contracted: 0.0, // interest_rate
-    fee_credit_opening_contracted: contract.simulation.loanValueSelected
+    proposal_id: id,
+    status: PROPOSAL_STATUS[statusContract.label] || console.log(id, 'unkown status', statusContract.label),
+    partners: ['platform-pontte'],
+    value_contracted: activeProposal.loanValue,
+    total_contracted: activeProposal.grossLoan,
+    first_installment_value_contracted: activeProposal.debts[0].debtValue,
+    installments_contracted: activeProposal.terms,
+    tax_credit_operation_percent_contracted: activeProposal.iof,
+    total_effective_cost_percent_monthly_contracted: activeProposal.interestRate,
+    total_effective_cost_percent_annually_contracted: monthToYear(activeProposal.interestRate),
+    tax_rate_percent_monthly_contracted: activeProposal.interestRate,
+    tax_rate_percent_annually_contracted: monthToYear(activeProposal.interestRate),
+    fee_credit_opening_contracted: 0,
+    contract_date: createdAt
   };
 };
 

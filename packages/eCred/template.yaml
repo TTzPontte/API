@@ -28,8 +28,21 @@ Parameters:
     Description: Ref of CommonAPILayer
     Type: String
 
+  TBContractReportStreamArnDev:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: '/pontte/dev/tbcontractreportstream'
+
+  TBContractReportStreamArnStaging:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: '/pontte/staging/tbcontractreportstream'
+
+  TBContractReportStreamArnProd:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: '/pontte/prod/tbcontractreportstream'
+
 Conditions:
   Prod: !Equals [!Ref Environment, prod]
+  Staging: !Equals [!Ref Environment, staging]
 
 Globals:
   Function:
@@ -80,6 +93,7 @@ Resources:
     Properties:
       Name: !Sub 'API-eCred-${Environment}'
       StageName: !Ref Environment
+      TracingEnabled:  true
       Auth:
         DefaultAuthorizer: ECredAPIAuthorizer
         Authorizers:
@@ -180,7 +194,7 @@ Resources:
   GetStatusContractFn:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'GetStatusContractFn-${Environment}'
+      FunctionName: !Sub 'ApiGetStatusContractFn-${Environment}'
       Description: Coletar os statusContract inseridos no elasticsearch
       Handler: getStatusContract.handler
       Tracing: Active
@@ -191,3 +205,10 @@ Resources:
             QueueName: !Sub "AuditLog-Api-${Environment}"
         - DynamoDBCrudPolicy:
             TableName: !Ref DBClients
+      Events:
+        DBContractReport:
+          Type: DynamoDB
+          Properties:
+            StartingPosition: TRIM_HORIZON
+            BatchSize: 10
+            Stream: !If [Prod, !Ref TBContractReportStreamArnProd, !If [Staging, !Ref TBContractReportStreamArnStaging, !Ref TBContractReportStreamArnDev]]
