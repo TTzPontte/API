@@ -43,7 +43,7 @@ const validate = async fields => {
   const questionsSchema = yup.object().shape({
     value: yup.number().required(),
     installments: yup
-      .string()
+      .number()
       .strict()
       .required(),
     cellphone: yup
