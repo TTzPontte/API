@@ -11,36 +11,76 @@
         "proposal_id": "00000000-0000-0000-0000-000000000000"
     },
     "questions": {
-        "value": "30000",
-        "installments": "12",
+        "address": "Rua Osvaldo Borges",
+        "address_city": "São Paulo",
+        "address_complement": "",
+        "address_neighborhood": "São Caetano",
+        "address_number": "212",
+        "address_state": {
+            "value": "SP",
+            "label": "São Paulo"
+        },
+        "address_zip_code": "45601-050",
+        "birth_state": {
+            "value": "SP",
+            "label": "S\u00e3o Paulo"
+        },
         "cellphone": "(11)981498025",
+        "gender": {
+            "value": "m",
+            "label": "Masculino"
+        },
+        "income": 20524.1,
+        "has_vehicle_guarantee": "false",
+        "issuing_agency": {
+            "value": "22",
+            "label": "AERON"
+        },
+        "issuing_date": "2009-10-06",
+        "issuing_state": {
+            "value": "SP",
+            "label": "S\u00e3o Paulo"
+        },
+        "installments": 180,
+        "marital_status": {
+            "value": "1",
+            "label": "Solteiro"
+        },
+        "mother_name": "Rufus Vandervort",
+        "nationality": {
+            "value": "1",
+            "label": "Brasileiro (a)"
+        },
         "occupation": {
-            "label": "Assalariado",
-            "value": "3"
+            "value": "3",
+            "label": "Assalariado"
         },
         "profession": {
             "label": "Estilista/Modelista",
             "value": "115"
         },
-        "income": 6000,
-        "address_zip_code": "45601-050",
-        "address": "Rua Osvaldo Borges",
-        "address_number": "212",
-        "address_neighborhood": "São Caetano",
-        "address_city": "São Paulo",
-        "address_state": {
-            "label": "São Paulo",
-            "value": "SP"
+        "property_value": 150000.0,
+        "property_state": {
+            "value": "SP",
+            "label": "São Paulo"
         },
         "property_type": {
             "label": "Casa",
             "value": "Casa"
         },
-        "property_state": {
-            "label": "São Paulo",
-            "value": "SP"
+        "reason": {
+            "value": "others",
+            "label": "Outros"
         },
-        "property_value": 150000,
-        "address_complement": ""
+        "residence_type": {
+            "value": "1",
+            "label": "Alugada"
+        },
+        "rg": "******1231231",
+        "schooling": {
+            "value": "1",
+            "label": "Fundamental incompleto"
+        },
+        "value": 80000
     }
 }
