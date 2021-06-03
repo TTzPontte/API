@@ -108,7 +108,16 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   const relations = await saveRelations({ ...entity, type: entityType });
   entity.relations = relations;
 
-  const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
+  const { User: cognitoUser } = await Cognito.createUser({
+    ...lastContract,
+    ...simulation,
+    loanValue,
+    name,
+    email,
+    phone,
+    documentNumber,
+    id
+  });
   const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
   const { id: propertyId } = await Property.save(property, trackCode);
 
