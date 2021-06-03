@@ -30,7 +30,7 @@ const save = async ({ entity, lastContract, ...data }) => {
     ...data,
     contractOwner: contractOwner,
     contractOwners: [contractOwner],
-    source,
+    source: source || 'ecred',
     campaign
   });
 

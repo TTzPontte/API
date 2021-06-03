@@ -1,5 +1,6 @@
 const { validate } = require('./validator');
 const Simulation = require('common/services/simulation.service');
+const Contract = require('common/services/contract.service');
 const Offer = require('common/services/offer.service');
 const { parserBody, parserLastContract, parserResponseContract } = require('./parser');
 const middyNoAuth = require('common/middy/middyNoAuth');
@@ -27,7 +28,12 @@ const contract = async (event, context) => {
 
   const lastEntity = await Offer.getLastEntity({ documentNumber });
 
-  const contract = await Offer.saveContract({ ...bodyParsed, clientId, lastContract: lastContractParsed, lastEntity });
+  const contract = await Offer.Contract({
+    ...bodyParsed,
+    clientId,
+    lastContract: lastContractParsed,
+    lastEntity
+  });
 
   await AuditLog.log(event, context, 'ecred', 'contract', body);
 
