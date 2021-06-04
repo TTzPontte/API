@@ -28,7 +28,7 @@ const contract = async (event, context) => {
 
   const lastEntity = await Offer.getLastEntity({ documentNumber });
 
-  const contract = await Offer.Contract({
+  const contract = await Contract.save({
     ...bodyParsed,
     clientId,
     lastContract: lastContractParsed,

@@ -1,4 +1,4 @@
-const uuid = require('uuid/v1');
+const { v1: uuid } = require('uuid');
 const { sendMessage } = require('../aws/sqs');
 
 const { ENV } = process.env;
