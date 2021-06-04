@@ -1,5 +1,5 @@
 const { Schema } = require('dynamoose');
-const { idOf } = require('uid');
+const { idOf } = require('./uid');
 const baseModel = require('./baseModel');
 const Dynamoose = require('../aws/dynamooses');
 
