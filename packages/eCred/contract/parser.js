@@ -1,5 +1,5 @@
 const parserBody = data => {
-  const { order, clientId, questions, consumer, } = data;
+  const { order, clientId, questions, consumer } = data;
   const nickName = consumer.name
     .split(' ')
     .slice(0, -1)
@@ -43,7 +43,7 @@ const parserBody = data => {
   };
 
   const property = {
-    address:  {
+    address: {
       cep: cepFormated,
       city: questions.address_city,
       complement: questions.address_complement,
@@ -53,9 +53,9 @@ const parserBody = data => {
       streetAddress: questions.address
     },
     id: simulationId,
-    financed: "Não",
-    age: "6-10",
-    isResident: "proprio",
+    financed: 'Não',
+    age: '6-10',
+    isResident: 'proprio',
     type: questions.property_type.value
   };
 
