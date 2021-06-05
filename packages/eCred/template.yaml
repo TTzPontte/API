@@ -160,6 +160,8 @@ Resources:
       Tracing: Active
       Policies:
         - SSMParameterReadPolicy:
+            ParameterName: !Sub 'cognito/${Environment}/*'
+        - SSMParameterReadPolicy:
             ParameterName: !Sub 'statusGroup/${Environment}/*'
         - SQSSendMessagePolicy:
             QueueName: !Sub "AuditLog-Api-${Environment}"

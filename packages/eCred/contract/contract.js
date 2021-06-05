@@ -7,6 +7,7 @@ const middyNoAuth = require('common/middy/middyNoAuth');
 const translateBody = require('./translate');
 const { success } = require('common/lambda/response');
 const { ssmGroup } = require('common/middy/shared/ssm');
+const { ssmCognito } = require('common/middy/shared/ssm');
 const AuditLog = require('common/lambda/auditLog');
 
 const contract = async (event, context) => {
@@ -42,4 +43,9 @@ const contract = async (event, context) => {
   return success(response);
 };
 
-module.exports = { handler: middyNoAuth(contract).use(ssmGroup()), contract };
+module.exports = {
+  handler: middyNoAuth(contract)
+    .use(ssmGroup())
+    .use(ssmCognito()),
+  contract
+};
