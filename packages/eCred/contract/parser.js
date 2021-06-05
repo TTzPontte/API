@@ -23,6 +23,7 @@ const parserBody = data => {
     address: {
       cep: cepFormated,
       city: questions.address_city,
+      complement: questions.address_complement,
       neighborhood: questions.address_neighborhood,
       number: questions.address_number,
       state: questions.address_state.value,
@@ -41,7 +42,24 @@ const parserBody = data => {
     ]
   };
 
-  return { entity, clientId, simulationId };
+  const property = {
+    address: {
+      cep: cepFormated,
+      city: questions.address_city,
+      complement: questions.address_complement,
+      neighborhood: questions.address_neighborhood,
+      number: questions.address_number,
+      state: questions.address_state.value,
+      streetAddress: questions.address
+    },
+    id: simulationId,
+    financed: 'Não',
+    age: '6-10',
+    isResident: 'proprio',
+    type: questions.property_type.value
+  };
+
+  return { entity, clientId, simulationId, property };
 };
 
 const parserLastContract = ({ lastContract, bodyParsed }) => {
