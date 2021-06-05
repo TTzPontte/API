@@ -28,7 +28,7 @@ const contract = async (event, context) => {
 
   const lastEntity = await Offer.getLastEntity({ documentNumber });
 
-  const contract = await Contract.save({
+  const contract = await Contract.saveEcred({
     ...bodyParsed,
     clientId,
     lastContract: lastContractParsed,

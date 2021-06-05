@@ -29,6 +29,7 @@ const save = async ({ entity, lastContract, ...data }) => {
     ...lastContract,
     ...data,
     contractOwner: contractOwner,
+    contractManager: contractOwner,
     contractOwners: [contractOwner],
     source: source || 'ecred',
     campaign
