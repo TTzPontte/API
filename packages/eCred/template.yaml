@@ -185,6 +185,13 @@ Resources:
             TableName: !Sub "Entity.${Environment}"
         - LambdaInvokePolicy:
             FunctionName: !Sub 'SimulatorCalculatorFn-${Environment}'
+        - Version: '2012-10-17'
+          Statement:
+            -
+              Effect: Allow
+              Action:
+                - 'cognito-idp:AdminCreateUser'
+              Resource: '*'
       Events:
         api1:
           Type: Api
