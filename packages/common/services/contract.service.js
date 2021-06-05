@@ -119,7 +119,7 @@ const saveEcred = async ({ entity, property, lastContract, secondPayers, ...data
     documentNumber,
     id
   });
-  
+
   const { id: propertyId } = await Property.save(property, trackCode);
 
   await User.save({
