@@ -82,7 +82,7 @@ const saveRelations = async entity => {
   return relationsList;
 };
 
-const getSecondPayers = ({ relations, secondPayers }) => {
+const getSecondPayers = ({ relations = [], secondPayers = [] }) => {
   const secondPayerList = [];
   for (const persona of secondPayers) {
     for (const relation of relations) {
@@ -107,6 +107,8 @@ const saveEcred = async ({ entity, property, lastContract, secondPayers, ...data
   const relations = await saveRelations({ ...entity, type: entityType });
   entity.relations = relations;
 
+  const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
+
   const { User: cognitoUser } = await Cognito.createUser({
     ...lastContract,
     ...simulation,
@@ -117,7 +119,7 @@ const saveEcred = async ({ entity, property, lastContract, secondPayers, ...data
     documentNumber,
     id
   });
-  const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
+
   const { id: propertyId } = await Property.save(property, trackCode);
 
   await User.save({
