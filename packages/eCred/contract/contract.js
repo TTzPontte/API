@@ -1,11 +1,13 @@
 const { validate } = require('./validator');
 const Simulation = require('common/services/simulation.service');
+const Contract = require('common/services/contract.service');
 const Offer = require('common/services/offer.service');
 const { parserBody, parserLastContract, parserResponseContract } = require('./parser');
 const middyNoAuth = require('common/middy/middyNoAuth');
 const translateBody = require('./translate');
 const { success } = require('common/lambda/response');
 const { ssmGroup } = require('common/middy/shared/ssm');
+const { ssmCognito } = require('common/middy/shared/ssm');
 const AuditLog = require('common/lambda/auditLog');
 
 const contract = async (event, context) => {
@@ -27,7 +29,12 @@ const contract = async (event, context) => {
 
   const lastEntity = await Offer.getLastEntity({ documentNumber });
 
-  const contract = await Offer.saveContract({ ...bodyParsed, clientId, lastContract: lastContractParsed, lastEntity });
+  const contract = await Contract.saveEcred({
+    ...bodyParsed,
+    clientId,
+    lastContract: lastContractParsed,
+    lastEntity
+  });
 
   await AuditLog.log(event, context, 'ecred', 'contract', body);
 
@@ -36,4 +43,9 @@ const contract = async (event, context) => {
   return success(response);
 };
 
-module.exports = { handler: middyNoAuth(contract).use(ssmGroup()), contract };
+module.exports = {
+  handler: middyNoAuth(contract)
+    .use(ssmGroup())
+    .use(ssmCognito()),
+  contract
+};

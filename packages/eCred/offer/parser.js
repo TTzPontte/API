@@ -22,6 +22,7 @@ const parserOfferSimulation = async event => {
     terms: installments,
     cep: cep,
     documentNumber: cpf,
+    cpf: cpf,
     loanMotivation: motivation,
     skipMonth,
     sourceIp,

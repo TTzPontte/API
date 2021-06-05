@@ -1,6 +1,6 @@
 const { Schema } = require('dynamoose');
 const Dynamoose = require('../aws/dynamooses');
-const { v4: uuid } = require('uuid');
+const { idOf } = require('./uid');
 const baseModel = require('./baseModel');
 
 const { ENV } = process.env;
@@ -10,7 +10,15 @@ const ContractsSchema = new Schema(
     id: {
       type: String,
       hashKey: true,
-      default: () => uuid()
+      default: ({
+        contractManager,
+        simulation: {
+          parameters: { cpf, documentNumber }
+        }
+      }) => {
+        const uid = contractManager || idOf(documentNumber || cpf);
+        return idOf(uid + new Date().toISOString());
+      }
     },
     propertyId: String,
     contractManager: String,
