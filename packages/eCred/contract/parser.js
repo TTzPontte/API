@@ -6,6 +6,7 @@ const parserBody = data => {
     .join(' ');
 
   const cepFormated = questions.address_zip_code.replace('-', '');
+  const phoneFormated = "+55{questions.cellphone.replace(/D/g, '')}";
 
   const simulationId = order.proposal_id;
 
@@ -13,7 +14,7 @@ const parserBody = data => {
     documentNumber: consumer.cpf,
     email: consumer.email,
     contactEmail: consumer.email,
-    phone: questions.cellphone,
+    phone: phoneFormated,
     name: consumer.name,
     nickName: nickName,
     accounts: [],
