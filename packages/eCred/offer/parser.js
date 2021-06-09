@@ -102,11 +102,12 @@ const parserResponseUpdateStatusContract = ({ id, activeProposal, statusContract
     contract_date: createdAt.replace(/T.+$/, ''),
     fee_credit_opening_contracted: 0,
     installments_contracted: activeProposal.terms,
-    installments_value_contracted: activeProposal.installment
+    first_installment_value_contracted: activeProposal.installment
       .map(({ installment = '0,00' }) => installment)
       .map(installment => installment.replace(/\./, '').replace(/,/, '.'))
       .map(parseFloat)
       .find(installment => installment > 0),
+    installments_value_contracted: activeProposal.grossLoan / activeProposal.terms,
     partners: ['platform-pontte'],
     proposal_id: id,
     status: PROPOSAL_STATUS[statusContract.label] || console.log(id, 'unkown status', statusContract.label),
