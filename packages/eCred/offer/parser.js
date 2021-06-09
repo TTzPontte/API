@@ -99,20 +99,24 @@ const parserResponseUpdateStatusContract = ({ id, activeProposal, statusContract
     };
 
   return {
+    contract_date: createdAt.replace(/T.+$/, ''),
+    fee_credit_opening_contracted: 0,
+    installments_contracted: activeProposal.terms,
+    installments_value_contracted: activeProposal.installment
+      .map(({ installment = '0,00' }) => installment)
+      .map(installment => installment.replace(/\./, '').replace(/,/, '.'))
+      .map(parseFloat)
+      .find(installment => installment > 0),
+    partners: ['platform-pontte'],
     proposal_id: id,
     status: PROPOSAL_STATUS[statusContract.label] || console.log(id, 'unkown status', statusContract.label),
-    partners: ['platform-pontte'],
-    value_contracted: activeProposal.loanValue,
-    total_contracted: activeProposal.grossLoan,
-    first_installment_value_contracted: activeProposal.debts[0].debtValue,
-    installments_contracted: activeProposal.terms,
     tax_credit_operation_percent_contracted: activeProposal.iof,
-    total_effective_cost_percent_monthly_contracted: activeProposal.interestRate,
-    total_effective_cost_percent_annually_contracted: monthToYear(activeProposal.interestRate),
     tax_rate_percent_monthly_contracted: activeProposal.interestRate,
-    tax_rate_percent_annually_contracted: monthToYear(activeProposal.interestRate),
-    fee_credit_opening_contracted: 0,
-    contract_date: createdAt
+    tax_rate_percent_annually_contracted: monthToYear(activeProposal.interestRate / 100) * 100,
+    total_contracted: activeProposal.grossLoan,
+    total_effective_cost_percent_annually_contracted: monthToYear(activeProposal.interestRate / 100) * 100,
+    total_effective_cost_percent_monthly_contracted: activeProposal.interestRate,
+    value_contracted: activeProposal.loanValue
   };
 };
 
