@@ -12,4 +12,4 @@ const ClientsApiSchema = new Schema(
     clientName: String
   })
 );
-module.exports = dynamoose.model(`ClientsApi.${ENV}`, ClientsApiSchema);
+module.exports = dynamoose.model(`ClientsApi.${ENV}`, ClientsApiSchema, { create: false, update: false });
