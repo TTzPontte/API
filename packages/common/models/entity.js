@@ -113,4 +113,4 @@ const EntitySchema = new Schema(
   })
 );
 
-module.exports = Dynamoose.model(`Entity.${ENV}`, EntitySchema);
+module.exports = Dynamoose.model(`Entity.${ENV}`, EntitySchema, { create: false, update: false });
