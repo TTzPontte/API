@@ -82,7 +82,7 @@ const saveRelations = async entity => {
   return relationsList;
 };
 
-const getSecondPayers = ({ relations, secondPayers }) => {
+const getSecondPayers = ({ relations = [], secondPayers = [] }) => {
   const secondPayerList = [];
   for (const persona of secondPayers) {
     for (const relation of relations) {
@@ -92,6 +92,68 @@ const getSecondPayers = ({ relations, secondPayers }) => {
     }
   }
   return secondPayerList;
+};
+
+const saveEcred = async ({ entity, property, lastContract, secondPayers, ...data }) => {
+  const Cognito = require('./cognito.service');
+
+  const { name, email, phone, documentNumber } = entity;
+  const { id, source, campaign, trackCode, simulation } = lastContract;
+  const {
+    parameters: { loanValue }
+  } = simulation;
+  const entityType = setEntityType(documentNumber);
+
+  const relations = await saveRelations({ ...entity, type: entityType });
+  entity.relations = relations;
+
+  const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
+
+  const { User: cognitoUser } = await Cognito.createUser({
+    ...lastContract,
+    ...simulation,
+    loanValue,
+    name,
+    email,
+    phone,
+    documentNumber,
+    id
+  });
+
+  const { id: propertyId } = await Property.save(property, trackCode);
+
+  await User.save({
+    id: cognitoUser.Username,
+    cpf: documentNumber,
+    trackingCode: trackCode,
+    entityId: contractOwner,
+    campaign: campaign,
+    source: source
+  });
+
+  const payers = getSecondPayers({ relations, secondPayers });
+
+  const contract = new ContractModel({
+    ...lastContract,
+    ...data,
+    propertyId,
+    contractOwner,
+    contractManager: contractOwner,
+    contractOwners: [contractOwner],
+    source,
+    campaign,
+    secondPayers: payers
+  });
+
+  const savedContract = await contract.save();
+
+  await Process.save({
+    contractId: savedContract.id,
+    suites: property.suites,
+    ...data
+  });
+
+  return savedContract;
 };
 
 const save = async ({ entity, property, lastContract, secondPayers, ...data }) => {
@@ -108,7 +170,16 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
   const relations = await saveRelations({ ...entity, type: entityType });
   entity.relations = relations;
 
-  const { User: cognitoUser } = await Cognito.createUser({ ...lastContract, ...simulation, loanValue, name, email, phone, documentNumber, id });
+  const { User: cognitoUser } = await Cognito.createUser({
+    ...lastContract,
+    ...simulation,
+    loanValue,
+    name,
+    email,
+    phone,
+    documentNumber,
+    id
+  });
   const { id: contractOwner } = await Entity.save({ ...entity, type: entityType });
   const { id: propertyId } = await Property.save(property, trackCode);
 
@@ -148,6 +219,7 @@ const save = async ({ entity, property, lastContract, secondPayers, ...data }) =
 
 module.exports = {
   save,
+  saveEcred,
   isRegistered,
   isRegisteredByDocNumber,
   getContractByOwner,

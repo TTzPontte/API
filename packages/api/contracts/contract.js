@@ -16,7 +16,11 @@ const contract = async event => {
 
   const lastContract = await Simulation.getLastContract(simulationId);
 
-  const contract = await Contract.save({ ...translatedBody, clientId, lastContract });
+  const contract = await Contract.save({
+    ...translatedBody,
+    clientId,
+    lastContract
+  });
 
   return success({ ...contract });
 };

@@ -1,5 +1,5 @@
 const { Schema } = require('dynamoose');
-const { v4: uuid } = require('uuid');
+const { idOf } = require('./uid');
 const baseModel = require('./baseModel');
 const Dynamoose = require('../aws/dynamooses');
 
@@ -10,7 +10,7 @@ const EntitySchema = new Schema(
     id: {
       type: String,
       hashKey: true,
-      default: () => uuid()
+      default: ({ documentNumber }) => idOf(documentNumber)
     },
     documentNumber: String,
     email: String,
@@ -113,4 +113,4 @@ const EntitySchema = new Schema(
   })
 );
 
-module.exports = Dynamoose.model(`Entity.${ENV}`, EntitySchema);
+module.exports = Dynamoose.model(`Entity.${ENV}`, EntitySchema, { create: false, update: false });
