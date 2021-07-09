@@ -20,7 +20,8 @@ const save = async ({
     sourceIp,
     clientId,
     clientName,
-    cpf
+    cpf,
+    documentNumber
   },
   calculated: { grossLoan, installment, ltv, ltvMax, cet }
 }) => {
@@ -40,6 +41,7 @@ const save = async ({
         phone: phone,
         loanDate: getNowDefaultDate(),
         cpf: cpf,
+        documentNumber: documentNumber,
         skipMonth: skipMonth,
         gracePeriod: gracePeriod,
         loanMotivation: loanMotivation
