@@ -1,6 +1,6 @@
-const MIN_LOAN_VALUE = 30000;
-const MAX_LOAN_VALUE = 5000000;
-const MIN_PROPERTY_VALUE = 200000;
+const MIN_LOAN_VALUE = 250000; // duzentos e cinquenta mil
+const MAX_LOAN_VALUE = 20000000; // vinte milhoes
+const MIN_PROPERTY_VALUE = 500000; // quinhentos mil
 const MIN_AGE = 18;
 const MAX_AGE = 75;
 
